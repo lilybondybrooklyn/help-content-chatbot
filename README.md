@@ -2,7 +2,7 @@
 
 <img src="docs/images/banner.png" alt="A help chatbot that knows when not to answer" width="100%">
 
-# From Complaints to Coverage: A Gap Analysis and a Cited Help Bot
+# A help chatbot that knows when not to answer
 
 **Product discovery → RAG chatbot → eval, built on public data**
 
