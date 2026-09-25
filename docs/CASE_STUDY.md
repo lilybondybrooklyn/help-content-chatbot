@@ -1,6 +1,6 @@
 # Case study: finding help-content gaps in complaint data and building a chatbot that respects them
 
-**Role:** product manager, doing the analysis and the build · **Timeline:** September 2026 · **Data:** public only
+**Role:** product manager, doing the analysis and the build · **Timeline:** September 2026 · **Data:** public only · **[Live demo](https://lilybondybrooklyn.github.io/help-content-chatbot/)**
 
 ## TL;DR
 
@@ -31,6 +31,8 @@ The question I wanted to answer: **which problems do customers escalate that the
 - **The most common gap is "what happens next".** The help content explains how to file a dispute or report fraud, then stops. Complaints are about denied claims, reversed credits, and timelines. More than half of dispute and fraud complaints ended with the bank giving money back, which suggests customers escalate because they can't see where their claim stands, not because they were wrong.
 - **A content-quality bug.** The overdraft FAQ's visible answer uses a **$10** fee in its example, but the hidden structured data (JSON-LD, which search engines and AI answer engines read) still says **$35**. That's a real risk for any retrieval-based bot.
 
+![Gap Finder walkthrough](images/demo-gap-finder.gif)
+
 ![Chatbot priorities](images/gap-finder-chatbot-priorities.png)
 
 ## 3. Prioritization: what the chatbot should cover first
@@ -52,7 +54,7 @@ Top five: dispute and fraud-claim status, deposit holds, bank-initiated closures
 
 **Corpus hygiene mattered more than I expected.** I rebuilt the corpus from the visible page text and used structured data only when a question didn't appear visibly (this fixed the $35 issue). I also stripped state pickers, navigation and legal boilerplate, merged duplicate answers, and split long answers into passages of about 900 characters.
 
-![Retrieval trace](images/chatbot-answer-with-trace.png)
+![Chatbot walkthrough](images/demo-chatbot.gif)
 
 ## 5. Evaluation
 

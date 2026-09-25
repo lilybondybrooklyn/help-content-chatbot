@@ -1,0 +1,290 @@
+[
+ {
+  "id": "e01",
+  "theme": "cc_dispute_stuck",
+  "expect": "partial",
+  "q": "I disputed a charge on my credit card three weeks ago and haven't heard anything. How do I check on it and how long does it take?",
+  "gold": "dispute"
+ },
+ {
+  "id": "e02",
+  "theme": "cc_dispute_stuck",
+  "expect": "handoff",
+  "q": "My dispute got denied and the credit was taken back off my card. Can I appeal?",
+  "gold": "dispute",
+  "orig_expect": "partial",
+  "label_note": "Relabeled after run 1: the help content covers dispute status, not appeals, and the question is about appeals."
+ },
+ {
+  "id": "e03",
+  "theme": "card_fraud",
+  "expect": "answer",
+  "q": "There's a charge on my credit card I never made. What do I do?",
+  "gold": "lost or stolen|fraud|dispute|unauthorized"
+ },
+ {
+  "id": "e04",
+  "theme": "card_fraud",
+  "expect": "partial",
+  "q": "Someone took money out of my checking account with my debit card. When will I get it back?",
+  "gold": "lost or stolen|dispute|liability|fraud|suspicious"
+ },
+ {
+  "id": "e05",
+  "theme": "deposit_hold",
+  "expect": "answer",
+  "q": "Why is there a hold on the check I deposited?",
+  "gold": "hold"
+ },
+ {
+  "id": "e06",
+  "theme": "deposit_hold",
+  "expect": "answer",
+  "q": "When will money from a mobile check deposit be available?",
+  "gold": "mobile check deposit|available|cutoff"
+ },
+ {
+  "id": "e07",
+  "theme": "deposit_hold",
+  "expect": "handoff",
+  "q": "A check I deposited was cleared and then reversed a week later. Why did the bank take the money back?",
+  "gold": "hold|returned"
+ },
+ {
+  "id": "e08",
+  "theme": "debit_atm",
+  "expect": "handoff",
+  "q": "The ATM didn't give me my cash but my account was still charged. What now?",
+  "gold": "atm|dispute"
+ },
+ {
+  "id": "e09",
+  "theme": "debit_atm",
+  "expect": "answer",
+  "q": "My debit card PIN isn't working at the ATM.",
+  "gold": "pin"
+ },
+ {
+  "id": "e10",
+  "theme": "payment_mishandled",
+  "expect": "partial",
+  "q": "I scheduled a transfer to my savings account but it never went through. What happened?",
+  "gold": "transfer|cutoff|scheduled"
+ },
+ {
+  "id": "e11",
+  "theme": "bank_closed",
+  "expect": "handoff",
+  "q": "Bank of America closed my account without telling me why. Why would they do that?",
+  "gold": "close"
+ },
+ {
+  "id": "e12",
+  "theme": "closed_funds",
+  "expect": "handoff",
+  "q": "The bank closed my checking account. How do I get the money that was left in it?",
+  "gold": "close"
+ },
+ {
+  "id": "e13",
+  "theme": "cant_close",
+  "expect": "answer",
+  "q": "How do I close my checking account?",
+  "gold": "close"
+ },
+ {
+  "id": "e14",
+  "theme": "access_locked",
+  "expect": "answer",
+  "q": "I forgot my online banking password. How do I get back in?",
+  "gold": "forgot|password|log"
+ },
+ {
+  "id": "e15",
+  "theme": "access_locked",
+  "expect": "handoff",
+  "q": "My account has been frozen and I can't use my money. How do I get it unfrozen?",
+  "gold": "lock|restrict"
+ },
+ {
+  "id": "e16",
+  "theme": "zelle_scam",
+  "expect": "partial",
+  "q": "Someone pretending to be from the bank got me to send $800 on Zelle. Can I get it back?",
+  "gold": "scam|zelle"
+ },
+ {
+  "id": "e17",
+  "theme": "transfer_problem",
+  "expect": "answer",
+  "q": "I sent money with Zelle but my friend says she never got it.",
+  "gold": "zelle"
+ },
+ {
+  "id": "e18",
+  "theme": "transfer_problem",
+  "expect": "answer",
+  "q": "Can I cancel a Zelle payment I already sent?",
+  "gold": "cancel"
+ },
+ {
+  "id": "e19",
+  "theme": "recurring_withdrawal",
+  "expect": "handoff",
+  "q": "How do I stop a gym from taking automatic payments out of my checking account?",
+  "gold": "stop payment|recurring"
+ },
+ {
+  "id": "e20",
+  "theme": "id_theft_account",
+  "expect": "partial",
+  "q": "Someone opened a credit card in my name. What should I do?",
+  "gold": "fraud|identity|suspicious|stolen"
+ },
+ {
+  "id": "e21",
+  "theme": "cant_open",
+  "expect": "handoff",
+  "q": "Why was I denied when I tried to open a checking account?",
+  "gold": "open"
+ },
+ {
+  "id": "e22",
+  "theme": "overdraft",
+  "expect": "partial",
+  "q": "How much is the overdraft fee?",
+  "gold": "overdraft",
+  "orig_expect": "answer",
+  "label_note": "Relabeled after run 1: the FAQ refers readers to the fee schedule; $10 appears only inside a worked example."
+ },
+ {
+  "id": "e23",
+  "theme": "overdraft",
+  "expect": "answer",
+  "q": "I thought I had enough money, so why did I get an overdraft fee?",
+  "gold": "overdraft"
+ },
+ {
+  "id": "e24",
+  "theme": "cc_fees_interest",
+  "expect": "partial",
+  "q": "What's the late fee on my credit card and how do I avoid it?",
+  "gold": "late fee|late",
+  "orig_expect": "answer",
+  "label_note": "Relabeled after run 1: the late-fee FAQ explains the fee and how to avoid it but gives no amount."
+ },
+ {
+  "id": "e25",
+  "theme": "cc_payment",
+  "expect": "answer",
+  "q": "What are the ways I can pay my Bank of America credit card?",
+  "gold": "payment"
+ },
+ {
+  "id": "e26",
+  "theme": "credit_report",
+  "expect": "partial",
+  "q": "Bank of America reported a late payment on my credit report that isn't right. How do I fix it?",
+  "gold": "credit report|goodwill|credit bureau"
+ },
+ {
+  "id": "e27",
+  "theme": "hardship",
+  "expect": "partial",
+  "q": "I lost my job and can't make my credit card payments. What are my options?",
+  "gold": "financial difficult|assistance|counsel"
+ },
+ {
+  "id": "e28",
+  "theme": "collections_dispute",
+  "expect": "handoff",
+  "q": "A collections department from the bank says I owe money on a card I already paid off. How do I dispute it?",
+  "gold": "collection"
+ },
+ {
+  "id": "e29",
+  "theme": "collections_threats",
+  "expect": "handoff",
+  "q": "Your collections team keeps calling me and threatening to hurt my credit. What are my rights?",
+  "gold": "collection"
+ },
+ {
+  "id": "e30",
+  "theme": "rewards_promo",
+  "expect": "handoff",
+  "q": "I never got the cash back rewards I earned. Where are they?",
+  "gold": "reward",
+  "orig_expect": "partial",
+  "label_note": "Relabeled after run 1: the help content covers redeeming rewards, not missing rewards."
+ },
+ {
+  "id": "e31",
+  "theme": "cc_access",
+  "expect": "answer",
+  "q": "How do I check the status of my credit card application?",
+  "gold": "application"
+ },
+ {
+  "id": "e32",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "Where do I find my routing number?",
+  "gold": "routing"
+ },
+ {
+  "id": "e33",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "Is there a fee to use Zelle?",
+  "gold": "cost|fee"
+ },
+ {
+  "id": "e34",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "How much cash can I take out of an ATM in one day?",
+  "gold": "withdraw|atm|limit"
+ },
+ {
+  "id": "e35",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "How do I lock my debit card if I misplaced it?",
+  "gold": "lock"
+ },
+ {
+  "id": "e36",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "What's the cutoff time for a transfer to count today?",
+  "gold": "cutoff|cut-off"
+ },
+ {
+  "id": "e37",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "How do I stop payment on a check I wrote?",
+  "gold": "stop payment"
+ },
+ {
+  "id": "e38",
+  "theme": "lookup",
+  "expect": "answer",
+  "q": "Can I use my credit card at an ATM overseas?",
+  "gold": "foreign|international|atm"
+ },
+ {
+  "id": "e39",
+  "theme": "out_of_scope",
+  "expect": "handoff",
+  "q": "What's the current 30-year mortgage rate?",
+  "gold": "$^"
+ },
+ {
+  "id": "e40",
+  "theme": "out_of_scope",
+  "expect": "handoff",
+  "q": "Should I buy Bank of America stock?",
+  "gold": "$^"
+ }
+]

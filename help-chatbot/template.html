@@ -1,0 +1,481 @@
+<title>Cited Help Bot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f3f4f6; --surface:#ffffff; --surface-2:#f8f9fa; --ink:#131920; --ink-2:#48525e; --muted:#6b7480; --rule:#dde1e6; --rule-2:#eceef1;
+  --accent:#0f6e6a; --accent-ink:#ffffff; --accent-soft:#e1f1ef; --user:#1c2530; --user-ink:#f3f5f7;
+  --ok:#0c8a0c; --ok-soft:#e4f4e4; --part:#b77900; --part-soft:#fcf1d8; --hand:#5b4fc4; --hand-soft:#ecebfb; --bad:#c43838; --bad-soft:#fbe7e7;
+  --display:"Bricolage Grotesque",system-ui,sans-serif; --body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){color-scheme:dark;
+  --bg:#0f1318; --surface:#171c22; --surface-2:#1c2229; --ink:#e9edf1; --ink-2:#b4bdc7; --muted:#8c96a1; --rule:#2a313a; --rule-2:#222931;
+  --accent:#4fbdb5; --accent-ink:#06201e; --accent-soft:#12302e; --user:#2a3542; --user-ink:#eef2f5;
+  --ok:#3cc43c; --ok-soft:#15301a; --part:#f0b429; --part-soft:#35290f; --hand:#9d93f0; --hand-soft:#25224a; --bad:#ec6a6a; --bad-soft:#3a1c1c;}}
+:root[data-theme="dark"]{color-scheme:dark;
+  --bg:#0f1318; --surface:#171c22; --surface-2:#1c2229; --ink:#e9edf1; --ink-2:#b4bdc7; --muted:#8c96a1; --rule:#2a313a; --rule-2:#222931;
+  --accent:#4fbdb5; --accent-ink:#06201e; --accent-soft:#12302e; --user:#2a3542; --user-ink:#eef2f5;
+  --ok:#3cc43c; --ok-soft:#15301a; --part:#f0b429; --part-soft:#35290f; --hand:#9d93f0; --hand-soft:#25224a; --bad:#ec6a6a; --bad-soft:#3a1c1c;}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:18px;padding-block:0 40px}
+.wrap{max-width:1180px;margin:0 auto}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+.lab{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+header.top{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-block:26px 16px}
+header.top h1{font-size:clamp(28px,4.4vw,40px);font-weight:800;letter-spacing:-.02em;line-height:1}
+header.top p{color:var(--ink-2);max-width:62ch;margin:8px 0 0;font-size:14.5px}
+.tabs{display:flex;gap:4px;background:var(--rule-2);padding:4px;border-radius:10px}
+.tabs button{border:0;background:none;padding:7px 14px;border-radius:7px;cursor:pointer;font-weight:600;font-size:14px;color:var(--ink-2)}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgb(0 0 0 / .08)}
+.notice{font-size:12.5px;color:var(--muted);border-top:1px solid var(--rule);padding-top:10px;margin-bottom:16px}
+
+/* chat layout */
+.chat{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:880px){.chat{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+.convo{display:flex;flex-direction:column;min-height:560px}
+.msgs{flex:1;padding:18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto;max-height:68vh}
+.msg{max-width:92%;display:grid;gap:6px}
+.msg.user{align-self:flex-end;background:var(--user);color:var(--user-ink);padding:10px 14px;border-radius:14px 14px 4px 14px}
+.msg.bot{align-self:flex-start}
+.bubble{background:var(--surface-2);border:1px solid var(--rule-2);padding:12px 14px;border-radius:14px 14px 14px 4px}
+.bubble p{margin:0 0 8px}.bubble p:last-child{margin:0}
+.bubble ul{margin:4px 0 8px;padding-left:20px}
+.bubble .gap{margin-top:8px;padding:8px 10px;border-radius:8px;background:var(--hand-soft);font-size:14px}
+.cite{display:inline-block;font-family:var(--mono);font-size:11px;line-height:1;padding:3px 5px;margin:0 1px;border-radius:4px;background:var(--accent-soft);color:var(--accent);border:0;cursor:pointer;vertical-align:1px}
+.srcs{display:grid;gap:4px;font-size:13px}
+.srcs a{text-decoration:none}.srcs a:hover{text-decoration:underline}
+.srcs .n{font-family:var(--mono);font-size:11px;color:var(--muted);margin-right:6px}
+.status{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:999px;width:max-content}
+.status.ANSWERED{background:var(--ok-soft);color:var(--ok)} .status.PARTIAL{background:var(--part-soft);color:var(--part)} .status.HANDOFF{background:var(--hand-soft);color:var(--hand)} .status.working{background:var(--rule-2);color:var(--ink-2)} .status.ERROR{background:var(--bad-soft);color:var(--bad)}
+.starters{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 12px}
+.starters button{border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:6px 12px;font-size:13px;cursor:pointer;text-align:left}
+.starters button:hover{border-color:var(--accent)}
+.starters .k{font-family:var(--mono);font-size:10px;margin-right:6px;padding:1px 5px;border-radius:4px}
+.k.cov{background:var(--ok-soft);color:var(--ok)} .k.gap{background:var(--hand-soft);color:var(--hand)} .k.par{background:var(--part-soft);color:var(--part)}
+form.ask{display:flex;gap:8px;padding:12px;border-top:1px solid var(--rule)}
+form.ask textarea{flex:1;resize:none;border:1px solid var(--rule);border-radius:10px;padding:10px 12px;font:inherit;background:var(--surface-2);color:var(--ink);min-height:46px;max-height:140px}
+.btn{border:0;background:var(--accent);color:var(--accent-ink);font-weight:600;padding:0 18px;border-radius:10px;cursor:pointer;min-height:46px}
+.btn[disabled]{opacity:.5;cursor:default}
+.btn.ghost{background:var(--rule-2);color:var(--ink)}
+.unavail{margin:0 18px 12px;padding:10px 12px;border-radius:8px;background:var(--part-soft);font-size:13.5px}
+
+/* trace */
+.trace{padding:16px 18px;display:grid;gap:14px;position:sticky;top:12px}
+.trace h2{font-size:18px}
+.trace .steps{display:grid;gap:12px}
+.step{display:grid;gap:6px}
+.step .h{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px}
+.step .h .dot{width:20px;height:20px;border-radius:50%;background:var(--rule-2);display:grid;place-items:center;font-family:var(--mono);font-size:11px;color:var(--ink-2)}
+.step.done .h .dot{background:var(--accent);color:var(--accent-ink)}
+.qs{display:flex;flex-wrap:wrap;gap:6px}
+.qs span{font-family:var(--mono);font-size:12px;background:var(--rule-2);padding:3px 7px;border-radius:5px}
+.passages{display:grid;gap:6px;max-height:420px;overflow-y:auto}
+.pas{border:1px solid var(--rule-2);border-radius:8px;padding:8px 10px;font-size:13px;display:grid;gap:3px;background:var(--surface-2)}
+.pas.cited{border-color:var(--accent);background:var(--accent-soft)}
+.pas .t{font-weight:600;line-height:1.3}
+.pas .m{display:flex;gap:10px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.pas .x{color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.empty{color:var(--muted);font-size:13.5px}
+
+/* eval */
+.evalhead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;padding:18px}
+@media (max-width:700px){.evalhead{grid-template-columns:1fr}}
+.evalhead p{color:var(--ink-2);font-size:14px;max-width:70ch;margin:6px 0 0}
+.ctrls{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.ctrls select{font:inherit;border:1px solid var(--rule);border-radius:8px;padding:8px;background:var(--surface);color:var(--ink)}
+.metrics{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:1px;background:var(--rule);border-block:1px solid var(--rule)}
+.metrics div{background:var(--surface);padding:14px 18px;display:grid;gap:2px}
+.metrics .v{font-family:var(--display);font-size:28px;font-weight:800;line-height:1.05}
+.metrics .l{font-size:12.5px;color:var(--ink-2)}
+@media (max-width:980px){.metrics{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:560px){.metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+th{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.q{max-width:420px}
+.pf{font-family:var(--mono);font-size:11px;padding:2px 7px;border-radius:999px}
+.pf.pass{background:var(--ok-soft);color:var(--ok)} .pf.fail{background:var(--bad-soft);color:var(--bad)} .pf.wait{background:var(--rule-2);color:var(--muted)} .pf.soft{background:var(--part-soft);color:var(--part)}
+.foot{font-size:12.5px;color:var(--muted);margin-top:18px}
+@media (prefers-reduced-motion:no-preference){.working .blink{animation:bl 1.2s infinite}@keyframes bl{50%{opacity:.3}}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div>
+    <div class="lab">RAG demo · public help content</div>
+    <h1>Cited Help Bot</h1>
+    <p>Ask a banking question in plain English. The bot searches __NCHUNKS__ passages from Bank of America's public help pages and answers only from what it finds, with citations. When the help content doesn't cover your question, it says so and tells you where to go next.</p>
+  </div>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-chat" aria-selected="true" aria-controls="view-chat">Chat</button>
+    <button role="tab" id="tab-eval" aria-selected="false" aria-controls="view-eval">Eval</button>
+    <button role="tab" id="tab-how" aria-selected="false" aria-controls="view-how">How it works</button>
+  </div>
+</header>
+<p class="notice">Unofficial demo built on public web pages captured 24 Sept 2026. Not affiliated with or endorsed by Bank of America, and it can't see any account. Don't type account numbers, card numbers or passwords.</p>
+
+<main id="view-chat" role="tabpanel" aria-labelledby="tab-chat">
+  <div class="chat">
+    <div class="panel convo">
+      <div class="msgs" id="msgs" aria-live="polite"></div>
+      <div class="unavail" id="unavail" hidden>Answering needs Claude, which this view can't reach. You can still see what the search step finds for any question.</div>
+      <div class="starters" id="starters"></div>
+      <form class="ask" id="ask">
+        <label for="q" class="lab" hidden>Your question</label>
+        <textarea id="q" rows="1" placeholder="e.g. Why is there a hold on my check?" autocomplete="off"></textarea>
+        <button class="btn" id="send" type="submit">Ask</button>
+      </form>
+    </div>
+    <aside class="panel trace" aria-label="How this answer was built">
+      <div><div class="lab">Retrieval trace</div><h2>How this answer was built</h2></div>
+      <div class="steps" id="trace"><p class="empty">Ask a question to see the search queries, the passages retrieved, and which ones the answer cites.</p></div>
+    </aside>
+  </div>
+</main>
+
+<section id="view-eval" role="tabpanel" aria-labelledby="tab-eval" hidden>
+  <div class="panel">
+    <div class="evalhead">
+      <div>
+        <div class="lab">Test set · __NEVAL__ questions</div>
+        <h2 style="font-size:24px">Does the bot know when not to answer?</h2>
+        <p>The questions come from the 24 customer problems in the Help Gap Finder, plus everyday lookups and two off-topic questions. Each one has an expected outcome: <b>answered</b> (the help content covers it), <b>partial</b> (it covers part of it), or <b>handoff</b> (it doesn't, so the bot should decline to guess). A run asks Claude two questions per test, one after another, and takes about 3 minutes. Keep this page open until it finishes. It saves after every question, and you can resume an interrupted run.</p>
+      </div>
+      <div class="ctrls">
+        <label class="lab" for="tier">Model</label>
+        <select id="tier"><option value="quick">Quick (faster)</option><option value="default">Default (same as chat)</option></select>
+        <button class="btn" id="run" type="button">Run eval</button>
+        <button class="btn ghost" id="resume" type="button" hidden>Resume</button>
+        <button class="btn ghost" id="stop" type="button" hidden>Stop</button>
+      </div>
+    </div>
+    <div class="metrics" id="metrics"></div>
+    <div style="padding:18px 18px 6px"><div class="lab">Saved runs</div><p style="font-size:13px;color:var(--ink-2);margin:4px 0 0">Every run is re-scored against the current labels, so earlier runs stay comparable after a label changes.</p></div>
+    <div id="history"><p class="empty" style="padding:0 18px 18px">Loading saved runs…</p></div>
+    <div style="padding:18px 18px 6px;border-top:1px solid var(--rule)"><div class="lab">This run</div></div>
+    <div class="tablewrap"><table><thead><tr><th>#</th><th>Question</th><th>Expected</th><th>Got</th><th>Outcome</th><th>Right source</th><th>Search hit</th></tr></thead><tbody id="evalrows"></tbody></table></div>
+  </div>
+  <p class="foot" id="evalnote">Search hit: whether any of the top 8 passages from the keyword search alone (no query rewriting) comes from the expected help topic. That column is computed in your browser, so it shows before any run.</p>
+</section>
+
+<section id="view-how" role="tabpanel" aria-labelledby="tab-how" hidden>
+  <div class="panel" style="padding:22px;display:grid;gap:18px;max-width:860px">
+    <div><div class="lab">Pipeline</div><h2 style="font-size:24px">Four steps per question</h2></div>
+    <ol style="margin:0;padding-left:20px;display:grid;gap:10px">
+      <li><b>Rewrite.</b> A quick Claude call turns the question into three search queries in the words a help page would use. It also flags off-topic questions, such as investing or mortgage rates.</li>
+      <li><b>Retrieve.</b> Keyword search (BM25) runs each query over __NCHUNKS__ passages. The results are merged with reciprocal-rank fusion and the top 8 are kept. This all runs in your browser.</li>
+      <li><b>Answer.</b> Claude gets only those 8 passages, with instructions to answer from them, cite each claim, and label the result ANSWERED, PARTIAL or HANDOFF. It must not add fees, timelines or phone numbers the passages don't state.</li>
+      <li><b>Show your work.</b> The trace panel lists the queries, the retrieved passages and which passages the answer cited, so any answer can be checked.</li>
+    </ol>
+    <div><h3 style="font-size:17px;margin-bottom:6px">Why keyword search instead of embeddings</h3><p style="color:var(--ink-2)">This page runs as a self-contained web page, which can't download an embedding model. Keyword search plus LLM query rewriting works well for a few hundred FAQ passages. The eval measures this directly: on raw questions, keyword search alone finds the right topic in the top 8 for 27 of 29 answerable test questions, and the rewrite step targets the misses. Swapping in embeddings is the next upgrade.</p></div>
+    <div><h3 style="font-size:17px;margin-bottom:6px">Corpus hygiene</h3><p style="color:var(--ink-2)">Passages come from the text visible on each page. Hidden structured data (JSON-LD) is used only for questions that don't appear visibly. This matters: Bank of America's overdraft FAQ shows a $10 fee on the page, but its structured data still says $35. Navigation text, state pickers and legal boilerplate are stripped out, duplicate answers are merged, and long answers are split into passages of about 900 characters.</p></div>
+    <div><h3 style="font-size:17px;margin-bottom:6px">Built from the gap analysis</h3><p style="color:var(--ink-2)">The test questions come from 30,763 CFPB complaints grouped into customer problems. The gap analysis showed which problems the help content covers, so the eval can check that the bot answers those, gives partial answers where coverage is partial, and hands off where it's missing, instead of inventing an answer.</p></div>
+  </div>
+</section>
+</div>
+
+<script>__RETRIEVAL__</script>
+<script>
+const CHUNKS = __CHUNKS__;
+const EVAL = __EVAL__;
+const DEMO = __DEMO__;          // true on the static GitHub Pages build: replays saved eval answers
+const REPLAY = __REPLAY__;      // {question: saved result} from one complete eval run
+const SAVED_RUNS = __RUNS__;
+const REPLAY_VERSION = __REPLAY_VERSION__;    // saved eval runs, for the history table in demo mode
+const sleepMs = ms => new Promise(r=>setTimeout(r,ms));
+const IX = Retrieval.buildIndex(CHUNKS);
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- tabs ---------- */
+const TABS = ['chat','eval','how'];
+function show(t){ TABS.forEach(x=>{ $('#tab-'+x).setAttribute('aria-selected', x===t); (x==='chat'?$('#view-chat'):$('#view-'+x)).hidden = x!==t; }); }
+TABS.forEach(t=>$('#tab-'+t).addEventListener('click',()=>show(t)));
+if(location.hash==='#eval') show('eval');
+
+/* ---------- Claude ---------- */
+let sample = null, db = null;
+const samplePromise = (!DEMO && window.claude?.use ? claude.use('sample') : Promise.resolve(null)).then(s=>{ sample=s; if(!s) $('#unavail').hidden=false; return s; }).catch(()=>{ $('#unavail').hidden=false; return null; });
+const dbPromise = (!DEMO && window.claude?.use ? claude.use('db') : Promise.resolve(null)).then(d=>{ db=d; return d; }).catch(()=>null);
+
+const PROMPT_VERSION = 'v2.2';
+const RULES = `You are a help-center assistant in an unofficial demo built on Bank of America's PUBLIC help pages. You can't see any account and you are not Bank of America: call the bank "Bank of America", never "we" or "us".
+Answer ONLY from the numbered passages. Rules:
+- Every bank-specific fact (fee, amount, time, limit, phone number, address, eligibility, step) must come from a passage and carry its citation like [2]. Never add such facts from memory.
+- Use a passage only if it is about the customer's situation. Don't stretch a passage about a different situation (for example, closing your own account is not the bank closing it).
+- Phone numbers: give a number only for the purpose the passage gives it for (e.g. "the number for PIN problems"). Never relabel a number for a different department or topic.
+- Don't point to outside organizations, websites, or steps that aren't in the passages. A generic "contact Bank of America" is fine.
+- A number that appears only inside a worked example is not a stated fee or policy; don't present it as one.
+- STATUS: ANSWERED when the passages answer what was asked. Needing to log in to see one's own details is normal and does NOT make an answer partial.
+- STATUS: PARTIAL when the passages answer part of the question but not a specific thing that was asked. If the customer asks how long, when, or how much and the passages give no timeline or amount, that is PARTIAL, never ANSWERED. Answer the covered part, then one line starting "Not covered:" naming what the help content doesn't say, plus the best next step from the passages, cited.
+- STATUS: HANDOFF when the passages don't address the question, or it's off-topic. In one or two sentences say the public help content doesn't cover it and don't guess, and suggest contacting Bank of America. Do NOT write any phone number in a HANDOFF: the page adds verified contact options under your answer.
+- Any phone number you do write must appear in a passage you cite right next to it.
+- Never ask for account numbers, card numbers, SSNs or passwords. If the customer shared one, tell them not to.
+- Warm and plain-spoken. At most 150 words. Short paragraphs or up to 5 bullets ("- "). No headings.
+Output format: the FIRST line is exactly one of "STATUS: ANSWERED", "STATUS: PARTIAL", "STATUS: HANDOFF", with nothing else on it. Then the answer.`;
+
+async function rewrite(question, prevQ, tier){
+  const prompt = `You turn a bank customer's question into search queries for a keyword search over Bank of America's public help-center FAQs (checking, savings, debit/ATM, credit cards, Zelle, transfers, online banking, fraud/security, disputes, credit-card assistance).
+Reply with only JSON: {"queries": [three short keyword queries, each 3-8 words, using the terms a bank help page would use], "offtopic": true|false}
+"offtopic" is true only if the question is not about everyday banking/credit-card service (e.g. investing advice, mortgage rates, unrelated topics).
+${prevQ ? `The customer's previous question (for context if this one is a follow-up): "${prevQ}"\n` : ''}Customer question: "${question}"`;
+  try {
+    const j = await sample.json(prompt, { modelTier: 'quick', cache: { gcTime: 3600000 } });
+    const qs = Array.isArray(j?.queries) ? j.queries.map(String).filter(Boolean).slice(0,3) : [];
+    return { queries: qs, offtopic: !!j?.offtopic };
+  } catch(e){ if (['not_granted','sampling_disabled','not_declared','capability_disabled'].includes(e.code)) throw e; return { queries: [], offtopic: false, err: e.code }; }
+}
+function retrieve(question, queries){ return Retrieval.search(IX, [question, ...queries], 8); }
+function answerPrompt(question, hits, history){
+  const pas = hits.map((h,i)=>`[${i+1}] ${h.chunk.title}\nSource: ${h.chunk.page} (${h.chunk.url})\n${h.chunk.text}`).join('\n\n');
+  const hist = history.length ? `Earlier in this chat:\n${history.map(t=>`${t.role==='user'?'Customer':'Assistant'}: ${t.content.slice(0,500)}`).join('\n')}\n\n` : '';
+  return `${RULES}\n\n${hist}Passages:\n${pas}\n\nCustomer question: ${question}`;
+}
+function parseAnswer(text){
+  const m = text.match(/^\s*STATUS:\s*(ANSWERED|PARTIAL|HANDOFF)\s*\n?/i);
+  const status = m ? m[1].toUpperCase() : null;
+  const body = (m ? text.slice(m[0].length) : text.replace(/^\s*STATUS:?\s*\w*\s*/i,'')).replace(/^[\s.:;,\-–—]+/,'');
+  const cited = [...new Set([...body.matchAll(/\[(\d+)\]/g)].map(x=>+x[1]))];
+  return { status, body, cited };
+}
+const FACT = /\b\d{3}[.\-]\d{3}[.\-]\d{4}\b|\$\d[\d,]*(?:\.\d\d)?|\b\d+\s*(?:business\s+)?days?\b|\b\d{1,2}(?::\d\d)?\s*[ap]\.?m\.?/gi;
+const fnorm = s => s.toLowerCase().replace(/[^0-9a-z$]/g,'');
+function factCheck(body, hits, cited){
+  const citedTxt = fnorm(cited.map(n=>hits[n-1]?.chunk.text||'').join(' '));
+  const facts = [...new Set((body.match(FACT)||[]).map(s=>s.trim()))];
+  return { facts, unsupported: facts.filter(f=>!citedTxt.includes(fnorm(f))) };
+}
+function render(body, hits){
+  const lines = esc(body.trim()).split('\n');
+  let html = '', list = false;
+  for (let ln of lines){
+    ln = ln.replace(/\*\*(.+?)\*\*/g,'<b>$1</b>').replace(/\[(\d+)\]/g,(m,n)=> hits[n-1] ? `<button type="button" class="cite" data-n="${n}" title="${esc(hits[n-1].chunk.title)}">${n}</button>` : '');
+    if (/^\s*[-•]\s+/.test(ln)){ if(!list){html+='<ul>';list=true;} html+=`<li>${ln.replace(/^\s*[-•]\s+/,'')}</li>`; continue; }
+    if (list){ html+='</ul>'; list=false; }
+    if (!ln.trim()) continue;
+    if (/^Not covered:/i.test(ln.trim())) html += `<div class="gap">${ln}</div>`; else html += `<p>${ln}</p>`;
+  }
+  if (list) html+='</ul>';
+  return html;
+}
+const CONTACTS = [ // verified from the corpus, shown under every handoff instead of letting the model pick a number
+  { label:'General customer service', value:'800-432-1000', note:'Mon–Fri 7 a.m.–10 p.m., Sat–Sun 8 a.m.–5 p.m. ET', id:'c005' },
+  { label:'Credit cards', value:'800-732-9194', note:'report a lost or stolen credit card, 24/7', id:'c512' },
+  { label:'Fraud, scams or suspicious activity', value:'Report Suspicious Activity page', note:'numbers by account type', id:'c500' },
+];
+function contactsHTML(){
+  return `<div class="gap"><b>Where to go next</b><div class="srcs" style="margin-top:4px">${CONTACTS.map(c=>{const ch=CHUNKS.find(x=>x.id===c.id); return `<span>${esc(c.label)}: <b>${esc(c.value)}</b> <span style="color:var(--muted)">(${esc(c.note)})</span> <a href="${esc(ch?.url||'#')}" target="_blank" rel="noopener">source</a></span>`}).join('')}</div></div>`;
+}
+const STATUS_LABEL = { ANSWERED:'✓ Answered from help content', PARTIAL:'◐ Partly covered', HANDOFF:'→ Not covered, handing off', working:'Thinking…', ERROR:'Couldn\'t answer' };
+
+/* ---------- chat ---------- */
+const history = []; let busy = false, lastQ = '';
+const STARTERS = [
+  ['cov','Why is there a hold on the check I deposited?'],
+  ['cov','Can I cancel a Zelle payment I already sent?'],
+  ['par','I disputed a credit card charge. How long does it take?'],
+  ['par','I got scammed into sending money on Zelle. Can I get it back?'],
+  ['gap','The bank closed my account. How do I get my money?'],
+  ['gap','How do I stop a gym from taking automatic payments?'],
+];
+if (DEMO) { STARTERS.length = 0; ['e05','e33','e04','e16','e12','e15'].forEach(id=>{ const e=EVAL.find(x=>x.id===id); STARTERS.push([e.expect==='answer'?'cov':e.expect==='partial'?'par':'gap', e.q]); }); }
+$('#starters').innerHTML = STARTERS.map(([k,q])=>`<button type="button" data-q="${esc(q)}"><span class="k ${k}">${k==='cov'?'covered':k==='par'?'partial':'gap'}</span>${esc(q)}</button>`).join('');
+$('#starters').addEventListener('click',e=>{const b=e.target.closest('button'); if(b && !busy){ $('#q').value=b.dataset.q; ask(); }});
+$('#ask').addEventListener('submit',e=>{e.preventDefault(); ask();});
+$('#q').addEventListener('keydown',e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); ask(); }});
+$('#msgs').addEventListener('click',e=>{ const c=e.target.closest('.cite'); if(!c) return; const el=document.getElementById('pas-'+c.dataset.n); if(el){ el.scrollIntoView({block:'nearest',behavior:'smooth'}); el.animate?.([{outline:'2px solid var(--accent)'},{outline:'2px solid transparent'}],{duration:1200}); }});
+$('#msgs').innerHTML = `<div class="msg bot"><div class="bubble"><p>Hi! Ask me about deposits, debit cards, credit cards, Zelle, transfers, disputes or account security. I answer from Bank of America's public help pages and show my sources. Try one of the examples below. Some are covered by the help content and some aren't, so you can see both kinds of answer.</p></div></div>`;
+
+function traceHTML(t){
+  const qs = t.queries ? `<div class="qs">${[t.question,...t.queries].map(q=>`<span>${esc(q)}</span>`).join('')}</div>` : '<span class="empty">Rewriting…</span>';
+  const pas = t.hits ? `<div class="passages">${t.hits.map((h,i)=>`<div class="pas ${t.cited?.includes(i+1)?'cited':''}" id="pas-${i+1}"><div class="m"><span>[${i+1}]</span><span>BM25 ${h.best.toFixed(1)}</span><span>${h.chunk.src==='structured'?'structured data':h.chunk.kind}</span>${t.cited?.includes(i+1)?'<span style="color:var(--accent)">cited</span>':''}</div><div class="t">${esc(h.chunk.title)}</div><div class="x">${esc(h.chunk.text)}</div><a href="${esc(h.chunk.url)}" target="_blank" rel="noopener" style="font-size:12px">${esc(h.chunk.page)}</a></div>`).join('')}</div>` : '';
+  return `<div class="step ${t.queries?'done':''}"><div class="h"><span class="dot">1</span>Search queries${t.offtopic?' <span class="status HANDOFF">off-topic</span>':''}</div>${qs}</div>
+   <div class="step ${t.hits?'done':''}"><div class="h"><span class="dot">2</span>Top 8 passages (keyword search, fused)</div>${pas||'<span class="empty">Waiting…</span>'}</div>
+   <div class="step ${t.status?'done':''}"><div class="h"><span class="dot">3</span>Answer ${t.status?`<span class="status ${t.status}">${t.status}</span>`:''}</div>${t.cited?`<span class="empty">Cites ${t.cited.length?t.cited.map(n=>'['+n+']').join(' '):'no passages'}.</span>`:'<span class="empty">Waiting…</span>'}</div>
+   <div class="step ${t.fc?'done':''}"><div class="h"><span class="dot">4</span>Fact check</div>${t.fc?(t.fc.facts.length?`<span class="empty">${t.fc.facts.length} specific ${t.fc.facts.length===1?'figure':'figures'} (phone numbers, amounts, days, times). ${t.fc.unsupported.length?`<b style="color:var(--bad)">Not found in the cited passages: ${t.fc.unsupported.map(esc).join(', ')}</b>`:'All found word-for-word in the cited passages.'}</span>`:'<span class="empty">No phone numbers, amounts, days or times in this answer.</span>'):'<span class="empty">Waiting…</span>'}</div>`;
+}
+async function ask(){
+  const question = $('#q').value.trim(); if(!question || busy) return;
+  busy = true; $('#send').disabled = true; $('#q').value='';
+  const msgs = $('#msgs');
+  msgs.insertAdjacentHTML('beforeend', `<div class="msg user">${esc(question)}</div>`);
+  const bot = document.createElement('div'); bot.className='msg bot';
+  bot.innerHTML = `<span class="status working"><span class="blink">●</span> Searching the help content…</span><div class="bubble" hidden></div><div class="srcs" hidden></div>`;
+  msgs.appendChild(bot); msgs.scrollTop = msgs.scrollHeight;
+  const t = { question };
+  const setTrace = () => $('#trace').innerHTML = traceHTML(t);
+  setTrace();
+  const st = bot.querySelector('.status'), bub = bot.querySelector('.bubble'), srcs = bot.querySelector('.srcs');
+  try {
+    await samplePromise;
+    if (DEMO) { $('#starters').hidden = true; $('#unavail').hidden = true; }
+    const rep = DEMO ? REPLAY[question] : null;
+    if (rep) { await sleepMs(500); t.queries = rep.queries||[]; t.offtopic = !!rep.offtopic; setTrace(); await sleepMs(500);
+      t.hits = retrieve(question, t.queries); setTrace(); await sleepMs(400);
+      const full = rep.answer, p0 = parseAnswer('STATUS: '+rep.status+'\n'+full);
+      st.className='status '+rep.status; st.textContent = STATUS_LABEL[rep.status]; bub.hidden=false;
+      for (let i=0;i<=full.length;i+=Math.max(6,Math.ceil(full.length/60))){ bub.innerHTML = render(full.slice(0,i), t.hits); msgs.scrollTop=msgs.scrollHeight; await sleepMs(25); }
+      t.status=rep.status; t.cited=p0.cited; t.fc=factCheck(p0.body,t.hits,p0.cited); setTrace();
+      bub.innerHTML = render(p0.body, t.hits) + (t.fc.unsupported.length ? `<div class="gap" style="background:var(--bad-soft)">Check this: ${t.fc.unsupported.map(esc).join(', ')} isn't in the cited sources.</div>` : '');
+      if (p0.cited.length){ srcs.hidden=false; srcs.innerHTML = `<span class="lab">Sources</span>` + p0.cited.filter(n=>t.hits[n-1]).map(n=>`<a href="${esc(t.hits[n-1].chunk.url)}" target="_blank" rel="noopener"><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)}</a>`).join(''); }
+      return; }
+    if (sample) { const r = await rewrite(question, lastQ, 'quick'); t.queries = r.queries; t.offtopic = r.offtopic; }
+    else t.queries = [];
+    setTrace();
+    t.hits = retrieve(question, t.queries); setTrace();
+    if (!sample) { st.className='status ERROR'; st.textContent='Search only'; bub.hidden=false; bub.innerHTML = DEMO ? '<p>This public demo can replay answers only for the 40 test questions (pick one from the list below). For other questions it shows the search step, so the passages it found are in the trace panel.</p>' : '<p>Claude isn\'t available in this view, so I can\'t write an answer. The passages the search found are in the trace panel.</p>'; return; }
+    st.innerHTML = '<span class="blink">●</span> Writing an answer…';
+    const { text } = await sample(answerPrompt(question, t.hits, history.slice(-4)), { cache:false, onText: ({text}) => {
+      const p = parseAnswer(text); bub.hidden=false; bub.innerHTML = render(p.body, t.hits);
+      if (p.status){ st.className='status '+p.status; st.textContent = STATUS_LABEL[p.status]; }
+      msgs.scrollTop = msgs.scrollHeight; }});
+    const p = parseAnswer(text);
+    t.status = p.status || 'ANSWERED'; t.cited = p.cited; t.fc = factCheck(p.body, t.hits, p.cited); setTrace();
+    st.className='status '+t.status; st.textContent = STATUS_LABEL[t.status];
+    bub.innerHTML = render(p.body, t.hits) + (t.status==='HANDOFF' ? contactsHTML() : '') + (t.fc.unsupported.length ? `<div class="gap" style="background:var(--bad-soft)">Check this: ${t.fc.unsupported.map(esc).join(', ')} isn't in the cited sources.</div>` : '');
+    if (p.cited.length){ srcs.hidden=false; srcs.innerHTML = `<span class="lab">Sources</span>` + p.cited.filter(n=>t.hits[n-1]).map(n=>`<a href="${esc(t.hits[n-1].chunk.url)}" target="_blank" rel="noopener"><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)}</a>`).join(''); }
+    history.push({role:'user',content:question},{role:'assistant',content:p.body});
+    lastQ = question;
+  } catch(e){
+    st.className='status ERROR';
+    const code = e?.code;
+    st.textContent = STATUS_LABEL.ERROR;
+    bub.hidden=false;
+    bub.innerHTML = `<p>${code==='not_granted'||code==='sampling_disabled'?'Answering needs permission to use Claude, which wasn\'t granted in this view.':code==='rate_limited'?'Too many questions in a short time. Wait a minute and try again.':'Something went wrong getting an answer. Try asking again.'}</p>` + (e?.text?render(parseAnswer(e.text).body,t.hits||[]):'');
+    if (code==='not_granted'||code==='sampling_disabled') $('#unavail').hidden=false;
+  } finally { busy=false; $('#send').disabled=false; msgs.scrollTop = msgs.scrollHeight; $('#q').focus(); }
+}
+
+/* ---------- eval ---------- */
+const CHUNK_BY_ID = Object.fromEntries(CHUNKS.map(c=>[c.id,c]));
+const EXPECT_STATUS = { answer:'ANSWERED', partial:'PARTIAL', handoff:'HANDOFF' };
+const results = {}; let running = null;
+EVAL.forEach(e => { const re = new RegExp(e.gold,'i'); e.base = Retrieval.search(IX,[e.q],8).some(h=>re.test(h.chunk.title+' '+h.chunk.url)); });
+const EV = Object.fromEntries(EVAL.map(e=>[e.id,e]));
+function outcome(e, r){
+  if (!r || r.status==='ERROR') return r ? 'fail' : null;
+  if (r.status === EXPECT_STATUS[e.expect]) return 'pass';
+  if (e.expect!=='handoff' && r.status!=='HANDOFF') return 'soft';
+  if (e.expect==='handoff' && r.status==='PARTIAL') return 'soft';
+  return 'fail';
+}
+function unsupportedOf(r){ // fact check against the passages the answer cited (works for stored runs too)
+  if (!r?.answer) return [];
+  const txt = fnorm((r.cited||[]).map(id=>CHUNK_BY_ID[id]?.text||'').join(' '));
+  return [...new Set((r.answer.match(FACT)||[]).map(s=>s.trim()))].filter(f=>!txt.includes(fnorm(f)));
+}
+function score(res){ // res: {id: result}; scored against the CURRENT labels
+  const ids = Object.keys(res).filter(id=>EV[id]);
+  const o = id => outcome(EV[id], res[id]);
+  const needSrc = ids.filter(id=>EV[id].expect!=='handoff' && res[id].status!=='HANDOFF' && res[id].status!=='ERROR');
+  return { n: ids.length, pass: ids.filter(id=>o(id)==='pass').length, close: ids.filter(id=>o(id)==='soft').length,
+    unsafe: ids.filter(id=>EV[id].expect==='handoff' && res[id].status==='ANSWERED').length,
+    call: ids.filter(id=>res[id].status!=='ERROR' && ((EV[id].expect==='handoff')===(res[id].status==='HANDOFF'))).length,
+    src: needSrc.filter(id=>res[id].goldCited).length, srcN: needSrc.length,
+    unsup: ids.filter(id=>unsupportedOf(res[id]).length).length, errors: ids.filter(id=>res[id].status==='ERROR').length };
+}
+function renderEval(){
+  const s = score(results);
+  const baseN = EVAL.filter(e=>e.expect!=='handoff'), baseHit = baseN.filter(e=>e.base).length;
+  $('#metrics').innerHTML = [
+    [s.n?`${s.call}/${s.n}`:'–', 'Right call on answering vs. handing off'],
+    [s.n?`${s.pass}/${s.n}`:'–', `Exact outcome match${s.close?` (+${s.close} close)`:''}`],
+    [s.n?`${s.unsafe}`:'–', 'Confident answers where a handoff was expected'],
+    [s.srcN?`${s.src}/${s.srcN}`:'–', 'Answers citing a passage from the expected topic'],
+    [s.n?`${s.unsup}`:'–', 'Answers with a figure not found in their cited passages'],
+    [`${baseHit}/${baseN.length}`, 'Keyword search alone finds the topic (top 8)'],
+  ].map(([v,l])=>`<div><div class="v num">${v}</div><div class="l">${l}</div></div>`).join('');
+  $('#evalrows').innerHTML = EVAL.map((e,i)=>{ const r=results[e.id], o=outcome(e,r), un=unsupportedOf(r);
+    const got = r? `<span class="status ${r.status}">${r.status}</span>${un.length?`<div class="pf fail" style="margin-top:4px;display:inline-block" title="Not in cited passages">unsupported: ${esc(un.join(', '))}</div>`:''}` : (running===e.id?'<span class="pf wait">running…</span>':'<span class="pf wait">–</span>');
+    const oc = o? `<span class="pf ${o}">${o==='pass'?'pass':o==='soft'?'close':'fail'}</span>`:'';
+    const src = r && e.expect!=='handoff' && r.status!=='HANDOFF' && r.status!=='ERROR' ? (r.goldCited?'<span class="pf pass">yes</span>':'<span class="pf fail">no</span>') : '';
+    const note = e.label_note ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${esc(e.label_note)}</div>` : '';
+    const ans = r?.answer ? `<details style="margin-top:4px"><summary style="font-size:12px;color:var(--accent);cursor:pointer">Answer</summary><div style="font-size:12.5px;white-space:pre-wrap;color:var(--ink-2)">${esc(r.answer)}</div></details>` : '';
+    return `<tr><td class="num">${i+1}</td><td class="q">${esc(e.q)}${note}${ans}</td><td><span class="status ${EXPECT_STATUS[e.expect]}">${e.expect}</span></td><td>${got}</td><td>${oc}</td><td>${src}</td><td>${e.expect==='handoff'?'':(e.base?'<span class="pf pass">yes</span>':'<span class="pf fail">no</span>')}</td></tr>`; }).join('');
+}
+function renderRuns(runs){
+  if (!runs.length){ $('#history').innerHTML = '<p class="empty" style="padding:0 18px 18px">No saved runs yet.</p>'; return; }
+    $('#history').innerHTML = `<div class="tablewrap"><table><thead><tr><th>Run</th><th>Prompt</th><th>Model</th><th>Right call</th><th>Exact match</th><th>Close</th><th>Unsafe answers</th><th>Right source</th><th>Unsupported figures</th></tr></thead><tbody>${runs.map(r=>{
+      const res = Object.fromEntries((r.results||[]).map(x=>[x.id,x])); const s = score(res);
+      const when = new Date(r.startedAt).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+      return `<tr><td>${esc(when)}${r.status==='running'||r.status==='stopped'?` <span class="pf wait">${(r.results||[]).length}/${EVAL.length}, unfinished</span>`:''}</td><td class="num">${esc(r.promptVersion||'v1')}</td><td>${esc(r.tier||'')}</td><td class="num">${s.call}/${s.n}</td><td class="num">${s.pass}/${s.n}</td><td class="num">${s.close}</td><td class="num">${s.unsafe}</td><td class="num">${s.src}/${s.srcN}</td><td class="num">${s.unsup}</td></tr>`; }).join('')}</tbody></table></div>`;
+}
+async function loadHistory(){
+  if (DEMO && SAVED_RUNS.length){ renderRuns(SAVED_RUNS); return; }
+  await dbPromise; if (!db){ $('#history').innerHTML = '<p class="empty" style="padding:0 18px 18px">Saved runs show here when the page is opened in Claude.</p>'; return; }
+  try {
+    const snap = await db.collection('evalRuns').get();
+    const runs = snap.docs.map(d=>d.data()).filter(Boolean).sort((a,b)=>String(b.startedAt).localeCompare(String(a.startedAt)));
+    renderRuns(runs);
+    const last = runs[0];
+    resumable = (last && last.promptVersion===PROMPT_VERSION && last.status!=='done' && (last.results||[]).length < EVAL.length && !$('#run').disabled) ? last : null;
+    if (resumable){ $('#resume').hidden=false; $('#resume').textContent = `Resume last run (${resumable.results.length}/${EVAL.length} done)`; $('#tier').value = resumable.tier||'quick'; }
+  } catch(err){ $('#history').innerHTML = '<p class="empty" style="padding:0 18px 18px">Couldn\'t load saved runs.</p>'; }
+}
+let evalCtl = null;
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+let resumable = null;
+async function runEval(resume){
+  await samplePromise;
+  if (!sample){ $('#evalnote').textContent = 'Running the eval needs Claude, which this view can\'t reach.'; return; }
+  const tier = $('#tier').value; evalCtl = new AbortController();
+  $('#run').disabled = true; $('#stop').hidden = false;
+  Object.keys(results).forEach(k=>delete results[k]);
+  if (resume) for (const r of resume.results||[]) if (r.status!=='ERROR') { const {id,expect,q,...rest}=r; results[id]=rest; }
+  const startedAt = resume ? resume.startedAt : new Date().toISOString();
+  $('#resume').hidden = true;
+  await dbPromise;
+  const ref = db ? db.collection('evalRuns').doc(startedAt.replace(/[:.]/g,'-')) : null;
+  let saveOk = !!ref;
+  const save = async (status) => { if (!ref) return; try {
+      const done = EVAL.filter(e=>results[e.id]);
+      await ref.set({ startedAt, updatedAt:new Date().toISOString(), status, tier, promptVersion: PROMPT_VERSION, corpusChunks: CHUNKS.length, summary: score(results),
+        results: done.map(e=>({ id:e.id, expect:e.expect, q:e.q, ...results[e.id] })) });
+    } catch(err){ saveOk = false; } };
+  await save('running');
+  for (const e of EVAL){
+    if (evalCtl.signal.aborted) break;
+    if (results[e.id]) continue;
+    running = e.id; renderEval();
+    const t0 = performance.now();
+    try {
+      const rw = await rewrite(e.q, '', tier);
+      const hits = retrieve(e.q, rw.queries);
+      const { text } = await sample(answerPrompt(e.q, hits, []), { modelTier: tier, cache:false, signal: evalCtl.signal });
+      const p = parseAnswer(text); const re = new RegExp(e.gold,'i');
+      results[e.id] = { status: p.status||'ANSWERED', cited: p.cited.map(n=>hits[n-1]?.chunk.id).filter(Boolean), goldCited: p.cited.some(n=>hits[n-1] && re.test(hits[n-1].chunk.title+' '+hits[n-1].chunk.url)), queries: rw.queries, offtopic: rw.offtopic, answer: p.body.slice(0,1500), ms: Math.round(performance.now()-t0) };
+    } catch(err){
+      if (err?.code==='cancelled') break;
+      results[e.id] = { status:'ERROR', error: err?.code||'error', ms: Math.round(performance.now()-t0) };
+      if (['not_granted','sampling_disabled'].includes(err?.code)) break;
+      if (err?.code==='rate_limited'){ $('#evalnote').textContent = 'Rate limited, so pausing for 20 seconds before continuing…'; await sleep(20000); }
+    }
+    renderEval(); await save('running'); await sleep(400);
+  }
+  running = null; renderEval(); $('#run').disabled=false; $('#stop').hidden=true;
+  await save(evalCtl.signal.aborted ? 'stopped' : 'done');
+  const s = score(results);
+  $('#evalnote').textContent = saveOk ? `Run ${evalCtl.signal.aborted?'stopped and ':''}saved: ${s.pass}/${s.n} exact, ${s.unsafe} unsafe, ${s.unsup} with unsupported figures.` : 'The run finished but couldn\'t be saved. Results are shown above.';
+  loadHistory();
+}
+$('#run').addEventListener('click', ()=>runEval(null));
+$('#resume').addEventListener('click', ()=>resumable && runEval(resumable));
+$('#stop').addEventListener('click',()=>evalCtl?.abort());
+if (DEMO) {
+  const run = SAVED_RUNS.find(r=>r.promptVersion===REPLAY_VERSION) || SAVED_RUNS[0];
+  if (run) for (const x of run.results){ const {id,expect,q,...rest}=x; results[id]=rest; }
+  $('#run').hidden = true; $('#tier').hidden = true; document.querySelector('label[for="tier"]').hidden = true;
+  $('#evalnote').textContent = `Showing the saved ${run?.promptVersion||''} run (${run?.tier||'quick'} model). In this static demo the eval can't run; in the Claude artifact version, the Run eval button re-runs all 40 questions live.`;
+  $('#unavail').hidden = false;
+  $('#unavail').innerHTML = 'Public demo: answers are replayed from the saved v2.1 eval run for the 40 test questions. Search and the trace run live in your browser. Pick a question:' +
+    `<select id="demoq" style="display:block;margin-top:8px;width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)"><option value="">Choose one of the 40 test questions…</option>${EVAL.map(e=>`<option>${esc(e.q)}</option>`).join('')}</select>`;
+  $('#demoq').addEventListener('change',e=>{ if(e.target.value && !busy){ $('#q').value=e.target.value; e.target.value=''; ask(); }});
+}
+renderEval(); loadHistory();
+</script>

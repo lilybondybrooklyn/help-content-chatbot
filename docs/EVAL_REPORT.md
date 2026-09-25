@@ -77,6 +77,6 @@ I changed each label only where reading the sources showed my original expectati
 
 ## Reproducing
 
-1. Open the chat page as a Claude artifact, go to the **Eval** tab, choose Quick, and click **Run eval**. It takes about 3 minutes. Results save after each question, and an interrupted run can be resumed.
+1. To browse saved results, open the [live demo's](https://lilybondybrooklyn.github.io/help-content-chatbot/chatbot-demo.html) Eval tab. To re-run the eval, open the chat page as a Claude artifact, go to the **Eval** tab, choose Quick, and click **Run eval**. It takes about 3 minutes. Results save after each question, and an interrupted run can be resumed.
 2. Export the runs to `help-chatbot/eval_runs/`, then run `python3 grounding.py` to repeat the fact check offline.
 3. Run `node eval_retrieval.js` for the keyword-only retrieval baseline.

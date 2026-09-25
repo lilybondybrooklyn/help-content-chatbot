@@ -1,0 +1,1572 @@
+{
+ "meta": {
+  "total": 30763,
+  "start": "2024-09-01",
+  "end": "2026-09-23",
+  "help_items": 389,
+  "help_pages": 42,
+  "months": [
+   "2024-09",
+   "2024-10",
+   "2024-11",
+   "2024-12",
+   "2025-01",
+   "2025-02",
+   "2025-03",
+   "2025-04",
+   "2025-05",
+   "2025-06",
+   "2025-07",
+   "2025-08",
+   "2025-09",
+   "2025-10",
+   "2025-11",
+   "2025-12",
+   "2026-01",
+   "2026-02",
+   "2026-03",
+   "2026-04",
+   "2026-05",
+   "2026-06",
+   "2026-07",
+   "2026-08"
+  ],
+  "products": {
+   "Checking or savings account": 14840,
+   "Credit card": 9895,
+   "Debt collection": 3051,
+   "Money transfer, virtual currency, or money service": 2977
+  },
+  "relief_overall": 0.35724864809010437,
+  "coverage_counts": {
+   "covered": 4,
+   "partial": 13,
+   "missing": 6
+  },
+  "complaints_by_cov": {
+   "covered": 3519,
+   "partial": 19894,
+   "missing": 6460,
+   "n/a": 890
+  }
+ },
+ "themes": [
+  {
+   "id": "bank_closed",
+   "label": "Bank closed my account without explanation",
+   "question": "Why did the bank close my account, and what happens to my money?",
+   "n": 1697,
+   "share": 0.05516367064330527,
+   "relief": 0.35764109067850347,
+   "trend": 0.03347280334728042,
+   "recent": 494,
+   "prior": 478,
+   "coverage": "missing",
+   "weight": 1.0,
+   "unanswered": 1697,
+   "gap": "The only closure content is about closures the customer starts. Nothing explains why the bank might close or restrict an account, what notice to expect, or what happens to the money.",
+   "evidence": [
+    "https://www.bankofamerica.com/help/account-information-faqs/"
+   ],
+   "subissues": [
+    [
+     "Closing an account \u2014 Company closed your account",
+     1137
+    ],
+    [
+     "Closing your account \u2014 Company closed your account",
+     560
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     1137
+    ],
+    [
+     "Credit card",
+     560
+    ]
+   ],
+   "monthly": [
+    45,
+    43,
+    39,
+    42,
+    70,
+    71,
+    62,
+    57,
+    62,
+    69,
+    63,
+    55,
+    68,
+    53,
+    87,
+    83,
+    94,
+    77,
+    81,
+    70,
+    79,
+    99,
+    86,
+    102
+   ]
+  },
+  {
+   "id": "deposit_hold",
+   "label": "Deposit held, missing, or reversed",
+   "question": "My deposit is on hold, missing, or was reversed. When can I use my money?",
+   "n": 3361,
+   "share": 0.10925462406137243,
+   "relief": 0.4004417797412433,
+   "trend": 0.16983240223463691,
+   "recent": 1047,
+   "prior": 895,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 1680,
+   "gap": "Explains why holds happen and how you're notified. Nothing on deposits that go missing, are reversed after funds were released, or on cashing a check.",
+   "evidence": [
+    "https://www.bankofamerica.com/deposits/deposit-holds-faqs/",
+    "https://www.bankofamerica.com/online-banking/mobile-check-deposit-faqs/"
+   ],
+   "subissues": [
+    [
+     "Managing an account \u2014 Deposits and withdrawals",
+     3028
+    ],
+    [
+     "Managing an account \u2014 Cashing a check",
+     277
+    ],
+    [
+     "Managing an account \u2014 Deposits or withdrawals",
+     56
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     3361
+    ]
+   ],
+   "monthly": [
+    110,
+    106,
+    83,
+    92,
+    117,
+    92,
+    93,
+    88,
+    113,
+    115,
+    150,
+    153,
+    143,
+    121,
+    143,
+    166,
+    170,
+    145,
+    159,
+    194,
+    164,
+    189,
+    195,
+    192
+   ]
+  },
+  {
+   "id": "cc_dispute_stuck",
+   "label": "Card dispute denied, stuck, or reversed",
+   "question": "I disputed a charge and the bank denied it, reversed my credit, or it's taking forever. What are my options?",
+   "n": 3089,
+   "share": 0.10041283359880376,
+   "relief": 0.5415643633812697,
+   "trend": 0.1756906077348066,
+   "recent": 1064,
+   "prior": 905,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 1544,
+   "gap": "Covers how to file and where to track status. No expected timeline, and nothing on what happens if the dispute is denied or the temporary credit is reversed, or how to appeal.",
+   "evidence": [
+    "https://www.bankofamerica.com/credit-cards/credit-card-disputes-faq/",
+    "https://www.bankofamerica.com/help/how-to-dispute-a-charge/"
+   ],
+   "subissues": [
+    [
+     "Problem with a purchase shown on your statement \u2014 Credit card company isn't resolving a dispute about a purchase on your statement",
+     2896
+    ],
+    [
+     "Problem with a purchase shown on your statement \u2014 Overcharged for something you did purchase with the card",
+     96
+    ],
+    [
+     "Problem with a company's investigation into an existing problem \u2014 Problem with personal statement of dispute",
+     57
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     3089
+    ]
+   ],
+   "monthly": [
+    57,
+    73,
+    77,
+    90,
+    83,
+    96,
+    91,
+    73,
+    100,
+    78,
+    114,
+    115,
+    92,
+    104,
+    94,
+    157,
+    195,
+    171,
+    208,
+    188,
+    212,
+    178,
+    188,
+    186
+   ]
+  },
+  {
+   "id": "collections_threats",
+   "label": "Collections calls, threats, and credit-damage warnings",
+   "question": "Collections keeps calling or threatening to hurt my credit. What are my rights?",
+   "n": 1489,
+   "share": 0.048402301466046876,
+   "relief": 0.03110209601081812,
+   "trend": -0.29555236728837875,
+   "recent": 491,
+   "prior": 697,
+   "coverage": "missing",
+   "weight": 1.0,
+   "unanswered": 1489,
+   "gap": "No content on Bank of America's own collections or recovery process, charge-offs, how collections contacts work, or how accounts are reported while in collections.",
+   "evidence": [
+    "https://www.bankofamerica.com/banking-information/assistance/credit-cards/credit-counseling/"
+   ],
+   "subissues": [
+    [
+     "Took or threatened to take negative or legal action \u2014 Threatened or suggested your credit would be damaged",
+     1246
+    ],
+    [
+     "Took or threatened to take negative or legal action \u2014 Seized or attempted to seize your property",
+     39
+    ],
+    [
+     "Communication tactics \u2014 Frequent or repeated calls",
+     35
+    ]
+   ],
+   "products": [
+    [
+     "Debt collection",
+     1489
+    ]
+   ],
+   "monthly": [
+    11,
+    17,
+    18,
+    13,
+    25,
+    15,
+    15,
+    28,
+    18,
+    17,
+    28,
+    40,
+    67,
+    136,
+    104,
+    132,
+    114,
+    112,
+    126,
+    116,
+    114,
+    130,
+    55,
+    33
+   ]
+  },
+  {
+   "id": "card_fraud",
+   "label": "Charges or withdrawals I didn't make",
+   "question": "There's a charge or withdrawal on my account that I didn't make. What happens now?",
+   "n": 2784,
+   "share": 0.09049832591099698,
+   "relief": 0.5530509133307423,
+   "trend": 0.19656992084432723,
+   "recent": 907,
+   "prior": 758,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 1392,
+   "gap": "Covers reporting and next-day credit for credit-card fraud. For debit, ACH, and checking fraud: no claim timeline and no explanation of what happens if the claim is denied.",
+   "evidence": [
+    "https://www.bankofamerica.com/credit-cards/credit-card-security-faq/",
+    "https://www.bankofamerica.com/deposits/debit-card-faqs/",
+    "https://www.bankofamerica.com/security-center/report-suspicious-communications/"
+   ],
+   "subissues": [
+    [
+     "Problem with a lender or other company charging your account \u2014 Transaction was not authorized",
+     1579
+    ],
+    [
+     "Problem with a purchase shown on your statement \u2014 Card was charged for something you did not purchase with the card",
+     1205
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     1579
+    ],
+    [
+     "Credit card",
+     1205
+    ]
+   ],
+   "monthly": [
+    46,
+    68,
+    80,
+    72,
+    97,
+    77,
+    68,
+    91,
+    100,
+    100,
+    107,
+    120,
+    129,
+    87,
+    91,
+    129,
+    159,
+    145,
+    149,
+    163,
+    162,
+    140,
+    177,
+    166
+   ]
+  },
+  {
+   "id": "collections_dispute",
+   "label": "Collections on a debt I don't owe or can't verify",
+   "question": "I'm being collected on for a debt that isn't mine, is already paid, or is the wrong amount.",
+   "n": 1324,
+   "share": 0.04303871533985632,
+   "relief": 0.06098514464425332,
+   "trend": -0.024630541871921152,
+   "recent": 396,
+   "prior": 406,
+   "coverage": "missing",
+   "weight": 1.0,
+   "unanswered": 1324,
+   "gap": "Nothing on disputing or verifying a debt the bank is collecting, or on a debt that was already paid.",
+   "evidence": [],
+   "subissues": [
+    [
+     "Attempts to collect debt not owed \u2014 Debt is not yours",
+     643
+    ],
+    [
+     "False statements or representation \u2014 Attempted to collect wrong amount",
+     211
+    ],
+    [
+     "Written notification about debt \u2014 Didn't receive enough information to verify debt",
+     170
+    ]
+   ],
+   "products": [
+    [
+     "Debt collection",
+     1324
+    ]
+   ],
+   "monthly": [
+    30,
+    33,
+    35,
+    39,
+    42,
+    29,
+    46,
+    50,
+    35,
+    59,
+    52,
+    35,
+    42,
+    57,
+    66,
+    65,
+    84,
+    74,
+    72,
+    80,
+    95,
+    69,
+    48,
+    61
+   ]
+  },
+  {
+   "id": "debit_atm",
+   "label": "Debit card or ATM problem",
+   "question": "My debit card was declined / the ATM didn't give me cash / I need to dispute a debit transaction.",
+   "n": 2347,
+   "share": 0.07629294932223775,
+   "relief": 0.4852670349907919,
+   "trend": 0.046875,
+   "recent": 737,
+   "prior": 704,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 1174,
+   "gap": "Covers how to dispute a debit transaction, PIN problems, and card replacement. Nothing on an ATM that didn't dispense cash or credit a deposit, or on why a debit card is declined.",
+   "evidence": [
+    "https://www.bankofamerica.com/deposits/debit-card-faqs/",
+    "https://www.bankofamerica.com/deposits/atm-fees-faqs/"
+   ],
+   "subissues": [
+    [
+     "Managing an account \u2014 Problem using a debit or ATM card",
+     2347
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     2347
+    ]
+   ],
+   "monthly": [
+    59,
+    63,
+    42,
+    48,
+    90,
+    62,
+    66,
+    76,
+    60,
+    74,
+    126,
+    86,
+    70,
+    86,
+    106,
+    116,
+    147,
+    130,
+    140,
+    130,
+    118,
+    110,
+    141,
+    141
+   ]
+  },
+  {
+   "id": "payment_mishandled",
+   "label": "Transfer or payment not handled as instructed / bank error",
+   "question": "I made a payment or transfer and the bank didn't handle it the way I asked (or made an error).",
+   "n": 2260,
+   "share": 0.07346487663751909,
+   "relief": 0.3542056074766355,
+   "trend": 0.15116279069767447,
+   "recent": 693,
+   "prior": 602,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 1130,
+   "gap": "Explains transfer mechanics and cutoff times. Nothing on how to report a bank error or payment that didn't go as instructed, or how long a correction takes.",
+   "evidence": [
+    "https://www.bankofamerica.com/online-banking/electronic-funds-transfer-faqs/",
+    "https://www.bankofamerica.com/help/cutoff-times/"
+   ],
+   "subissues": [
+    [
+     "Managing an account \u2014 Funds not handled or disbursed as instructed",
+     943
+    ],
+    [
+     "Managing an account \u2014 Banking errors",
+     676
+    ],
+    [
+     "Managing an account \u2014 Problem making or receiving payments",
+     641
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     2260
+    ]
+   ],
+   "monthly": [
+    65,
+    72,
+    50,
+    71,
+    109,
+    70,
+    58,
+    70,
+    76,
+    90,
+    81,
+    99,
+    66,
+    91,
+    91,
+    117,
+    119,
+    82,
+    115,
+    140,
+    112,
+    153,
+    104,
+    109
+   ]
+  },
+  {
+   "id": "cant_open",
+   "label": "Can't open an account / didn't get the advertised terms",
+   "question": "Why can't I open an account, and where's the bonus or terms I was promised?",
+   "n": 886,
+   "share": 0.028800832168514125,
+   "relief": 0.2962085308056872,
+   "trend": -0.04489795918367345,
+   "recent": 234,
+   "prior": 245,
+   "coverage": "missing",
+   "weight": 1.0,
+   "unanswered": 886,
+   "gap": "Nothing on why an application might be declined or need extra verification, or on promised bonuses that weren't paid.",
+   "evidence": [],
+   "subissues": [
+    [
+     "Opening an account \u2014 Unable to open an account",
+     666
+    ],
+    [
+     "Opening an account \u2014 Didn't receive terms that were advertised",
+     172
+    ],
+    [
+     "Opening an account \u2014 Confusing or missing disclosures",
+     48
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     886
+    ]
+   ],
+   "monthly": [
+    25,
+    33,
+    27,
+    30,
+    32,
+    29,
+    31,
+    33,
+    22,
+    32,
+    37,
+    42,
+    40,
+    52,
+    31,
+    43,
+    49,
+    29,
+    46,
+    40,
+    39,
+    45,
+    41,
+    28
+   ]
+  },
+  {
+   "id": "zelle_scam",
+   "label": "Zelle / P2P scam or fraud",
+   "question": "I was scammed (or my account was used) through Zelle. Can I get my money back?",
+   "n": 1411,
+   "share": 0.04586678802457498,
+   "relief": 0.18025430067314885,
+   "trend": 0.2044025157232705,
+   "recent": 383,
+   "prior": 318,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 706,
+   "gap": "One sentence says that qualifying imposter scams \"may be eligible for reimbursement\". It doesn't say who qualifies, how to file, how long it takes, or what happens with other kinds of scams.",
+   "evidence": [
+    "https://www.bankofamerica.com/online-banking/zelle-faqs/",
+    "https://www.bankofamerica.com/security-center/report-suspicious-communications/"
+   ],
+   "subissues": [
+    [
+     "Fraud or scam",
+     1411
+    ]
+   ],
+   "products": [
+    [
+     "Money transfer, virtual currency, or money service",
+     1411
+    ]
+   ],
+   "monthly": [
+    47,
+    39,
+    41,
+    64,
+    115,
+    48,
+    46,
+    40,
+    45,
+    54,
+    68,
+    66,
+    47,
+    40,
+    55,
+    60,
+    61,
+    43,
+    67,
+    83,
+    68,
+    56,
+    66,
+    55
+   ]
+  },
+  {
+   "id": "closed_funds",
+   "label": "Can't get my money back from a closed account",
+   "question": "My account was closed. When and how do I get my remaining balance?",
+   "n": 697,
+   "share": 0.022657088060332217,
+   "relief": 0.5365079365079365,
+   "trend": 0.3160621761658031,
+   "recent": 254,
+   "prior": 193,
+   "coverage": "missing",
+   "weight": 1.0,
+   "unanswered": 697,
+   "gap": "Closure content tells customers to move their balance out before closing. Nothing says how or when the remaining money is returned after the bank closes the account.",
+   "evidence": [
+    "https://www.bankofamerica.com/help/account-information-faqs/"
+   ],
+   "subissues": [
+    [
+     "Closing an account \u2014 Funds not received from closed account",
+     697
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     697
+    ]
+   ],
+   "monthly": [
+    20,
+    17,
+    16,
+    14,
+    13,
+    15,
+    23,
+    27,
+    24,
+    24,
+    20,
+    18,
+    24,
+    27,
+    28,
+    39,
+    32,
+    37,
+    30,
+    46,
+    37,
+    50,
+    40,
+    50
+   ]
+  },
+  {
+   "id": "id_theft_account",
+   "label": "Account or card opened in my name (identity theft)",
+   "question": "Someone opened an account or card in my name. How do I report it and clean it up?",
+   "n": 1066,
+   "share": 0.03465201703344927,
+   "relief": 0.2450592885375494,
+   "trend": -0.10408921933085502,
+   "recent": 241,
+   "prior": 269,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 533,
+   "gap": "Only generic 'freeze your credit, call us' guidance. No Bank of America process for an account or card opened in your name, or for clearing it from your credit report.",
+   "evidence": [
+    "https://www.bankofamerica.com/security-center/faq/sharing-information/",
+    "https://web.bankofamerica.com/en/security/library/steps-if-targeted-by-fraud-scam"
+   ],
+   "subissues": [
+    [
+     "Getting a credit card \u2014 Card opened without my consent or knowledge",
+     391
+    ],
+    [
+     "Opening an account \u2014 Account opened without my consent or knowledge",
+     307
+    ],
+    [
+     "Attempts to collect debt not owed \u2014 Debt was result of identity theft",
+     238
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     493
+    ],
+    [
+     "Checking or savings account",
+     335
+    ],
+    [
+     "Debt collection",
+     238
+    ]
+   ],
+   "monthly": [
+    71,
+    40,
+    29,
+    23,
+    52,
+    36,
+    54,
+    45,
+    37,
+    40,
+    49,
+    48,
+    51,
+    32,
+    54,
+    43,
+    45,
+    37,
+    42,
+    45,
+    52,
+    38,
+    45,
+    43
+   ]
+  },
+  {
+   "id": "cc_payment",
+   "label": "Credit card payment problems",
+   "question": "My card payment didn't post, was applied wrong, or I never got a bill.",
+   "n": 862,
+   "share": 0.028020674186522772,
+   "relief": 0.3990498812351544,
+   "trend": -0.08444444444444443,
+   "recent": 206,
+   "prior": 225,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 431,
+   "gap": "Covers payment methods and how to avoid late fees. Nothing on a payment that didn't post or was applied wrong, or on a statement that never arrived.",
+   "evidence": [
+    "https://www.bankofamerica.com/banking-information/assistance/credit-cards/making-credit-card-payments/",
+    "https://www.bankofamerica.com/credit-cards/credit-card-fees-faq/"
+   ],
+   "subissues": [
+    [
+     "Problem when making payments \u2014 Problem during payment process",
+     706
+    ],
+    [
+     "Problem when making payments \u2014 You never received your bill or did not know a payment was due",
+     156
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     862
+    ]
+   ],
+   "monthly": [
+    30,
+    28,
+    28,
+    30,
+    48,
+    33,
+    46,
+    31,
+    30,
+    37,
+    29,
+    36,
+    29,
+    38,
+    27,
+    41,
+    53,
+    30,
+    39,
+    50,
+    41,
+    37,
+    31,
+    26
+   ]
+  },
+  {
+   "id": "credit_report",
+   "label": "Wrong information on my credit report",
+   "question": "The bank is reporting something wrong to the credit bureaus. How do I get it fixed?",
+   "n": 814,
+   "share": 0.026460358222540066,
+   "relief": 0.16036505867014342,
+   "trend": 0.0072202166064982976,
+   "recent": 279,
+   "prior": 277,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 407,
+   "gap": "Sends customers to the credit bureaus, with phone numbers for contacting the bank. No direct process or timeline for disputing what the bank reported.",
+   "evidence": [
+    "https://www.bankofamerica.com/help/goodwill-adjustments/"
+   ],
+   "subissues": [
+    [
+     "Incorrect information on your report \u2014 Account status incorrect",
+     297
+    ],
+    [
+     "Problem with a company's investigation into an existing problem \u2014 Their investigation did not fix an error on your report",
+     269
+    ],
+    [
+     "Incorrect information on your report \u2014 Account information incorrect",
+     163
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     711
+    ],
+    [
+     "Checking or savings account",
+     103
+    ]
+   ],
+   "monthly": [
+    23,
+    18,
+    14,
+    17,
+    23,
+    19,
+    11,
+    22,
+    17,
+    23,
+    27,
+    26,
+    26,
+    36,
+    38,
+    50,
+    52,
+    54,
+    49,
+    59,
+    50,
+    37,
+    42,
+    54
+   ]
+  },
+  {
+   "id": "recurring_withdrawal",
+   "label": "Can't stop a recurring charge, or wrong-day / wrong-amount withdrawal",
+   "question": "How do I stop a merchant or company from taking money out of my account?",
+   "n": 367,
+   "share": 0.01192991580795111,
+   "relief": 0.3875739644970414,
+   "trend": 0.36046511627906974,
+   "recent": 117,
+   "prior": 86,
+   "coverage": "missing",
+   "weight": 1.0,
+   "unanswered": 367,
+   "gap": "Stop-payment content covers paper checks only. Nothing on stopping a recurring debit or ACH withdrawal from a merchant, or on revoking authorization.",
+   "evidence": [
+    "https://www.bankofamerica.com/deposits/account-information-and-access-faqs/"
+   ],
+   "subissues": [
+    [
+     "Problem with a lender or other company charging your account \u2014 Money was taken from your account on the wrong day or for the wrong amount",
+     256
+    ],
+    [
+     "Problem with a lender or other company charging your account \u2014 Can't stop withdrawals from your account",
+     111
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     367
+    ]
+   ],
+   "monthly": [
+    18,
+    8,
+    13,
+    10,
+    19,
+    9,
+    10,
+    16,
+    12,
+    8,
+    17,
+    15,
+    10,
+    12,
+    9,
+    12,
+    22,
+    12,
+    24,
+    21,
+    22,
+    13,
+    26,
+    21
+   ]
+  },
+  {
+   "id": "rewards_promo",
+   "label": "Rewards, promo, or balance-transfer terms not honored",
+   "question": "I didn't get the rewards, promo rate, or balance-transfer terms I was promised.",
+   "n": 601,
+   "share": 0.019536456132366806,
+   "relief": 0.3197879858657244,
+   "trend": 0.3129251700680271,
+   "recent": 193,
+   "prior": 147,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 300,
+   "gap": "Covers redeeming rewards and how payments apply to promo balances. Nothing on rewards, bonuses, or promo rates that were never credited.",
+   "evidence": [
+    "https://www.bankofamerica.com/credit-cards/credit-card-account-information-faq/"
+   ],
+   "subissues": [
+    [
+     "Other features, terms, or problems \u2014 Problem with rewards from credit card",
+     252
+    ],
+    [
+     "Advertising and marketing, including promotional offers \u2014 Didn't receive advertised or promotional terms",
+     127
+    ],
+    [
+     "Other features, terms, or problems \u2014 Problem with balance transfer",
+     126
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     601
+    ]
+   ],
+   "monthly": [
+    15,
+    23,
+    25,
+    20,
+    27,
+    18,
+    17,
+    22,
+    22,
+    18,
+    22,
+    20,
+    15,
+    21,
+    22,
+    34,
+    25,
+    19,
+    28,
+    29,
+    32,
+    32,
+    34,
+    43
+   ]
+  },
+  {
+   "id": "cc_access",
+   "label": "Card application, credit limit, or card won't work",
+   "question": "My application was denied or delayed, my limit changed, or my card won't work.",
+   "n": 569,
+   "share": 0.018496245489711665,
+   "relief": 0.21561338289962825,
+   "trend": 0.22377622377622375,
+   "recent": 175,
+   "prior": 143,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 284,
+   "gap": "Covers application status and credit-line increases. Nothing on why an application was denied or a limit was lowered.",
+   "evidence": [
+    "https://www.bankofamerica.com/credit-cards/credit-card-account-information-faq/"
+   ],
+   "subissues": [
+    [
+     "Trouble using your card \u2014 Can't use card to make purchases",
+     192
+    ],
+    [
+     "Getting a credit card \u2014 Application denied",
+     177
+    ],
+    [
+     "Trouble using your card \u2014 Credit card company won't increase or decrease your credit limit",
+     75
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     569
+    ]
+   ],
+   "monthly": [
+    22,
+    19,
+    20,
+    22,
+    21,
+    26,
+    21,
+    17,
+    18,
+    19,
+    17,
+    18,
+    18,
+    19,
+    18,
+    29,
+    34,
+    18,
+    25,
+    32,
+    20,
+    42,
+    27,
+    29
+   ]
+  },
+  {
+   "id": "access_locked",
+   "label": "Locked out, frozen, or can't access my account",
+   "question": "My account is locked, frozen, or restricted. How do I get back in?",
+   "n": 562,
+   "share": 0.018268699411630854,
+   "relief": 0.26454033771106944,
+   "trend": 0.34751773049645385,
+   "recent": 190,
+   "prior": 141,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 281,
+   "gap": "Covers forgotten user IDs and passwords. Nothing on accounts the bank has locked, frozen, or restricted, or on how to verify your identity to get back in.",
+   "evidence": [
+    "https://www.bankofamerica.com/customer-service/contact-us/bank-of-america-login-issues/",
+    "https://www.bankofamerica.com/help/account-information-faqs/"
+   ],
+   "subissues": [
+    [
+     "Managing an account \u2014 Problem accessing account",
+     562
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     562
+    ]
+   ],
+   "monthly": [
+    12,
+    20,
+    20,
+    17,
+    25,
+    15,
+    20,
+    10,
+    14,
+    15,
+    26,
+    22,
+    19,
+    11,
+    28,
+    30,
+    24,
+    30,
+    21,
+    27,
+    42,
+    38,
+    32,
+    36
+   ]
+  },
+  {
+   "id": "hardship",
+   "label": "Struggling to pay / need a payment plan",
+   "question": "I can't make my payments. What hardship or payment-plan options do I have?",
+   "n": 168,
+   "share": 0.005461105873939473,
+   "relief": 0.08536585365853659,
+   "trend": 0.21621621621621623,
+   "recent": 45,
+   "prior": 37,
+   "coverage": "partial",
+   "weight": 0.5,
+   "unanswered": 84,
+   "gap": "Says 'call us to explore options' and links to credit counseling. It doesn't describe any actual hardship or payment-plan options.",
+   "evidence": [
+    "https://www.bankofamerica.com/banking-information/assistance/credit-cards/managing-credit-card-debt/"
+   ],
+   "subissues": [
+    [
+     "Struggling to pay your bill \u2014 Credit card company won't work with you while you're going through financial hardship",
+     159
+    ],
+    [
+     "Struggling to pay your bill \u2014 Problem lowering your monthly payments",
+     7
+    ],
+    [
+     "Struggling to pay your bill \u2014 Filed for bankruptcy",
+     2
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     168
+    ]
+   ],
+   "monthly": [
+    1,
+    6,
+    5,
+    11,
+    3,
+    4,
+    6,
+    8,
+    9,
+    4,
+    9,
+    12,
+    12,
+    0,
+    11,
+    6,
+    7,
+    3,
+    9,
+    14,
+    6,
+    10,
+    6,
+    3
+   ]
+  },
+  {
+   "id": "transfer_problem",
+   "label": "Transfer didn't arrive, wrong amount, or can't be traced",
+   "question": "My transfer / Zelle / wire didn't arrive or went to the wrong place. Where is my money?",
+   "n": 1566,
+   "share": 0.0509053083249358,
+   "relief": 0.2636484687083888,
+   "trend": -0.07837837837837835,
+   "recent": 341,
+   "prior": 370,
+   "coverage": "covered",
+   "weight": 0.0,
+   "unanswered": 0,
+   "gap": "Zelle pending, failed, and not-received scenarios are answered in detail. Wire tracing is thin.",
+   "evidence": [
+    "https://www.bankofamerica.com/online-banking/zelle-faqs/"
+   ],
+   "subissues": [
+    [
+     "Other transaction problem",
+     637
+    ],
+    [
+     "Money was not available when promised",
+     257
+    ],
+    [
+     "Unauthorized transactions or other transaction problem",
+     175
+    ]
+   ],
+   "products": [
+    [
+     "Money transfer, virtual currency, or money service",
+     1566
+    ]
+   ],
+   "monthly": [
+    30,
+    44,
+    38,
+    42,
+    243,
+    63,
+    49,
+    63,
+    48,
+    37,
+    59,
+    99,
+    46,
+    61,
+    60,
+    86,
+    64,
+    52,
+    56,
+    59,
+    63,
+    54,
+    65,
+    59
+   ]
+  },
+  {
+   "id": "overdraft",
+   "label": "Overdraft, NSF, and account fees",
+   "question": "Why was I charged an overdraft or account fee, and can it be refunded?",
+   "n": 894,
+   "share": 0.02906088482917791,
+   "relief": 0.44947735191637633,
+   "trend": 0.09859154929577474,
+   "recent": 234,
+   "prior": 213,
+   "coverage": "covered",
+   "weight": 0.0,
+   "unanswered": 0,
+   "gap": "Well covered, including a worked example. But the page's structured data (what search engines and AI assistants read) still shows a $35 fee in the example, while the visible page shows $10.",
+   "evidence": [
+    "https://www.bankofamerica.com/deposits/overdrafts-and-overdraft-protection/"
+   ],
+   "subissues": [
+    [
+     "Problem caused by your funds being low \u2014 Overdrafts and overdraft fees",
+     264
+    ],
+    [
+     "Problem caused by your funds being low \u2014 Non-sufficient funds and associated fees",
+     232
+    ],
+    [
+     "Managing an account \u2014 Fee problem",
+     163
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     894
+    ]
+   ],
+   "monthly": [
+    27,
+    20,
+    31,
+    29,
+    63,
+    30,
+    35,
+    22,
+    44,
+    31,
+    40,
+    46,
+    35,
+    34,
+    34,
+    30,
+    43,
+    29,
+    53,
+    55,
+    37,
+    23,
+    44,
+    44
+   ]
+  },
+  {
+   "id": "service_other",
+   "label": "Other / customer-service problems",
+   "question": "Other issues and poor customer-service experiences.",
+   "n": 890,
+   "share": 0.028930858498846017,
+   "relief": 0.3345238095238095,
+   "trend": 0.030303030303030276,
+   "recent": 238,
+   "prior": 231,
+   "coverage": "n/a",
+   "weight": 0.0,
+   "unanswered": 0,
+   "gap": "Catch-all bucket, not scored.",
+   "evidence": [],
+   "subissues": [
+    [
+     "Other features, terms, or problems \u2014 Other problem",
+     525
+    ],
+    [
+     "Other features, terms, or problems \u2014 Problem with customer service",
+     117
+    ],
+    [
+     "Closing an account \u2014 Fees charged for closing account",
+     37
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     809
+    ],
+    [
+     "Checking or savings account",
+     81
+    ]
+   ],
+   "monthly": [
+    31,
+    36,
+    29,
+    37,
+    37,
+    38,
+    34,
+    22,
+    36,
+    30,
+    34,
+    31,
+    31,
+    32,
+    24,
+    52,
+    41,
+    43,
+    45,
+    41,
+    36,
+    43,
+    36,
+    50
+   ]
+  },
+  {
+   "id": "cc_fees_interest",
+   "label": "Credit card fees and interest",
+   "question": "Why was I charged this fee or interest on my credit card?",
+   "n": 729,
+   "share": 0.023697298702987354,
+   "relief": 0.4757834757834758,
+   "trend": 0.022727272727272707,
+   "recent": 225,
+   "prior": 220,
+   "coverage": "covered",
+   "weight": 0.0,
+   "unanswered": 0,
+   "gap": "A 24-question fees FAQ explains each fee and how to avoid it. Nothing on getting a fee refunded.",
+   "evidence": [
+    "https://www.bankofamerica.com/credit-cards/credit-card-fees-faq/"
+   ],
+   "subissues": [
+    [
+     "Fees or interest \u2014 Problem with fees",
+     456
+    ],
+    [
+     "Fees or interest \u2014 Charged too much interest",
+     231
+    ],
+    [
+     "Fees or interest \u2014 Unexpected increase in interest rate",
+     42
+    ]
+   ],
+   "products": [
+    [
+     "Credit card",
+     729
+    ]
+   ],
+   "monthly": [
+    19,
+    17,
+    25,
+    27,
+    24,
+    19,
+    29,
+    18,
+    23,
+    25,
+    25,
+    16,
+    23,
+    23,
+    35,
+    46,
+    45,
+    34,
+    41,
+    35,
+    42,
+    35,
+    35,
+    50
+   ]
+  },
+  {
+   "id": "cant_close",
+   "label": "Can't close my account",
+   "question": "How do I close my account, and why won't it close?",
+   "n": 330,
+   "share": 0.010727172252381107,
+   "relief": 0.3753943217665615,
+   "trend": 0.030927835051546282,
+   "recent": 100,
+   "prior": 97,
+   "coverage": "covered",
+   "weight": 0.0,
+   "unanswered": 0,
+   "gap": "Step-by-step closure instructions by phone, mail, online, and in branch.",
+   "evidence": [
+    "https://www.bankofamerica.com/help/account-information-faqs/",
+    "https://www.bankofamerica.com/credit-cards/credit-card-account-information-faq/"
+   ],
+   "subissues": [
+    [
+     "Closing an account \u2014 Can't close your account",
+     231
+    ],
+    [
+     "Closing your account \u2014 Can't close your account",
+     99
+    ]
+   ],
+   "products": [
+    [
+     "Checking or savings account",
+     231
+    ],
+    [
+     "Credit card",
+     99
+    ]
+   ],
+   "monthly": [
+    4,
+    11,
+    11,
+    14,
+    13,
+    8,
+    16,
+    8,
+    8,
+    6,
+    11,
+    17,
+    10,
+    10,
+    10,
+    8,
+    28,
+    23,
+    21,
+    13,
+    12,
+    21,
+    18,
+    19
+   ]
+  }
+ ]
+}

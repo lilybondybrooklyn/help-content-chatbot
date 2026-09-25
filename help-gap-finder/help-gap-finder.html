@@ -1,0 +1,356 @@
+<title>Help Gap Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --ink:#15201b; --ink-2:#4d5a53; --muted:#6f7a74; --rule:#dfe3de; --rule-2:#eef0ec;
+  --accent:#1d5b86; --accent-soft:#e3edf4; --bar:#b9c3bd;
+  --missing:#d03b3b; --partial:#e39a00; --covered:#0ca30c; --na:#9aa39e;
+  --missing-soft:#fbe9e7; --partial-soft:#fdf2da; --covered-soft:#e2f4e2;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111513; --surface:#191e1b; --ink:#edf1ee; --ink-2:#bcc6c0; --muted:#95a09a; --rule:#2c332f; --rule-2:#222825;
+    --accent:#7fb4dc; --accent-soft:#1c2a33; --bar:#46514b;
+    --missing:#e66767; --partial:#fab219; --covered:#2fbf2f; --na:#6d7671;
+    --missing-soft:#3a1f1e; --partial-soft:#352a12; --covered-soft:#16301a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111513; --surface:#191e1b; --ink:#edf1ee; --ink-2:#bcc6c0; --muted:#95a09a; --rule:#2c332f; --rule-2:#222825;
+  --accent:#7fb4dc; --accent-soft:#1c2a33; --bar:#46514b;
+  --missing:#e66767; --partial:#fab219; --covered:#2fbf2f; --na:#6d7671;
+  --missing-soft:#3a1f1e; --partial-soft:#352a12; --covered-soft:#16301a;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(34px,6vw,56px);font-weight:800;font-stretch:78%;line-height:1}
+h2{font-size:26px;font-weight:750;font-stretch:85%;line-height:1.15}
+h3{font-size:17px;font-weight:700;font-stretch:95%}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+p{margin:0}
+.lede{font-size:18px;max-width:64ch;color:var(--ink-2)}
+header.top{padding-block:40px 28px;border-bottom:1px solid var(--rule);display:grid;gap:18px}
+section{padding-block:40px 8px;display:grid;gap:18px}
+.sechead{display:grid;gap:6px;max-width:70ch}
+.sechead p{color:var(--ink-2)}
+
+/* headline stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.stat{background:var(--surface);padding:16px 18px;display:grid;gap:4px;align-content:start}
+.stat .v{font-family:var(--display);font-weight:750;font-stretch:80%;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:13px;color:var(--ink-2)}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* coverage strip */
+.strip{display:grid;gap:10px}
+.strip-bar{display:flex;height:34px;gap:2px}
+.strip-bar div{height:100%;border-radius:4px;position:relative;min-width:6px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px 2px 6px;border-radius:999px;white-space:nowrap;color:var(--ink)}
+.chip i{font-style:normal;font-weight:600}
+.chip.missing{background:var(--missing-soft)} .chip.missing i{color:var(--missing)}
+.chip.partial{background:var(--partial-soft)} .chip.partial i{color:var(--partial)}
+.chip.covered{background:var(--covered-soft)} .chip.covered i{color:var(--covered)}
+.chip.na{background:var(--rule-2)}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.filters .sep{width:1px;height:20px;background:var(--rule);margin-inline:4px}
+
+/* gap table */
+.gaptable{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.ghead,.grow{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,2fr) 92px 78px 78px;gap:14px;align-items:center;padding:10px 16px}
+.ghead{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);background:var(--surface)}
+.ghead .r,.grow .r{text-align:right}
+.grow{border-bottom:1px solid var(--rule-2);cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;text-align:left}
+.grow:hover{background:var(--rule-2)}
+.grow .t{display:grid;gap:3px;min-width:0}
+.grow .t b{font-weight:600;font-size:14.5px;line-height:1.3}
+.bars{position:relative;height:18px}
+.bars .full{position:absolute;inset:0 auto 0 0;background:var(--bar);border-radius:0 4px 4px 0;opacity:.55}
+.bars .gap{position:absolute;inset:0 auto 0 0;border-radius:0 4px 4px 0}
+.bars .lbl{position:absolute;top:0;font-family:var(--mono);font-size:11.5px;line-height:18px;color:var(--ink-2);padding-left:6px;white-space:nowrap}
+.delta.up{color:var(--missing)} .delta.down{color:var(--covered)}
+.detail{padding:4px 16px 22px;border-bottom:1px solid var(--rule);background:var(--rule-2);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}
+.detail h4{margin:14px 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.detail .q{font-family:var(--display);font-stretch:90%;font-size:19px;font-weight:600;line-height:1.3;margin-top:14px}
+.detail ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.detail li{font-size:14px}
+.detail .evid a{word-break:break-all;font-size:13px}
+.spark{width:100%;height:70px;display:block}
+@media (max-width:760px){
+  .ghead{display:none}
+  .grow{grid-template-columns:minmax(0,1fr) 70px;row-gap:8px}
+  .grow .bars{grid-column:1 / -1;grid-row:2}
+  .grow .c-rel,.grow .c-tr{display:none}
+  .detail{grid-template-columns:1fr}
+}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;padding:8px 10px;border-radius:6px;max-width:260px;z-index:10;line-height:1.4}
+.tip .num{color:inherit}
+
+/* recommendations */
+.recs{display:grid;gap:14px;counter-reset:rec}
+.rec{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr);gap:18px}
+.rec .rank{font-family:var(--display);font-weight:800;font-stretch:75%;font-size:40px;line-height:.9;color:var(--accent)}
+.rec .body{display:grid;gap:8px;align-content:start}
+.rec .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--ink-2)}
+.rec .bot{display:grid;gap:8px;align-content:start;font-size:14px;border-left:1px solid var(--rule);padding-left:18px}
+.rec .bot ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.handoff{font-size:13px;background:var(--accent-soft);padding:8px 10px;border-radius:4px}
+@media (max-width:760px){.rec{grid-template-columns:1fr}.rec .bot{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:12px}}
+.later{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.later > div{border-top:2px solid var(--ink);padding-top:10px;display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
+.later h3{color:var(--ink)}
+@media (max-width:760px){.later{grid-template-columns:1fr}}
+
+.finding{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.fcard{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;display:grid;gap:8px;align-content:start;font-size:14px}
+.fcard code{font-family:var(--mono);font-size:12.5px;background:var(--rule-2);padding:1px 5px;border-radius:3px}
+@media (max-width:760px){.finding{grid-template-columns:1fr}}
+
+.method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;font-size:14px;color:var(--ink-2)}
+.method > div{display:grid;gap:6px;align-content:start}
+.method h3{color:var(--ink)}
+@media (max-width:760px){.method{grid-template-columns:1fr}}
+.sources{font-size:13px;color:var(--ink-2);columns:2;column-gap:28px}
+.sources li{break-inside:avoid;margin-bottom:4px}
+@media (max-width:760px){.sources{columns:1}}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.detail{animation:open .18s ease-out}@keyframes open{from{opacity:.4;transform:translateY(-3px)}to{opacity:1;transform:none}}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Product discovery · CFPB complaint data × public help content</div>
+  <h1>Help Gap Finder</h1>
+  <p class="lede">Which problems do Bank of America customers take to the federal regulator that the bank's own help center doesn't answer? I grouped <span class="num" id="h-total"></span> CFPB complaints (Sept 2024 to Sept 2026) into 24 customer problems, read them against about 390 public help Q&amp;As and articles, and ranked the gaps. The result is a short list of what a self-service chatbot should cover first.</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">01 · Where complaints land</div>
+    <h2>Only about one complaint in nine is about a problem the help center fully answers</h2>
+    <p>Each complaint is counted under the coverage rating of its problem.</p>
+  </div>
+  <div class="strip">
+    <div class="strip-bar" id="strip" role="img"></div>
+    <div class="legend" id="strip-legend"></div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">02 · The gap map</div>
+    <h2>24 customer problems, ranked by complaints the help content leaves unanswered</h2>
+    <p>The grey bar is all complaints for a problem. The colored part is the share help content doesn't answer: all of it for <em>missing</em>, half for <em>partial</em>. Click a row to see the customer's question, the CFPB categories behind it, and what the help content says.</p>
+  </div>
+  <div class="filters" id="filters" role="group" aria-label="Filter by coverage"></div>
+  <div class="gaptable" id="gaptable">
+    <div class="ghead"><div>Customer problem</div><div>Complaints · unanswered share</div><div class="r">Unanswered</div><div class="r">Relief</div><div class="r">6-mo change</div></div>
+    <div id="rows"></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted)"><b>Relief</b> is the share of closed complaints where the bank gave money back or changed something for the customer. A high number suggests the customer often had a point. <b>6-mo change</b> compares Mar to Sept 2026 with the six months before.</p>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">03 · So here's what the chatbot should cover first</div>
+    <h2>Five intents, picked for volume, gap size, growth, and how well a bot can actually help</h2>
+    <p>Ranking isn't only by gap size. Collections is a large gap, but complaints about it are falling, the bank is rarely found at fault (3 to 6% relief), and the topic is legally sensitive. So that one is a content fix first, with the bot routing to a person.</p>
+  </div>
+  <div class="recs" id="recs"></div>
+  <div class="later">
+    <div><h3>Write the content before building the bot: collections</h3><p><span class="num">2,813</span> complaints and no help content at all. Publish a page on how Bank of America's recovery process works, how to verify or dispute a debt, and how the account is reported to credit bureaus. The bot can then point to it and route to a person.</p></div>
+    <div><h3>Quick content fixes</h3><p>Missing pages for <em>why can't I open an account</em> (886) and <em>how to fix what you reported to my credit bureau</em> (814). Also correct the overdraft page's structured data (section 04).</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">04 · Two things I found along the way</div>
+    <h2>Findings that matter for anyone building a help chatbot</h2>
+  </div>
+  <div class="finding">
+    <div class="fcard">
+      <span class="chip missing"><i>●</i> Stale content</span>
+      <h3>The overdraft page tells machines one fee and people another</h3>
+      <p>The visible answer to "I thought I had enough money; why did you charge me an overdraft fee?" gives a <b>$10</b> fee in its example. The page's hidden FAQ structured data (<code>application/ld+json</code>), which search engines and AI answer engines read, still says <b>$35</b>. A retrieval-based chatbot that indexes structured data would quote the old fee.</p>
+      <p><b>Lesson for the build:</b> index the visible text, and add a check that compares numbers between the two versions. I ran that check on 76 matched Q&amp;As: this was the only fee mismatch, plus one small wording difference ("14 days" versus "14 business days").</p>
+    </div>
+    <div class="fcard">
+      <span class="chip na"><i>●</i> Data constraint</span>
+      <h3>The complaint stories are gone</h3>
+      <p>On Aug 14, 2026, the CFPB stopped publishing complaint narratives (customers' written descriptions). Older narratives are no longer in the public API either. So this analysis uses the CFPB's structured categories (product, issue, sub-issue) and the company-response field, not text clustering.</p>
+      <p><b>What that means:</b> the problem groupings are coarser than clustering the text would give, and there are no quotes from customers. The next version could cluster a bank's own chat transcripts or call reasons instead.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">05 · Method and limits</div>
+    <h2>How this was built</h2>
+  </div>
+  <div class="method">
+    <div><h3>Complaints</h3><p>All <span class="num" id="m-total"></span> CFPB complaints against Bank of America, N.A., received 1 Sept 2024 to 23 Sept 2026, in four products: checking/savings, credit card, debt collection, and money transfer. Each product → issue → sub-issue combination (140 in total) was mapped by ordered rules to one of 24 problems, each worded as the question a customer would ask.</p></div>
+    <div><h3>Help content</h3><p>I crawled 41 public Bank of America help and FAQ pages in the product areas above (deposits, debit, credit card, Zelle, online banking, security center, disputes, credit-card assistance) and extracted each Q&amp;A from the page and its structured data. Pages behind login were out of scope, and so were Erica answers.</p></div>
+    <div><h3>Coverage call</h3><p>For each problem I pulled the closest matches (TF-IDF plus a keyword sweep), read them, and rated the problem <em>covered</em>, <em>partial</em> (explains how to start but not what the complaints are about), or <em>missing</em>. Unanswered complaints = complaints × 1 for missing, × 0.5 for partial. This is a judgment call, and each rating's evidence is in its row above.</p></div>
+  </div>
+  <p style="font-size:13.5px;color:var(--ink-2);max-width:80ch">Limits: CFPB complaints are a biased sample. They skew toward escalated, unresolved problems and don't represent all customer contacts. Relief rates come from the bank's own response codes. The recent-trend window includes complaints still in progress. The customer-facing timelines in section 03 are the federal maximums (Reg E, Reg Z), not Bank of America policy.</p>
+</section>
+
+<section>
+  <div class="sechead"><div class="eyebrow">Sources</div></div>
+  <ul class="sources">
+    <li><a href="https://www.consumerfinance.gov/data-research/consumer-complaints/" target="_blank" rel="noopener">CFPB Consumer Complaint Database</a> (export pulled 24 Sept 2026)</li>
+    <li><a href="https://www.consumerfinance.gov/about-us/newsroom/the-cfpb-to-cease-discretionary-publication-of-complaint-narratives-and-visualizations/" target="_blank" rel="noopener">CFPB: ceasing publication of complaint narratives</a></li>
+    <li><a href="https://www.consumerfinancemonitor.com/2026/08/18/cfpb-ends-publication-of-consumer-complaint-narratives-and-data-visualizations/" target="_blank" rel="noopener">Consumer Finance Monitor on the narrative change</a></li>
+    <li><a href="https://www.bankofamerica.com/help/overview/" target="_blank" rel="noopener">Bank of America Help Center</a> and the FAQ pages linked in each row</li>
+    <li><a href="https://www.bankofamerica.com/deposits/overdrafts-and-overdraft-protection/" target="_blank" rel="noopener">Bank of America overdraft FAQs</a> (the $10 / $35 mismatch)</li>
+    <li><a href="https://web.bankofamerica.com/en/security/library/steps-if-targeted-by-fraud-scam" target="_blank" rel="noopener">Bank of America: steps to take after fraud or a scam</a></li>
+  </ul>
+  <p class="foot">An independent portfolio exercise using public data only. Not affiliated with Bank of America or the CFPB. Built by Lily with Claude.</p>
+</section>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA = {"meta": {"total": 30763, "start": "2024-09-01", "end": "2026-09-23", "help_items": 389, "help_pages": 42, "months": ["2024-09", "2024-10", "2024-11", "2024-12", "2025-01", "2025-02", "2025-03", "2025-04", "2025-05", "2025-06", "2025-07", "2025-08", "2025-09", "2025-10", "2025-11", "2025-12", "2026-01", "2026-02", "2026-03", "2026-04", "2026-05", "2026-06", "2026-07", "2026-08"], "products": {"Checking or savings account": 14840, "Credit card": 9895, "Debt collection": 3051, "Money transfer, virtual currency, or money service": 2977}, "relief_overall": 0.35724864809010437, "coverage_counts": {"covered": 4, "partial": 13, "missing": 6}, "complaints_by_cov": {"covered": 3519, "partial": 19894, "missing": 6460, "n/a": 890}}, "themes": [{"id": "bank_closed", "label": "Bank closed my account without explanation", "question": "Why did the bank close my account, and what happens to my money?", "n": 1697, "share": 0.05516367064330527, "relief": 0.35764109067850347, "trend": 0.03347280334728042, "recent": 494, "prior": 478, "coverage": "missing", "weight": 1.0, "unanswered": 1697, "gap": "The only closure content is about closures the customer starts. Nothing explains why the bank might close or restrict an account, what notice to expect, or what happens to the money.", "evidence": ["https://www.bankofamerica.com/help/account-information-faqs/"], "subissues": [["Closing an account \u2014 Company closed your account", 1137], ["Closing your account \u2014 Company closed your account", 560]], "products": [["Checking or savings account", 1137], ["Credit card", 560]], "monthly": [45, 43, 39, 42, 70, 71, 62, 57, 62, 69, 63, 55, 68, 53, 87, 83, 94, 77, 81, 70, 79, 99, 86, 102]}, {"id": "deposit_hold", "label": "Deposit held, missing, or reversed", "question": "My deposit is on hold, missing, or was reversed. When can I use my money?", "n": 3361, "share": 0.10925462406137243, "relief": 0.4004417797412433, "trend": 0.16983240223463691, "recent": 1047, "prior": 895, "coverage": "partial", "weight": 0.5, "unanswered": 1680, "gap": "Explains why holds happen and how you're notified. Nothing on deposits that go missing, are reversed after funds were released, or on cashing a check.", "evidence": ["https://www.bankofamerica.com/deposits/deposit-holds-faqs/", "https://www.bankofamerica.com/online-banking/mobile-check-deposit-faqs/"], "subissues": [["Managing an account \u2014 Deposits and withdrawals", 3028], ["Managing an account \u2014 Cashing a check", 277], ["Managing an account \u2014 Deposits or withdrawals", 56]], "products": [["Checking or savings account", 3361]], "monthly": [110, 106, 83, 92, 117, 92, 93, 88, 113, 115, 150, 153, 143, 121, 143, 166, 170, 145, 159, 194, 164, 189, 195, 192]}, {"id": "cc_dispute_stuck", "label": "Card dispute denied, stuck, or reversed", "question": "I disputed a charge and the bank denied it, reversed my credit, or it's taking forever. What are my options?", "n": 3089, "share": 0.10041283359880376, "relief": 0.5415643633812697, "trend": 0.1756906077348066, "recent": 1064, "prior": 905, "coverage": "partial", "weight": 0.5, "unanswered": 1544, "gap": "Covers how to file and where to track status. No expected timeline, and nothing on what happens if the dispute is denied or the temporary credit is reversed, or how to appeal.", "evidence": ["https://www.bankofamerica.com/credit-cards/credit-card-disputes-faq/", "https://www.bankofamerica.com/help/how-to-dispute-a-charge/"], "subissues": [["Problem with a purchase shown on your statement \u2014 Credit card company isn't resolving a dispute about a purchase on your statement", 2896], ["Problem with a purchase shown on your statement \u2014 Overcharged for something you did purchase with the card", 96], ["Problem with a company's investigation into an existing problem \u2014 Problem with personal statement of dispute", 57]], "products": [["Credit card", 3089]], "monthly": [57, 73, 77, 90, 83, 96, 91, 73, 100, 78, 114, 115, 92, 104, 94, 157, 195, 171, 208, 188, 212, 178, 188, 186]}, {"id": "collections_threats", "label": "Collections calls, threats, and credit-damage warnings", "question": "Collections keeps calling or threatening to hurt my credit. What are my rights?", "n": 1489, "share": 0.048402301466046876, "relief": 0.03110209601081812, "trend": -0.29555236728837875, "recent": 491, "prior": 697, "coverage": "missing", "weight": 1.0, "unanswered": 1489, "gap": "No content on Bank of America's own collections or recovery process, charge-offs, how collections contacts work, or how accounts are reported while in collections.", "evidence": ["https://www.bankofamerica.com/banking-information/assistance/credit-cards/credit-counseling/"], "subissues": [["Took or threatened to take negative or legal action \u2014 Threatened or suggested your credit would be damaged", 1246], ["Took or threatened to take negative or legal action \u2014 Seized or attempted to seize your property", 39], ["Communication tactics \u2014 Frequent or repeated calls", 35]], "products": [["Debt collection", 1489]], "monthly": [11, 17, 18, 13, 25, 15, 15, 28, 18, 17, 28, 40, 67, 136, 104, 132, 114, 112, 126, 116, 114, 130, 55, 33]}, {"id": "card_fraud", "label": "Charges or withdrawals I didn't make", "question": "There's a charge or withdrawal on my account that I didn't make. What happens now?", "n": 2784, "share": 0.09049832591099698, "relief": 0.5530509133307423, "trend": 0.19656992084432723, "recent": 907, "prior": 758, "coverage": "partial", "weight": 0.5, "unanswered": 1392, "gap": "Covers reporting and next-day credit for credit-card fraud. For debit, ACH, and checking fraud: no claim timeline and no explanation of what happens if the claim is denied.", "evidence": ["https://www.bankofamerica.com/credit-cards/credit-card-security-faq/", "https://www.bankofamerica.com/deposits/debit-card-faqs/", "https://www.bankofamerica.com/security-center/report-suspicious-communications/"], "subissues": [["Problem with a lender or other company charging your account \u2014 Transaction was not authorized", 1579], ["Problem with a purchase shown on your statement \u2014 Card was charged for something you did not purchase with the card", 1205]], "products": [["Checking or savings account", 1579], ["Credit card", 1205]], "monthly": [46, 68, 80, 72, 97, 77, 68, 91, 100, 100, 107, 120, 129, 87, 91, 129, 159, 145, 149, 163, 162, 140, 177, 166]}, {"id": "collections_dispute", "label": "Collections on a debt I don't owe or can't verify", "question": "I'm being collected on for a debt that isn't mine, is already paid, or is the wrong amount.", "n": 1324, "share": 0.04303871533985632, "relief": 0.06098514464425332, "trend": -0.024630541871921152, "recent": 396, "prior": 406, "coverage": "missing", "weight": 1.0, "unanswered": 1324, "gap": "Nothing on disputing or verifying a debt the bank is collecting, or on a debt that was already paid.", "evidence": [], "subissues": [["Attempts to collect debt not owed \u2014 Debt is not yours", 643], ["False statements or representation \u2014 Attempted to collect wrong amount", 211], ["Written notification about debt \u2014 Didn't receive enough information to verify debt", 170]], "products": [["Debt collection", 1324]], "monthly": [30, 33, 35, 39, 42, 29, 46, 50, 35, 59, 52, 35, 42, 57, 66, 65, 84, 74, 72, 80, 95, 69, 48, 61]}, {"id": "debit_atm", "label": "Debit card or ATM problem", "question": "My debit card was declined / the ATM didn't give me cash / I need to dispute a debit transaction.", "n": 2347, "share": 0.07629294932223775, "relief": 0.4852670349907919, "trend": 0.046875, "recent": 737, "prior": 704, "coverage": "partial", "weight": 0.5, "unanswered": 1174, "gap": "Covers how to dispute a debit transaction, PIN problems, and card replacement. Nothing on an ATM that didn't dispense cash or credit a deposit, or on why a debit card is declined.", "evidence": ["https://www.bankofamerica.com/deposits/debit-card-faqs/", "https://www.bankofamerica.com/deposits/atm-fees-faqs/"], "subissues": [["Managing an account \u2014 Problem using a debit or ATM card", 2347]], "products": [["Checking or savings account", 2347]], "monthly": [59, 63, 42, 48, 90, 62, 66, 76, 60, 74, 126, 86, 70, 86, 106, 116, 147, 130, 140, 130, 118, 110, 141, 141]}, {"id": "payment_mishandled", "label": "Transfer or payment not handled as instructed / bank error", "question": "I made a payment or transfer and the bank didn't handle it the way I asked (or made an error).", "n": 2260, "share": 0.07346487663751909, "relief": 0.3542056074766355, "trend": 0.15116279069767447, "recent": 693, "prior": 602, "coverage": "partial", "weight": 0.5, "unanswered": 1130, "gap": "Explains transfer mechanics and cutoff times. Nothing on how to report a bank error or payment that didn't go as instructed, or how long a correction takes.", "evidence": ["https://www.bankofamerica.com/online-banking/electronic-funds-transfer-faqs/", "https://www.bankofamerica.com/help/cutoff-times/"], "subissues": [["Managing an account \u2014 Funds not handled or disbursed as instructed", 943], ["Managing an account \u2014 Banking errors", 676], ["Managing an account \u2014 Problem making or receiving payments", 641]], "products": [["Checking or savings account", 2260]], "monthly": [65, 72, 50, 71, 109, 70, 58, 70, 76, 90, 81, 99, 66, 91, 91, 117, 119, 82, 115, 140, 112, 153, 104, 109]}, {"id": "cant_open", "label": "Can't open an account / didn't get the advertised terms", "question": "Why can't I open an account, and where's the bonus or terms I was promised?", "n": 886, "share": 0.028800832168514125, "relief": 0.2962085308056872, "trend": -0.04489795918367345, "recent": 234, "prior": 245, "coverage": "missing", "weight": 1.0, "unanswered": 886, "gap": "Nothing on why an application might be declined or need extra verification, or on promised bonuses that weren't paid.", "evidence": [], "subissues": [["Opening an account \u2014 Unable to open an account", 666], ["Opening an account \u2014 Didn't receive terms that were advertised", 172], ["Opening an account \u2014 Confusing or missing disclosures", 48]], "products": [["Checking or savings account", 886]], "monthly": [25, 33, 27, 30, 32, 29, 31, 33, 22, 32, 37, 42, 40, 52, 31, 43, 49, 29, 46, 40, 39, 45, 41, 28]}, {"id": "zelle_scam", "label": "Zelle / P2P scam or fraud", "question": "I was scammed (or my account was used) through Zelle. Can I get my money back?", "n": 1411, "share": 0.04586678802457498, "relief": 0.18025430067314885, "trend": 0.2044025157232705, "recent": 383, "prior": 318, "coverage": "partial", "weight": 0.5, "unanswered": 706, "gap": "One sentence says that qualifying imposter scams \"may be eligible for reimbursement\". It doesn't say who qualifies, how to file, how long it takes, or what happens with other kinds of scams.", "evidence": ["https://www.bankofamerica.com/online-banking/zelle-faqs/", "https://www.bankofamerica.com/security-center/report-suspicious-communications/"], "subissues": [["Fraud or scam", 1411]], "products": [["Money transfer, virtual currency, or money service", 1411]], "monthly": [47, 39, 41, 64, 115, 48, 46, 40, 45, 54, 68, 66, 47, 40, 55, 60, 61, 43, 67, 83, 68, 56, 66, 55]}, {"id": "closed_funds", "label": "Can't get my money back from a closed account", "question": "My account was closed. When and how do I get my remaining balance?", "n": 697, "share": 0.022657088060332217, "relief": 0.5365079365079365, "trend": 0.3160621761658031, "recent": 254, "prior": 193, "coverage": "missing", "weight": 1.0, "unanswered": 697, "gap": "Closure content tells customers to move their balance out before closing. Nothing says how or when the remaining money is returned after the bank closes the account.", "evidence": ["https://www.bankofamerica.com/help/account-information-faqs/"], "subissues": [["Closing an account \u2014 Funds not received from closed account", 697]], "products": [["Checking or savings account", 697]], "monthly": [20, 17, 16, 14, 13, 15, 23, 27, 24, 24, 20, 18, 24, 27, 28, 39, 32, 37, 30, 46, 37, 50, 40, 50]}, {"id": "id_theft_account", "label": "Account or card opened in my name (identity theft)", "question": "Someone opened an account or card in my name. How do I report it and clean it up?", "n": 1066, "share": 0.03465201703344927, "relief": 0.2450592885375494, "trend": -0.10408921933085502, "recent": 241, "prior": 269, "coverage": "partial", "weight": 0.5, "unanswered": 533, "gap": "Only generic 'freeze your credit, call us' guidance. No Bank of America process for an account or card opened in your name, or for clearing it from your credit report.", "evidence": ["https://www.bankofamerica.com/security-center/faq/sharing-information/", "https://web.bankofamerica.com/en/security/library/steps-if-targeted-by-fraud-scam"], "subissues": [["Getting a credit card \u2014 Card opened without my consent or knowledge", 391], ["Opening an account \u2014 Account opened without my consent or knowledge", 307], ["Attempts to collect debt not owed \u2014 Debt was result of identity theft", 238]], "products": [["Credit card", 493], ["Checking or savings account", 335], ["Debt collection", 238]], "monthly": [71, 40, 29, 23, 52, 36, 54, 45, 37, 40, 49, 48, 51, 32, 54, 43, 45, 37, 42, 45, 52, 38, 45, 43]}, {"id": "cc_payment", "label": "Credit card payment problems", "question": "My card payment didn't post, was applied wrong, or I never got a bill.", "n": 862, "share": 0.028020674186522772, "relief": 0.3990498812351544, "trend": -0.08444444444444443, "recent": 206, "prior": 225, "coverage": "partial", "weight": 0.5, "unanswered": 431, "gap": "Covers payment methods and how to avoid late fees. Nothing on a payment that didn't post or was applied wrong, or on a statement that never arrived.", "evidence": ["https://www.bankofamerica.com/banking-information/assistance/credit-cards/making-credit-card-payments/", "https://www.bankofamerica.com/credit-cards/credit-card-fees-faq/"], "subissues": [["Problem when making payments \u2014 Problem during payment process", 706], ["Problem when making payments \u2014 You never received your bill or did not know a payment was due", 156]], "products": [["Credit card", 862]], "monthly": [30, 28, 28, 30, 48, 33, 46, 31, 30, 37, 29, 36, 29, 38, 27, 41, 53, 30, 39, 50, 41, 37, 31, 26]}, {"id": "credit_report", "label": "Wrong information on my credit report", "question": "The bank is reporting something wrong to the credit bureaus. How do I get it fixed?", "n": 814, "share": 0.026460358222540066, "relief": 0.16036505867014342, "trend": 0.0072202166064982976, "recent": 279, "prior": 277, "coverage": "partial", "weight": 0.5, "unanswered": 407, "gap": "Sends customers to the credit bureaus, with phone numbers for contacting the bank. No direct process or timeline for disputing what the bank reported.", "evidence": ["https://www.bankofamerica.com/help/goodwill-adjustments/"], "subissues": [["Incorrect information on your report \u2014 Account status incorrect", 297], ["Problem with a company's investigation into an existing problem \u2014 Their investigation did not fix an error on your report", 269], ["Incorrect information on your report \u2014 Account information incorrect", 163]], "products": [["Credit card", 711], ["Checking or savings account", 103]], "monthly": [23, 18, 14, 17, 23, 19, 11, 22, 17, 23, 27, 26, 26, 36, 38, 50, 52, 54, 49, 59, 50, 37, 42, 54]}, {"id": "recurring_withdrawal", "label": "Can't stop a recurring charge, or wrong-day / wrong-amount withdrawal", "question": "How do I stop a merchant or company from taking money out of my account?", "n": 367, "share": 0.01192991580795111, "relief": 0.3875739644970414, "trend": 0.36046511627906974, "recent": 117, "prior": 86, "coverage": "missing", "weight": 1.0, "unanswered": 367, "gap": "Stop-payment content covers paper checks only. Nothing on stopping a recurring debit or ACH withdrawal from a merchant, or on revoking authorization.", "evidence": ["https://www.bankofamerica.com/deposits/account-information-and-access-faqs/"], "subissues": [["Problem with a lender or other company charging your account \u2014 Money was taken from your account on the wrong day or for the wrong amount", 256], ["Problem with a lender or other company charging your account \u2014 Can't stop withdrawals from your account", 111]], "products": [["Checking or savings account", 367]], "monthly": [18, 8, 13, 10, 19, 9, 10, 16, 12, 8, 17, 15, 10, 12, 9, 12, 22, 12, 24, 21, 22, 13, 26, 21]}, {"id": "rewards_promo", "label": "Rewards, promo, or balance-transfer terms not honored", "question": "I didn't get the rewards, promo rate, or balance-transfer terms I was promised.", "n": 601, "share": 0.019536456132366806, "relief": 0.3197879858657244, "trend": 0.3129251700680271, "recent": 193, "prior": 147, "coverage": "partial", "weight": 0.5, "unanswered": 300, "gap": "Covers redeeming rewards and how payments apply to promo balances. Nothing on rewards, bonuses, or promo rates that were never credited.", "evidence": ["https://www.bankofamerica.com/credit-cards/credit-card-account-information-faq/"], "subissues": [["Other features, terms, or problems \u2014 Problem with rewards from credit card", 252], ["Advertising and marketing, including promotional offers \u2014 Didn't receive advertised or promotional terms", 127], ["Other features, terms, or problems \u2014 Problem with balance transfer", 126]], "products": [["Credit card", 601]], "monthly": [15, 23, 25, 20, 27, 18, 17, 22, 22, 18, 22, 20, 15, 21, 22, 34, 25, 19, 28, 29, 32, 32, 34, 43]}, {"id": "cc_access", "label": "Card application, credit limit, or card won't work", "question": "My application was denied or delayed, my limit changed, or my card won't work.", "n": 569, "share": 0.018496245489711665, "relief": 0.21561338289962825, "trend": 0.22377622377622375, "recent": 175, "prior": 143, "coverage": "partial", "weight": 0.5, "unanswered": 284, "gap": "Covers application status and credit-line increases. Nothing on why an application was denied or a limit was lowered.", "evidence": ["https://www.bankofamerica.com/credit-cards/credit-card-account-information-faq/"], "subissues": [["Trouble using your card \u2014 Can't use card to make purchases", 192], ["Getting a credit card \u2014 Application denied", 177], ["Trouble using your card \u2014 Credit card company won't increase or decrease your credit limit", 75]], "products": [["Credit card", 569]], "monthly": [22, 19, 20, 22, 21, 26, 21, 17, 18, 19, 17, 18, 18, 19, 18, 29, 34, 18, 25, 32, 20, 42, 27, 29]}, {"id": "access_locked", "label": "Locked out, frozen, or can't access my account", "question": "My account is locked, frozen, or restricted. How do I get back in?", "n": 562, "share": 0.018268699411630854, "relief": 0.26454033771106944, "trend": 0.34751773049645385, "recent": 190, "prior": 141, "coverage": "partial", "weight": 0.5, "unanswered": 281, "gap": "Covers forgotten user IDs and passwords. Nothing on accounts the bank has locked, frozen, or restricted, or on how to verify your identity to get back in.", "evidence": ["https://www.bankofamerica.com/customer-service/contact-us/bank-of-america-login-issues/", "https://www.bankofamerica.com/help/account-information-faqs/"], "subissues": [["Managing an account \u2014 Problem accessing account", 562]], "products": [["Checking or savings account", 562]], "monthly": [12, 20, 20, 17, 25, 15, 20, 10, 14, 15, 26, 22, 19, 11, 28, 30, 24, 30, 21, 27, 42, 38, 32, 36]}, {"id": "hardship", "label": "Struggling to pay / need a payment plan", "question": "I can't make my payments. What hardship or payment-plan options do I have?", "n": 168, "share": 0.005461105873939473, "relief": 0.08536585365853659, "trend": 0.21621621621621623, "recent": 45, "prior": 37, "coverage": "partial", "weight": 0.5, "unanswered": 84, "gap": "Says 'call us to explore options' and links to credit counseling. It doesn't describe any actual hardship or payment-plan options.", "evidence": ["https://www.bankofamerica.com/banking-information/assistance/credit-cards/managing-credit-card-debt/"], "subissues": [["Struggling to pay your bill \u2014 Credit card company won't work with you while you're going through financial hardship", 159], ["Struggling to pay your bill \u2014 Problem lowering your monthly payments", 7], ["Struggling to pay your bill \u2014 Filed for bankruptcy", 2]], "products": [["Credit card", 168]], "monthly": [1, 6, 5, 11, 3, 4, 6, 8, 9, 4, 9, 12, 12, 0, 11, 6, 7, 3, 9, 14, 6, 10, 6, 3]}, {"id": "transfer_problem", "label": "Transfer didn't arrive, wrong amount, or can't be traced", "question": "My transfer / Zelle / wire didn't arrive or went to the wrong place. Where is my money?", "n": 1566, "share": 0.0509053083249358, "relief": 0.2636484687083888, "trend": -0.07837837837837835, "recent": 341, "prior": 370, "coverage": "covered", "weight": 0.0, "unanswered": 0, "gap": "Zelle pending, failed, and not-received scenarios are answered in detail. Wire tracing is thin.", "evidence": ["https://www.bankofamerica.com/online-banking/zelle-faqs/"], "subissues": [["Other transaction problem", 637], ["Money was not available when promised", 257], ["Unauthorized transactions or other transaction problem", 175]], "products": [["Money transfer, virtual currency, or money service", 1566]], "monthly": [30, 44, 38, 42, 243, 63, 49, 63, 48, 37, 59, 99, 46, 61, 60, 86, 64, 52, 56, 59, 63, 54, 65, 59]}, {"id": "overdraft", "label": "Overdraft, NSF, and account fees", "question": "Why was I charged an overdraft or account fee, and can it be refunded?", "n": 894, "share": 0.02906088482917791, "relief": 0.44947735191637633, "trend": 0.09859154929577474, "recent": 234, "prior": 213, "coverage": "covered", "weight": 0.0, "unanswered": 0, "gap": "Well covered, including a worked example. But the page's structured data (what search engines and AI assistants read) still shows a $35 fee in the example, while the visible page shows $10.", "evidence": ["https://www.bankofamerica.com/deposits/overdrafts-and-overdraft-protection/"], "subissues": [["Problem caused by your funds being low \u2014 Overdrafts and overdraft fees", 264], ["Problem caused by your funds being low \u2014 Non-sufficient funds and associated fees", 232], ["Managing an account \u2014 Fee problem", 163]], "products": [["Checking or savings account", 894]], "monthly": [27, 20, 31, 29, 63, 30, 35, 22, 44, 31, 40, 46, 35, 34, 34, 30, 43, 29, 53, 55, 37, 23, 44, 44]}, {"id": "service_other", "label": "Other / customer-service problems", "question": "Other issues and poor customer-service experiences.", "n": 890, "share": 0.028930858498846017, "relief": 0.3345238095238095, "trend": 0.030303030303030276, "recent": 238, "prior": 231, "coverage": "n/a", "weight": 0.0, "unanswered": 0, "gap": "Catch-all bucket, not scored.", "evidence": [], "subissues": [["Other features, terms, or problems \u2014 Other problem", 525], ["Other features, terms, or problems \u2014 Problem with customer service", 117], ["Closing an account \u2014 Fees charged for closing account", 37]], "products": [["Credit card", 809], ["Checking or savings account", 81]], "monthly": [31, 36, 29, 37, 37, 38, 34, 22, 36, 30, 34, 31, 31, 32, 24, 52, 41, 43, 45, 41, 36, 43, 36, 50]}, {"id": "cc_fees_interest", "label": "Credit card fees and interest", "question": "Why was I charged this fee or interest on my credit card?", "n": 729, "share": 0.023697298702987354, "relief": 0.4757834757834758, "trend": 0.022727272727272707, "recent": 225, "prior": 220, "coverage": "covered", "weight": 0.0, "unanswered": 0, "gap": "A 24-question fees FAQ explains each fee and how to avoid it. Nothing on getting a fee refunded.", "evidence": ["https://www.bankofamerica.com/credit-cards/credit-card-fees-faq/"], "subissues": [["Fees or interest \u2014 Problem with fees", 456], ["Fees or interest \u2014 Charged too much interest", 231], ["Fees or interest \u2014 Unexpected increase in interest rate", 42]], "products": [["Credit card", 729]], "monthly": [19, 17, 25, 27, 24, 19, 29, 18, 23, 25, 25, 16, 23, 23, 35, 46, 45, 34, 41, 35, 42, 35, 35, 50]}, {"id": "cant_close", "label": "Can't close my account", "question": "How do I close my account, and why won't it close?", "n": 330, "share": 0.010727172252381107, "relief": 0.3753943217665615, "trend": 0.030927835051546282, "recent": 100, "prior": 97, "coverage": "covered", "weight": 0.0, "unanswered": 0, "gap": "Step-by-step closure instructions by phone, mail, online, and in branch.", "evidence": ["https://www.bankofamerica.com/help/account-information-faqs/", "https://www.bankofamerica.com/credit-cards/credit-card-account-information-faq/"], "subissues": [["Closing an account \u2014 Can't close your account", 231], ["Closing your account \u2014 Can't close your account", 99]], "products": [["Checking or savings account", 231], ["Credit card", 99]], "monthly": [4, 11, 11, 14, 13, 8, 16, 8, 8, 6, 11, 17, 10, 10, 10, 8, 28, 23, 21, 13, 12, 21, 18, 19]}]};
+const T = DATA.themes, M = DATA.meta;
+const fmt = n => n.toLocaleString('en-US');
+const pct = x => Math.round(x*100)+'%';
+const COV = {missing:{lab:'Missing',sym:'✕'},partial:{lab:'Partial',sym:'◐'},covered:{lab:'Covered',sym:'✓'},'n/a':{lab:'Not scored',sym:'–'}};
+const covClass = c => c==='n/a'?'na':c;
+const chip = c => `<span class="chip ${covClass(c)}"><i aria-hidden="true">${COV[c].sym}</i>${COV[c].lab}</span>`;
+const byId = Object.fromEntries(T.map(t=>[t.id,t]));
+document.getElementById('h-total').textContent = fmt(M.total);
+document.getElementById('m-total').textContent = fmt(M.total);
+
+// stats
+const unanswered = T.reduce((s,t)=>s+t.unanswered,0);
+const gapShare = (M.complaints_by_cov.missing+M.complaints_by_cov.partial)/M.total;
+document.getElementById('stats').innerHTML = [
+  [fmt(M.total),'CFPB complaints, Sept 2024 to Sept 2026'],
+  ['~390','public help Q&As and articles reviewed, from 41 pages'],
+  [pct(gapShare),'of complaints are about a problem the help content misses or only partly answers'],
+  [M.coverage_counts.missing+' of 23','scored problems have no help content at all'],
+].map(([v,l])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+// strip
+const order=['missing','partial','covered','n/a'], colors={missing:'var(--missing)',partial:'var(--partial)',covered:'var(--covered)','n/a':'var(--na)'};
+const strip=document.getElementById('strip');
+strip.setAttribute('aria-label', order.map(c=>`${COV[c].lab}: ${fmt(M.complaints_by_cov[c])} complaints`).join(', '));
+strip.innerHTML = order.map(c=>`<div style="flex:${M.complaints_by_cov[c]};background:${colors[c]}" data-tip="<b>${COV[c].lab}</b><br><span class='num'>${fmt(M.complaints_by_cov[c])}</span> complaints (${pct(M.complaints_by_cov[c]/M.total)})"></div>`).join('');
+document.getElementById('strip-legend').innerHTML = order.map(c=>`<span><span class="sw" style="background:${colors[c]}"></span>${COV[c].lab} <b class="num">${pct(M.complaints_by_cov[c]/M.total)}</b> <span class="num">(${fmt(M.complaints_by_cov[c])})</span></span>`).join('');
+
+// filters
+let filter='all', open=null;
+const F=[['all','All problems'],['missing','Missing'],['partial','Partial'],['covered','Covered']];
+const fEl=document.getElementById('filters');
+fEl.innerHTML = F.map(([k,l])=>`<button type="button" id="f-${k}" data-f="${k}" aria-pressed="${k==='all'}">${l}</button>`).join('');
+fEl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;filter=b.dataset.f;fEl.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+
+const maxN = Math.max(...T.map(t=>t.n));
+function spark(t){
+  const v=t.monthly, w=320,h=70,p=6, mx=Math.max(...v);
+  const x=i=>p+i*(w-2*p)/(v.length-1), y=val=>h-14-(val/mx)*(h-24);
+  const pts=v.map((val,i)=>`${x(i).toFixed(1)},${y(val).toFixed(1)}`).join(' ');
+  const last=v.length-1;
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" role="img" aria-label="Monthly complaints, ${M.months[0]} to ${M.months[last]}, from ${v[0]} to ${v[last]}">
+   <line x1="${p}" x2="${w-p}" y1="${h-14}" y2="${h-14}" stroke="var(--rule)" stroke-width="1"/>
+   <polygon points="${p},${h-14} ${pts} ${x(last)},${h-14}" fill="var(--accent)" opacity=".12"/>
+   <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+   <circle cx="${x(last)}" cy="${y(v[last])}" r="4" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>
+   <text x="${p}" y="${h-2}" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${M.months[0]}</text>
+   <text x="${w-p}" y="${h-2}" font-size="10" fill="var(--muted)" text-anchor="end" font-family="IBM Plex Mono, monospace">${M.months[last]} · ${v[last]}/mo</text>
+  </svg>`;
+}
+function detail(t){
+  const ev = t.evidence.length? t.evidence.map(u=>`<li><a href="${u}" target="_blank" rel="noopener">${u.replace('https://','')}</a></li>`).join('') : '<li>No relevant page found.</li>';
+  const cat = t.subissues.map(([k,v])=>`<li>${k} <span class="num" style="color:var(--muted)">${fmt(v)}</span></li>`).join('');
+  return `<div class="detail" id="d-${t.id}">
+   <div><div class="q">“${t.question}”</div>
+     <h4>What the help content says, and what's missing</h4><p style="font-size:14px">${t.gap}</p>
+     <h4>Closest help pages</h4><ul class="evid">${ev}</ul></div>
+   <div><h4>Top CFPB categories behind it</h4><ul>${cat}</ul>
+     <h4>Complaints per month</h4>${spark(t)}</div></div>`;
+}
+function render(){
+  const rows = T.filter(t=>filter==='all'||t.coverage===filter);
+  document.getElementById('rows').innerHTML = rows.map(t=>{
+    const wFull = t.n/maxN*100, wGap = t.unanswered/maxN*100;
+    const tr = t.trend==null?'–':(t.trend>0?'+':'')+Math.round(t.trend*100)+'%';
+    const trc = t.trend>0.1?'up':(t.trend<-0.1?'down':'');
+    const tip = `<b>${t.label}</b><br><span class='num'>${fmt(t.n)}</span> complaints · <span class='num'>${fmt(t.unanswered)}</span> unanswered<br>Relief ${pct(t.relief)} · 6-mo ${tr}`;
+    return `<button type="button" class="grow" id="r-${t.id}" aria-expanded="${open===t.id}" aria-controls="d-${t.id}" data-id="${t.id}">
+      <div class="t"><b>${t.label}</b><span>${chip(t.coverage)}</span></div>
+      <div class="bars" data-tip="${tip}"><div class="full" style="width:${wFull}%"></div><div class="gap" style="width:${wGap}%;background:${colors[t.coverage]}"></div><span class="lbl" style="left:${wFull}%">${fmt(t.n)}</span></div>
+      <div class="r num">${fmt(t.unanswered)}</div>
+      <div class="r num c-rel">${pct(t.relief)}</div>
+      <div class="r num c-tr delta ${trc}">${tr}</div>
+    </button>${open===t.id?detail(t):''}`;
+  }).join('');
+}
+document.getElementById('rows').addEventListener('click',e=>{const r=e.target.closest('.grow');if(!r)return;open = open===r.dataset.id?null:r.dataset.id;render();const el=document.getElementById('r-'+r.dataset.id);el&&el.focus({preventScroll:true})});
+render();
+
+// tooltip
+const tip=document.getElementById('tip');
+document.addEventListener('pointermove',e=>{const el=e.target.closest('[data-tip]');if(!el){tip.hidden=true;return}
+  tip.innerHTML=el.dataset.tip;tip.hidden=false;const r=tip.getBoundingClientRect();
+  let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=x+'px';tip.style.top=y+'px'});
+document.addEventListener('pointerleave',()=>tip.hidden=true);
+
+// recommendations
+const RECS = [
+ {title:`Dispute and fraud-claim status: "Where's my claim, and what happens next?"`, ids:[`cc_dispute_stuck`,`card_fraud`],
+  why:`The biggest combined gap, and still growing. More than half of these complaints end with the bank paying money back, which suggests customers escalate because they can't see where their claim stands, not because they are wrong. Help pages explain how to file, then stop.`,
+  bot:[`Sort the claim into credit card, debit/ATM, or ACH/checking, since the rules differ`,`Show claim status and next step after the customer logs in`,`Explain timelines: federal rules allow up to 10 business days to investigate debit/ACH claims (up to 45 days with temporary credit), and up to 2 billing cycles or 90 days for credit-card billing errors`,`Explain what a denial means and how to reopen a claim with documents`],
+  handoff:`Hand off to an agent when a claim is denied or a temporary credit is reversed.`},
+ {title:`Deposit holds and missing deposits: "When can I use my money?"`, ids:[`deposit_hold`],
+  why:`The single largest problem, up 17%. The holds FAQ is good but covers only the easy case. Reversed deposits, returned checks after funds were released, and missing ATM or mobile deposits have no answer.`,
+  bot:[`Explain holds for this specific deposit: type, amount, release date`,`Explain why a deposit can be reversed after the money was made available`,`Trace a missing ATM or mobile deposit and open a research case`],
+  handoff:`Hand off to an agent when a returned check has pushed the account below zero.`},
+ {title:`"The bank closed my account. Where's my money?"`, ids:[`bank_closed`,`closed_funds`],
+  why:`2,394 complaints with no help content at all. The closed-funds half is up 32% and ends in relief 54% of the time. Even when the bank can't say why it closed an account, it can explain what happens next.`,
+  bot:[`Explain the process: what notice to expect, when pending transactions and direct deposits stop`,`Say how and when the remaining balance is returned (check or transfer) and to which address`,`Check that the mailing address is current`],
+  handoff:`The bot should never guess the reason for a closure. Route to a specialist queue with the case already started.`},
+ {title:`Zelle scams: "I was tricked into sending money. Can I get it back?"`, ids:[`zelle_scam`],
+  why:`Up 20%, and the help content gives the whole topic one sentence ("qualifying imposter scams may be eligible for reimbursement"). The 18% relief rate means most customers don't get money back, so setting clear expectations early matters.`,
+  bot:[`Separate "I sent it but was tricked" (a scam) from "I didn't send it" (unauthorized), since the rules differ`,`Explain which imposter scams qualify and how to file`,`Give immediate steps: stop contact, secure the account, report the recipient`],
+  handoff:`Hand off to an agent right away if the customer is still in contact with the scammer or the transfer is pending.`},
+ {title:`"How do I stop a company from taking money from my account?"`, ids:[`recurring_withdrawal`],
+  why:`A small volume (367) but no content at all, the fastest growth of any problem (+36%), and an easy, rules-based answer. This is the quick win that shows the bot works.`,
+  bot:[`Explain how to stop a recurring debit-card charge versus an ACH withdrawal`,`Explain how to revoke authorization and place a stop payment on an ACH debit`,`Say what to do if a charge comes in after the customer revoked authorization (that becomes a dispute, see intent 1)`],
+  handoff:`Hand off to an agent only when the customer is disputing an amount the company already took.`},
+];
+document.getElementById('recs').innerHTML = RECS.map((r,i)=>{
+  const ts=r.ids.map(id=>byId[id]); const n=ts.reduce((s,t)=>s+t.n,0), un=ts.reduce((s,t)=>s+t.unanswered,0);
+  const rec=ts.reduce((s,t)=>s+t.recent,0), pri=ts.reduce((s,t)=>s+t.prior,0), tr=Math.round((rec/pri-1)*100);
+  const covs=[...new Set(ts.map(t=>t.coverage))].map(chip).join(' ');
+  return `<article class="rec"><div class="rank" aria-hidden="true">${i+1}</div>
+   <div class="body"><h3>${r.title}</h3>
+    <div class="meta"><span><b class="num">${fmt(n)}</b> complaints</span><span><b class="num">${fmt(un)}</b> unanswered</span><span class="num">${tr>0?'+':''}${tr}% 6-mo</span>${covs}</div>
+    <p style="font-size:14px;color:var(--ink-2)">${r.why}</p></div>
+   <div class="bot"><span class="lab">What the bot should handle</span><ul>${r.bot.map(b=>`<li>${b}</li>`).join('')}</ul><div class="handoff"><b>Handoff rule:</b> ${r.handoff}</div></div></article>`}).join('');
+</script>

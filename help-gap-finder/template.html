@@ -1,0 +1,356 @@
+<title>Help Gap Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Public+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#f5f6f3; --surface:#ffffff; --ink:#15201b; --ink-2:#4d5a53; --muted:#6f7a74; --rule:#dfe3de; --rule-2:#eef0ec;
+  --accent:#1d5b86; --accent-soft:#e3edf4; --bar:#b9c3bd;
+  --missing:#d03b3b; --partial:#e39a00; --covered:#0ca30c; --na:#9aa39e;
+  --missing-soft:#fbe9e7; --partial-soft:#fdf2da; --covered-soft:#e2f4e2;
+  --display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#111513; --surface:#191e1b; --ink:#edf1ee; --ink-2:#bcc6c0; --muted:#95a09a; --rule:#2c332f; --rule-2:#222825;
+    --accent:#7fb4dc; --accent-soft:#1c2a33; --bar:#46514b;
+    --missing:#e66767; --partial:#fab219; --covered:#2fbf2f; --na:#6d7671;
+    --missing-soft:#3a1f1e; --partial-soft:#352a12; --covered-soft:#16301a;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111513; --surface:#191e1b; --ink:#edf1ee; --ink-2:#bcc6c0; --muted:#95a09a; --rule:#2c332f; --rule-2:#222825;
+  --accent:#7fb4dc; --accent-soft:#1c2a33; --bar:#46514b;
+  --missing:#e66767; --partial:#fab219; --covered:#2fbf2f; --na:#6d7671;
+  --missing-soft:#3a1f1e; --partial-soft:#352a12; --covered-soft:#16301a;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:20px;padding-block:0 64px}
+.wrap{max-width:1080px;margin:0 auto}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(34px,6vw,56px);font-weight:800;font-stretch:78%;line-height:1}
+h2{font-size:26px;font-weight:750;font-stretch:85%;line-height:1.15}
+h3{font-size:17px;font-weight:700;font-stretch:95%}
+.eyebrow{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+p{margin:0}
+.lede{font-size:18px;max-width:64ch;color:var(--ink-2)}
+header.top{padding-block:40px 28px;border-bottom:1px solid var(--rule);display:grid;gap:18px}
+section{padding-block:40px 8px;display:grid;gap:18px}
+.sechead{display:grid;gap:6px;max-width:70ch}
+.sechead p{color:var(--ink-2)}
+
+/* headline stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.stat{background:var(--surface);padding:16px 18px;display:grid;gap:4px;align-content:start}
+.stat .v{font-family:var(--display);font-weight:750;font-stretch:80%;font-size:34px;line-height:1;font-variant-numeric:tabular-nums}
+.stat .l{font-size:13px;color:var(--ink-2)}
+@media (max-width:760px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* coverage strip */
+.strip{display:grid;gap:10px}
+.strip-bar{display:flex;height:34px;gap:2px}
+.strip-bar div{height:100%;border-radius:4px;position:relative;min-width:6px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.sw{width:11px;height:11px;border-radius:3px;display:inline-block;flex:none}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px 2px 6px;border-radius:999px;white-space:nowrap;color:var(--ink)}
+.chip i{font-style:normal;font-weight:600}
+.chip.missing{background:var(--missing-soft)} .chip.missing i{color:var(--missing)}
+.chip.partial{background:var(--partial-soft)} .chip.partial i{color:var(--partial)}
+.chip.covered{background:var(--covered-soft)} .chip.covered i{color:var(--covered)}
+.chip.na{background:var(--rule-2)}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.filters button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--surface);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.filters .sep{width:1px;height:20px;background:var(--rule);margin-inline:4px}
+
+/* gap table */
+.gaptable{background:var(--surface);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.ghead,.grow{display:grid;grid-template-columns:minmax(0,2.3fr) minmax(0,2fr) 92px 78px 78px;gap:14px;align-items:center;padding:10px 16px}
+.ghead{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);background:var(--surface)}
+.ghead .r,.grow .r{text-align:right}
+.grow{border-bottom:1px solid var(--rule-2);cursor:pointer;width:100%;background:none;border-left:0;border-right:0;border-top:0;font:inherit;color:inherit;text-align:left}
+.grow:hover{background:var(--rule-2)}
+.grow .t{display:grid;gap:3px;min-width:0}
+.grow .t b{font-weight:600;font-size:14.5px;line-height:1.3}
+.bars{position:relative;height:18px}
+.bars .full{position:absolute;inset:0 auto 0 0;background:var(--bar);border-radius:0 4px 4px 0;opacity:.55}
+.bars .gap{position:absolute;inset:0 auto 0 0;border-radius:0 4px 4px 0}
+.bars .lbl{position:absolute;top:0;font-family:var(--mono);font-size:11.5px;line-height:18px;color:var(--ink-2);padding-left:6px;white-space:nowrap}
+.delta.up{color:var(--missing)} .delta.down{color:var(--covered)}
+.detail{padding:4px 16px 22px;border-bottom:1px solid var(--rule);background:var(--rule-2);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px}
+.detail h4{margin:14px 0 6px;font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.detail .q{font-family:var(--display);font-stretch:90%;font-size:19px;font-weight:600;line-height:1.3;margin-top:14px}
+.detail ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.detail li{font-size:14px}
+.detail .evid a{word-break:break-all;font-size:13px}
+.spark{width:100%;height:70px;display:block}
+@media (max-width:760px){
+  .ghead{display:none}
+  .grow{grid-template-columns:minmax(0,1fr) 70px;row-gap:8px}
+  .grow .bars{grid-column:1 / -1;grid-row:2}
+  .grow .c-rel,.grow .c-tr{display:none}
+  .detail{grid-template-columns:1fr}
+}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12.5px;padding:8px 10px;border-radius:6px;max-width:260px;z-index:10;line-height:1.4}
+.tip .num{color:inherit}
+
+/* recommendations */
+.recs{display:grid;gap:14px;counter-reset:rec}
+.rec{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 20px;display:grid;grid-template-columns:44px minmax(0,1fr) minmax(0,1fr);gap:18px}
+.rec .rank{font-family:var(--display);font-weight:800;font-stretch:75%;font-size:40px;line-height:.9;color:var(--accent)}
+.rec .body{display:grid;gap:8px;align-content:start}
+.rec .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--ink-2)}
+.rec .bot{display:grid;gap:8px;align-content:start;font-size:14px;border-left:1px solid var(--rule);padding-left:18px}
+.rec .bot ul{margin:0;padding-left:18px;display:grid;gap:3px}
+.lab{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.handoff{font-size:13px;background:var(--accent-soft);padding:8px 10px;border-radius:4px}
+@media (max-width:760px){.rec{grid-template-columns:1fr}.rec .bot{border-left:0;padding-left:0;border-top:1px solid var(--rule);padding-top:12px}}
+.later{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.later > div{border-top:2px solid var(--ink);padding-top:10px;display:grid;gap:6px;font-size:14px;color:var(--ink-2)}
+.later h3{color:var(--ink)}
+@media (max-width:760px){.later{grid-template-columns:1fr}}
+
+.finding{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.fcard{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 18px;display:grid;gap:8px;align-content:start;font-size:14px}
+.fcard code{font-family:var(--mono);font-size:12.5px;background:var(--rule-2);padding:1px 5px;border-radius:3px}
+@media (max-width:760px){.finding{grid-template-columns:1fr}}
+
+.method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;font-size:14px;color:var(--ink-2)}
+.method > div{display:grid;gap:6px;align-content:start}
+.method h3{color:var(--ink)}
+@media (max-width:760px){.method{grid-template-columns:1fr}}
+.sources{font-size:13px;color:var(--ink-2);columns:2;column-gap:28px}
+.sources li{break-inside:avoid;margin-bottom:4px}
+@media (max-width:760px){.sources{columns:1}}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){.detail{animation:open .18s ease-out}@keyframes open{from{opacity:.4;transform:translateY(-3px)}to{opacity:1;transform:none}}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">Product discovery · CFPB complaint data × public help content</div>
+  <h1>Help Gap Finder</h1>
+  <p class="lede">Which problems do Bank of America customers take to the federal regulator that the bank's own help center doesn't answer? I grouped <span class="num" id="h-total"></span> CFPB complaints (Sept 2024 to Sept 2026) into 24 customer problems, read them against about 390 public help Q&amp;As and articles, and ranked the gaps. The result is a short list of what a self-service chatbot should cover first.</p>
+  <div class="stats" id="stats"></div>
+</header>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">01 · Where complaints land</div>
+    <h2>Only about one complaint in nine is about a problem the help center fully answers</h2>
+    <p>Each complaint is counted under the coverage rating of its problem.</p>
+  </div>
+  <div class="strip">
+    <div class="strip-bar" id="strip" role="img"></div>
+    <div class="legend" id="strip-legend"></div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">02 · The gap map</div>
+    <h2>24 customer problems, ranked by complaints the help content leaves unanswered</h2>
+    <p>The grey bar is all complaints for a problem. The colored part is the share help content doesn't answer: all of it for <em>missing</em>, half for <em>partial</em>. Click a row to see the customer's question, the CFPB categories behind it, and what the help content says.</p>
+  </div>
+  <div class="filters" id="filters" role="group" aria-label="Filter by coverage"></div>
+  <div class="gaptable" id="gaptable">
+    <div class="ghead"><div>Customer problem</div><div>Complaints · unanswered share</div><div class="r">Unanswered</div><div class="r">Relief</div><div class="r">6-mo change</div></div>
+    <div id="rows"></div>
+  </div>
+  <p style="font-size:13px;color:var(--muted)"><b>Relief</b> is the share of closed complaints where the bank gave money back or changed something for the customer. A high number suggests the customer often had a point. <b>6-mo change</b> compares Mar to Sept 2026 with the six months before.</p>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">03 · So here's what the chatbot should cover first</div>
+    <h2>Five intents, picked for volume, gap size, growth, and how well a bot can actually help</h2>
+    <p>Ranking isn't only by gap size. Collections is a large gap, but complaints about it are falling, the bank is rarely found at fault (3 to 6% relief), and the topic is legally sensitive. So that one is a content fix first, with the bot routing to a person.</p>
+  </div>
+  <div class="recs" id="recs"></div>
+  <div class="later">
+    <div><h3>Write the content before building the bot: collections</h3><p><span class="num">2,813</span> complaints and no help content at all. Publish a page on how Bank of America's recovery process works, how to verify or dispute a debt, and how the account is reported to credit bureaus. The bot can then point to it and route to a person.</p></div>
+    <div><h3>Quick content fixes</h3><p>Missing pages for <em>why can't I open an account</em> (886) and <em>how to fix what you reported to my credit bureau</em> (814). Also correct the overdraft page's structured data (section 04).</p></div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">04 · Two things I found along the way</div>
+    <h2>Findings that matter for anyone building a help chatbot</h2>
+  </div>
+  <div class="finding">
+    <div class="fcard">
+      <span class="chip missing"><i>●</i> Stale content</span>
+      <h3>The overdraft page tells machines one fee and people another</h3>
+      <p>The visible answer to "I thought I had enough money; why did you charge me an overdraft fee?" gives a <b>$10</b> fee in its example. The page's hidden FAQ structured data (<code>application/ld+json</code>), which search engines and AI answer engines read, still says <b>$35</b>. A retrieval-based chatbot that indexes structured data would quote the old fee.</p>
+      <p><b>Lesson for the build:</b> index the visible text, and add a check that compares numbers between the two versions. I ran that check on 76 matched Q&amp;As: this was the only fee mismatch, plus one small wording difference ("14 days" versus "14 business days").</p>
+    </div>
+    <div class="fcard">
+      <span class="chip na"><i>●</i> Data constraint</span>
+      <h3>The complaint stories are gone</h3>
+      <p>On Aug 14, 2026, the CFPB stopped publishing complaint narratives (customers' written descriptions). Older narratives are no longer in the public API either. So this analysis uses the CFPB's structured categories (product, issue, sub-issue) and the company-response field, not text clustering.</p>
+      <p><b>What that means:</b> the problem groupings are coarser than clustering the text would give, and there are no quotes from customers. The next version could cluster a bank's own chat transcripts or call reasons instead.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="sechead">
+    <div class="eyebrow">05 · Method and limits</div>
+    <h2>How this was built</h2>
+  </div>
+  <div class="method">
+    <div><h3>Complaints</h3><p>All <span class="num" id="m-total"></span> CFPB complaints against Bank of America, N.A., received 1 Sept 2024 to 23 Sept 2026, in four products: checking/savings, credit card, debt collection, and money transfer. Each product → issue → sub-issue combination (140 in total) was mapped by ordered rules to one of 24 problems, each worded as the question a customer would ask.</p></div>
+    <div><h3>Help content</h3><p>I crawled 41 public Bank of America help and FAQ pages in the product areas above (deposits, debit, credit card, Zelle, online banking, security center, disputes, credit-card assistance) and extracted each Q&amp;A from the page and its structured data. Pages behind login were out of scope, and so were Erica answers.</p></div>
+    <div><h3>Coverage call</h3><p>For each problem I pulled the closest matches (TF-IDF plus a keyword sweep), read them, and rated the problem <em>covered</em>, <em>partial</em> (explains how to start but not what the complaints are about), or <em>missing</em>. Unanswered complaints = complaints × 1 for missing, × 0.5 for partial. This is a judgment call, and each rating's evidence is in its row above.</p></div>
+  </div>
+  <p style="font-size:13.5px;color:var(--ink-2);max-width:80ch">Limits: CFPB complaints are a biased sample. They skew toward escalated, unresolved problems and don't represent all customer contacts. Relief rates come from the bank's own response codes. The recent-trend window includes complaints still in progress. The customer-facing timelines in section 03 are the federal maximums (Reg E, Reg Z), not Bank of America policy.</p>
+</section>
+
+<section>
+  <div class="sechead"><div class="eyebrow">Sources</div></div>
+  <ul class="sources">
+    <li><a href="https://www.consumerfinance.gov/data-research/consumer-complaints/" target="_blank" rel="noopener">CFPB Consumer Complaint Database</a> (export pulled 24 Sept 2026)</li>
+    <li><a href="https://www.consumerfinance.gov/about-us/newsroom/the-cfpb-to-cease-discretionary-publication-of-complaint-narratives-and-visualizations/" target="_blank" rel="noopener">CFPB: ceasing publication of complaint narratives</a></li>
+    <li><a href="https://www.consumerfinancemonitor.com/2026/08/18/cfpb-ends-publication-of-consumer-complaint-narratives-and-data-visualizations/" target="_blank" rel="noopener">Consumer Finance Monitor on the narrative change</a></li>
+    <li><a href="https://www.bankofamerica.com/help/overview/" target="_blank" rel="noopener">Bank of America Help Center</a> and the FAQ pages linked in each row</li>
+    <li><a href="https://www.bankofamerica.com/deposits/overdrafts-and-overdraft-protection/" target="_blank" rel="noopener">Bank of America overdraft FAQs</a> (the $10 / $35 mismatch)</li>
+    <li><a href="https://web.bankofamerica.com/en/security/library/steps-if-targeted-by-fraud-scam" target="_blank" rel="noopener">Bank of America: steps to take after fraud or a scam</a></li>
+  </ul>
+  <p class="foot">An independent portfolio exercise using public data only. Not affiliated with Bank of America or the CFPB. Built by Lily with Claude.</p>
+</section>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+const DATA = __DATA__;
+const T = DATA.themes, M = DATA.meta;
+const fmt = n => n.toLocaleString('en-US');
+const pct = x => Math.round(x*100)+'%';
+const COV = {missing:{lab:'Missing',sym:'✕'},partial:{lab:'Partial',sym:'◐'},covered:{lab:'Covered',sym:'✓'},'n/a':{lab:'Not scored',sym:'–'}};
+const covClass = c => c==='n/a'?'na':c;
+const chip = c => `<span class="chip ${covClass(c)}"><i aria-hidden="true">${COV[c].sym}</i>${COV[c].lab}</span>`;
+const byId = Object.fromEntries(T.map(t=>[t.id,t]));
+document.getElementById('h-total').textContent = fmt(M.total);
+document.getElementById('m-total').textContent = fmt(M.total);
+
+// stats
+const unanswered = T.reduce((s,t)=>s+t.unanswered,0);
+const gapShare = (M.complaints_by_cov.missing+M.complaints_by_cov.partial)/M.total;
+document.getElementById('stats').innerHTML = [
+  [fmt(M.total),'CFPB complaints, Sept 2024 to Sept 2026'],
+  ['~390','public help Q&As and articles reviewed, from 41 pages'],
+  [pct(gapShare),'of complaints are about a problem the help content misses or only partly answers'],
+  [M.coverage_counts.missing+' of 23','scored problems have no help content at all'],
+].map(([v,l])=>`<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+// strip
+const order=['missing','partial','covered','n/a'], colors={missing:'var(--missing)',partial:'var(--partial)',covered:'var(--covered)','n/a':'var(--na)'};
+const strip=document.getElementById('strip');
+strip.setAttribute('aria-label', order.map(c=>`${COV[c].lab}: ${fmt(M.complaints_by_cov[c])} complaints`).join(', '));
+strip.innerHTML = order.map(c=>`<div style="flex:${M.complaints_by_cov[c]};background:${colors[c]}" data-tip="<b>${COV[c].lab}</b><br><span class='num'>${fmt(M.complaints_by_cov[c])}</span> complaints (${pct(M.complaints_by_cov[c]/M.total)})"></div>`).join('');
+document.getElementById('strip-legend').innerHTML = order.map(c=>`<span><span class="sw" style="background:${colors[c]}"></span>${COV[c].lab} <b class="num">${pct(M.complaints_by_cov[c]/M.total)}</b> <span class="num">(${fmt(M.complaints_by_cov[c])})</span></span>`).join('');
+
+// filters
+let filter='all', open=null;
+const F=[['all','All problems'],['missing','Missing'],['partial','Partial'],['covered','Covered']];
+const fEl=document.getElementById('filters');
+fEl.innerHTML = F.map(([k,l])=>`<button type="button" id="f-${k}" data-f="${k}" aria-pressed="${k==='all'}">${l}</button>`).join('');
+fEl.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;filter=b.dataset.f;fEl.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));render()});
+
+const maxN = Math.max(...T.map(t=>t.n));
+function spark(t){
+  const v=t.monthly, w=320,h=70,p=6, mx=Math.max(...v);
+  const x=i=>p+i*(w-2*p)/(v.length-1), y=val=>h-14-(val/mx)*(h-24);
+  const pts=v.map((val,i)=>`${x(i).toFixed(1)},${y(val).toFixed(1)}`).join(' ');
+  const last=v.length-1;
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" role="img" aria-label="Monthly complaints, ${M.months[0]} to ${M.months[last]}, from ${v[0]} to ${v[last]}">
+   <line x1="${p}" x2="${w-p}" y1="${h-14}" y2="${h-14}" stroke="var(--rule)" stroke-width="1"/>
+   <polygon points="${p},${h-14} ${pts} ${x(last)},${h-14}" fill="var(--accent)" opacity=".12"/>
+   <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+   <circle cx="${x(last)}" cy="${y(v[last])}" r="4" fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>
+   <text x="${p}" y="${h-2}" font-size="10" fill="var(--muted)" font-family="IBM Plex Mono, monospace">${M.months[0]}</text>
+   <text x="${w-p}" y="${h-2}" font-size="10" fill="var(--muted)" text-anchor="end" font-family="IBM Plex Mono, monospace">${M.months[last]} · ${v[last]}/mo</text>
+  </svg>`;
+}
+function detail(t){
+  const ev = t.evidence.length? t.evidence.map(u=>`<li><a href="${u}" target="_blank" rel="noopener">${u.replace('https://','')}</a></li>`).join('') : '<li>No relevant page found.</li>';
+  const cat = t.subissues.map(([k,v])=>`<li>${k} <span class="num" style="color:var(--muted)">${fmt(v)}</span></li>`).join('');
+  return `<div class="detail" id="d-${t.id}">
+   <div><div class="q">“${t.question}”</div>
+     <h4>What the help content says, and what's missing</h4><p style="font-size:14px">${t.gap}</p>
+     <h4>Closest help pages</h4><ul class="evid">${ev}</ul></div>
+   <div><h4>Top CFPB categories behind it</h4><ul>${cat}</ul>
+     <h4>Complaints per month</h4>${spark(t)}</div></div>`;
+}
+function render(){
+  const rows = T.filter(t=>filter==='all'||t.coverage===filter);
+  document.getElementById('rows').innerHTML = rows.map(t=>{
+    const wFull = t.n/maxN*100, wGap = t.unanswered/maxN*100;
+    const tr = t.trend==null?'–':(t.trend>0?'+':'')+Math.round(t.trend*100)+'%';
+    const trc = t.trend>0.1?'up':(t.trend<-0.1?'down':'');
+    const tip = `<b>${t.label}</b><br><span class='num'>${fmt(t.n)}</span> complaints · <span class='num'>${fmt(t.unanswered)}</span> unanswered<br>Relief ${pct(t.relief)} · 6-mo ${tr}`;
+    return `<button type="button" class="grow" id="r-${t.id}" aria-expanded="${open===t.id}" aria-controls="d-${t.id}" data-id="${t.id}">
+      <div class="t"><b>${t.label}</b><span>${chip(t.coverage)}</span></div>
+      <div class="bars" data-tip="${tip}"><div class="full" style="width:${wFull}%"></div><div class="gap" style="width:${wGap}%;background:${colors[t.coverage]}"></div><span class="lbl" style="left:${wFull}%">${fmt(t.n)}</span></div>
+      <div class="r num">${fmt(t.unanswered)}</div>
+      <div class="r num c-rel">${pct(t.relief)}</div>
+      <div class="r num c-tr delta ${trc}">${tr}</div>
+    </button>${open===t.id?detail(t):''}`;
+  }).join('');
+}
+document.getElementById('rows').addEventListener('click',e=>{const r=e.target.closest('.grow');if(!r)return;open = open===r.dataset.id?null:r.dataset.id;render();const el=document.getElementById('r-'+r.dataset.id);el&&el.focus({preventScroll:true})});
+render();
+
+// tooltip
+const tip=document.getElementById('tip');
+document.addEventListener('pointermove',e=>{const el=e.target.closest('[data-tip]');if(!el){tip.hidden=true;return}
+  tip.innerHTML=el.dataset.tip;tip.hidden=false;const r=tip.getBoundingClientRect();
+  let x=e.clientX+14,y=e.clientY+14;if(x+r.width>innerWidth-8)x=e.clientX-r.width-14;if(y+r.height>innerHeight-8)y=e.clientY-r.height-14;tip.style.left=x+'px';tip.style.top=y+'px'});
+document.addEventListener('pointerleave',()=>tip.hidden=true);
+
+// recommendations
+const RECS = [
+ {title:`Dispute and fraud-claim status: "Where's my claim, and what happens next?"`, ids:[`cc_dispute_stuck`,`card_fraud`],
+  why:`The biggest combined gap, and still growing. More than half of these complaints end with the bank paying money back, which suggests customers escalate because they can't see where their claim stands, not because they are wrong. Help pages explain how to file, then stop.`,
+  bot:[`Sort the claim into credit card, debit/ATM, or ACH/checking, since the rules differ`,`Show claim status and next step after the customer logs in`,`Explain timelines: federal rules allow up to 10 business days to investigate debit/ACH claims (up to 45 days with temporary credit), and up to 2 billing cycles or 90 days for credit-card billing errors`,`Explain what a denial means and how to reopen a claim with documents`],
+  handoff:`Hand off to an agent when a claim is denied or a temporary credit is reversed.`},
+ {title:`Deposit holds and missing deposits: "When can I use my money?"`, ids:[`deposit_hold`],
+  why:`The single largest problem, up 17%. The holds FAQ is good but covers only the easy case. Reversed deposits, returned checks after funds were released, and missing ATM or mobile deposits have no answer.`,
+  bot:[`Explain holds for this specific deposit: type, amount, release date`,`Explain why a deposit can be reversed after the money was made available`,`Trace a missing ATM or mobile deposit and open a research case`],
+  handoff:`Hand off to an agent when a returned check has pushed the account below zero.`},
+ {title:`"The bank closed my account. Where's my money?"`, ids:[`bank_closed`,`closed_funds`],
+  why:`2,394 complaints with no help content at all. The closed-funds half is up 32% and ends in relief 54% of the time. Even when the bank can't say why it closed an account, it can explain what happens next.`,
+  bot:[`Explain the process: what notice to expect, when pending transactions and direct deposits stop`,`Say how and when the remaining balance is returned (check or transfer) and to which address`,`Check that the mailing address is current`],
+  handoff:`The bot should never guess the reason for a closure. Route to a specialist queue with the case already started.`},
+ {title:`Zelle scams: "I was tricked into sending money. Can I get it back?"`, ids:[`zelle_scam`],
+  why:`Up 20%, and the help content gives the whole topic one sentence ("qualifying imposter scams may be eligible for reimbursement"). The 18% relief rate means most customers don't get money back, so setting clear expectations early matters.`,
+  bot:[`Separate "I sent it but was tricked" (a scam) from "I didn't send it" (unauthorized), since the rules differ`,`Explain which imposter scams qualify and how to file`,`Give immediate steps: stop contact, secure the account, report the recipient`],
+  handoff:`Hand off to an agent right away if the customer is still in contact with the scammer or the transfer is pending.`},
+ {title:`"How do I stop a company from taking money from my account?"`, ids:[`recurring_withdrawal`],
+  why:`A small volume (367) but no content at all, the fastest growth of any problem (+36%), and an easy, rules-based answer. This is the quick win that shows the bot works.`,
+  bot:[`Explain how to stop a recurring debit-card charge versus an ACH withdrawal`,`Explain how to revoke authorization and place a stop payment on an ACH debit`,`Say what to do if a charge comes in after the customer revoked authorization (that becomes a dispute, see intent 1)`],
+  handoff:`Hand off to an agent only when the customer is disputing an amount the company already took.`},
+];
+document.getElementById('recs').innerHTML = RECS.map((r,i)=>{
+  const ts=r.ids.map(id=>byId[id]); const n=ts.reduce((s,t)=>s+t.n,0), un=ts.reduce((s,t)=>s+t.unanswered,0);
+  const rec=ts.reduce((s,t)=>s+t.recent,0), pri=ts.reduce((s,t)=>s+t.prior,0), tr=Math.round((rec/pri-1)*100);
+  const covs=[...new Set(ts.map(t=>t.coverage))].map(chip).join(' ');
+  return `<article class="rec"><div class="rank" aria-hidden="true">${i+1}</div>
+   <div class="body"><h3>${r.title}</h3>
+    <div class="meta"><span><b class="num">${fmt(n)}</b> complaints</span><span><b class="num">${fmt(un)}</b> unanswered</span><span class="num">${tr>0?'+':''}${tr}% 6-mo</span>${covs}</div>
+    <p style="font-size:14px;color:var(--ink-2)">${r.why}</p></div>
+   <div class="bot"><span class="lab">What the bot should handle</span><ul>${r.bot.map(b=>`<li>${b}</li>`).join('')}</ul><div class="handoff"><b>Handoff rule:</b> ${r.handoff}</div></div></article>`}).join('');
+</script>

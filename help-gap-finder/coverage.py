@@ -1,0 +1,86 @@
+"""Coverage judgments: does Bank of America's public help content answer each theme's customer question?
+
+Method: for every theme, the top TF-IDF matches plus a keyword sweep of 390 help Q&As / articles
+were read by hand (retrieve.py output, grep.txt). Rubric:
+  covered  - the help content answers the customer's actual question (what happens, what to do, when)
+  partial  - it explains how to *start* (file, call, log in) but not the thing the complaints are about
+             (timelines, denials, recourse, the bank-initiated version of the problem)
+  missing  - no public help content addresses the question
+Evidence URLs are the best-matching pages; `gap` is what an answer would need to add.
+"""
+BASE = "https://www.bankofamerica.com"
+
+COVERAGE = {
+    "deposit_hold": ("partial",
+        [BASE + "/deposits/deposit-holds-faqs/", BASE + "/online-banking/mobile-check-deposit-faqs/"],
+        "Explains why holds happen and how you're notified. Nothing on deposits that go missing, are reversed after funds were released, or on cashing a check."),
+    "cc_dispute_stuck": ("partial",
+        [BASE + "/credit-cards/credit-card-disputes-faq/", BASE + "/help/how-to-dispute-a-charge/"],
+        "Covers how to file and where to track status. No expected timeline, and nothing on what happens if the dispute is denied or the temporary credit is reversed, or how to appeal."),
+    "card_fraud": ("partial",
+        [BASE + "/credit-cards/credit-card-security-faq/", BASE + "/deposits/debit-card-faqs/", BASE + "/security-center/report-suspicious-communications/"],
+        "Covers reporting and next-day credit for credit-card fraud. For debit, ACH, and checking fraud: no claim timeline and no explanation of what happens if the claim is denied."),
+    "debit_atm": ("partial",
+        [BASE + "/deposits/debit-card-faqs/", BASE + "/deposits/atm-fees-faqs/"],
+        "Covers how to dispute a debit transaction, PIN problems, and card replacement. Nothing on an ATM that didn't dispense cash or credit a deposit, or on why a debit card is declined."),
+    "payment_mishandled": ("partial",
+        [BASE + "/online-banking/electronic-funds-transfer-faqs/", BASE + "/help/cutoff-times/"],
+        "Explains transfer mechanics and cutoff times. Nothing on how to report a bank error or payment that didn't go as instructed, or how long a correction takes."),
+    "bank_closed": ("missing",
+        [BASE + "/help/account-information-faqs/"],
+        "The only closure content is about closures the customer starts. Nothing explains why the bank might close or restrict an account, what notice to expect, or what happens to the money."),
+    "transfer_problem": ("covered",
+        [BASE + "/online-banking/zelle-faqs/"],
+        "Zelle pending, failed, and not-received scenarios are answered in detail. Wire tracing is thin."),
+    "collections_threats": ("missing",
+        [BASE + "/banking-information/assistance/credit-cards/credit-counseling/"],
+        "No content on Bank of America's own collections or recovery process, charge-offs, how collections contacts work, or how accounts are reported while in collections."),
+    "zelle_scam": ("partial",
+        [BASE + "/online-banking/zelle-faqs/", BASE + "/security-center/report-suspicious-communications/"],
+        "One sentence says that qualifying imposter scams \"may be eligible for reimbursement\". It doesn't say who qualifies, how to file, how long it takes, or what happens with other kinds of scams."),
+    "collections_dispute": ("missing",
+        [],
+        "Nothing on disputing or verifying a debt the bank is collecting, or on a debt that was already paid."),
+    "id_theft_account": ("partial",
+        [BASE + "/security-center/faq/sharing-information/", "https://web.bankofamerica.com/en/security/library/steps-if-targeted-by-fraud-scam"],
+        "Only generic 'freeze your credit, call us' guidance. No Bank of America process for an account or card opened in your name, or for clearing it from your credit report."),
+    "overdraft": ("covered",
+        [BASE + "/deposits/overdrafts-and-overdraft-protection/"],
+        "Well covered, including a worked example. But the page's structured data (what search engines and AI assistants read) still shows a $35 fee in the example, while the visible page shows $10."),
+    "cant_open": ("missing",
+        [],
+        "Nothing on why an application might be declined or need extra verification, or on promised bonuses that weren't paid."),
+    "cc_payment": ("partial",
+        [BASE + "/banking-information/assistance/credit-cards/making-credit-card-payments/", BASE + "/credit-cards/credit-card-fees-faq/"],
+        "Covers payment methods and how to avoid late fees. Nothing on a payment that didn't post or was applied wrong, or on a statement that never arrived."),
+    "credit_report": ("partial",
+        [BASE + "/help/goodwill-adjustments/"],
+        "Sends customers to the credit bureaus, with phone numbers for contacting the bank. No direct process or timeline for disputing what the bank reported."),
+    "cc_fees_interest": ("covered",
+        [BASE + "/credit-cards/credit-card-fees-faq/"],
+        "A 24-question fees FAQ explains each fee and how to avoid it. Nothing on getting a fee refunded."),
+    "closed_funds": ("missing",
+        [BASE + "/help/account-information-faqs/"],
+        "Closure content tells customers to move their balance out before closing. Nothing says how or when the remaining money is returned after the bank closes the account."),
+    "rewards_promo": ("partial",
+        [BASE + "/credit-cards/credit-card-account-information-faq/"],
+        "Covers redeeming rewards and how payments apply to promo balances. Nothing on rewards, bonuses, or promo rates that were never credited."),
+    "cc_access": ("partial",
+        [BASE + "/credit-cards/credit-card-account-information-faq/"],
+        "Covers application status and credit-line increases. Nothing on why an application was denied or a limit was lowered."),
+    "access_locked": ("partial",
+        [BASE + "/customer-service/contact-us/bank-of-america-login-issues/", BASE + "/help/account-information-faqs/"],
+        "Covers forgotten user IDs and passwords. Nothing on accounts the bank has locked, frozen, or restricted, or on how to verify your identity to get back in."),
+    "recurring_withdrawal": ("missing",
+        [BASE + "/deposits/account-information-and-access-faqs/"],
+        "Stop-payment content covers paper checks only. Nothing on stopping a recurring debit or ACH withdrawal from a merchant, or on revoking authorization."),
+    "cant_close": ("covered",
+        [BASE + "/help/account-information-faqs/", BASE + "/credit-cards/credit-card-account-information-faq/"],
+        "Step-by-step closure instructions by phone, mail, online, and in branch."),
+    "hardship": ("partial",
+        [BASE + "/banking-information/assistance/credit-cards/managing-credit-card-debt/"],
+        "Says 'call us to explore options' and links to credit counseling. It doesn't describe any actual hardship or payment-plan options."),
+    "service_other": ("n/a", [], "Catch-all bucket, not scored."),
+}
+
+GAP_WEIGHT = {"missing": 1.0, "partial": 0.5, "covered": 0.0, "n/a": 0.0}

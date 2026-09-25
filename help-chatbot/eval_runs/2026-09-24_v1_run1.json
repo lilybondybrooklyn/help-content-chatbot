@@ -1,0 +1,768 @@
+{
+  "corpusChunks": 548,
+  "finishedAt": "2026-09-24T20:32:27.875Z",
+  "results": [
+    {
+      "answer": "You can track your dispute status in your Online Banking Messaging Center or the Claims Message Center, where you can see individual disputes and receive requests for additional information [1].\n\nThe passages don't specify how long the full process takes. They do say that Bank of America will keep you updated by phone, mail, and/or your Online Banking Message Center [5], and that if they need more info from you, you should respond within 12 business days [5].\n\nNot covered: The expected timeline for resolution. For specifics on how long your case should take, call Bank of America credit card customer service at 800.432.1000 [7].",
+      "cited": [
+        "c511",
+        "c510",
+        "c508"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e01",
+      "ms": 3785,
+      "offtopic": false,
+      "q": "I disputed a charge on my credit card three weeks ago and haven't heard anything. How do I check on it and how long does it take?",
+      "queries": [
+        "credit card dispute status check",
+        "how long credit card dispute resolution",
+        "dispute claim investigation timeline"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "The public help content doesn't cover appeals or what to do after a dispute is denied. Since this involves a decision on your specific dispute, you'll need to contact Bank of America directly—they can review your case and explain your options. You can reach credit card customer service by phone or mail, or log into Online Banking to message the dispute department through your Message Center [5].",
+      "cited": [
+        "c511"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e02",
+      "ms": 2839,
+      "offtopic": false,
+      "q": "My dispute got denied and the credit was taken back off my card. Can I appeal?",
+      "queries": [
+        "dispute denial appeal process",
+        "credit card chargeback appeal",
+        "dispute reversal how to appeal"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "Here's what to do:\n\n**First, try the merchant.** Call them using the number on your receipt or billing statement—they often resolve this fast [2, 5].\n\n**Then dispute it with us.** You have 60 days from the statement date to file [4]. Log in to Online Banking, go to your credit card's Activity tab, select the transaction, and click \"Dispute a transaction\" [3]. You can also use the Erica icon in the mobile app [1].\n\n**Track your claim.** Check the Online Banking Messaging Center to see the status and respond to any requests for info [6].\n\nIf you think someone stole your info, call us right away at 800.432.1000 [2]. During the dispute, no fees or interest will be charged on that transaction [4].",
+      "cited": [
+        "c507",
+        "c325",
+        "c504",
+        "c511",
+        "c508"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e03",
+      "ms": 3866,
+      "offtopic": false,
+      "q": "There's a charge on my credit card I never made. What do I do?",
+      "queries": [
+        "dispute credit card charge",
+        "unauthorized transaction claim",
+        "credit card fraud dispute process"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "I'm sorry that happened. Here's what the help content covers:\n\nIf you believe your debit card was used without your permission, you should **contact Bank of America immediately by calling 800.432.1000** [1]. They'll help you right away.\n\nOnce you file a dispute, no fees or interest will be charged on the disputed amount while it's being investigated [3]. Bank of America will research the transaction and contact you with results [3].\n\nNot covered: The specific timeline for getting your money back. The passages explain the dispute process but don't state how long a refund takes. When you call 800.432.1000, ask them for the expected timeframe for your particular situation.",
+      "cited": [
+        "c508",
+        "c507"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e04",
+      "ms": 3737,
+      "offtopic": false,
+      "q": "Someone took money out of my checking account with my debit card. When will I get it back?",
+      "queries": [
+        "debit card fraud unauthorized transaction",
+        "checking account disputed charge refund",
+        "debit card dispute resolution timeline"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "Bank of America places holds on deposited checks to give the bank time to validate the check and confirm the funds [2]. This helps protect you from potential fees if the check turns out to be unpaid.\n\nHolds typically last 2–7 business days, depending on the reason [1]. You'll be notified about the hold through your deposit receipt, ATM screen, email, or mail—depending on how you deposited the check [5].\n\nImportant to know: even after funds become available to you, a check may still be returned unpaid later [2]. And Bank of America service reps can't release funds while they're on hold, since the validation process is still underway [4].",
+      "cited": [
+        "c436",
+        "c438",
+        "c437",
+        "c433"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e05",
+      "ms": 3663,
+      "offtopic": false,
+      "q": "Why is there a hold on the check I deposited?",
+      "queries": [
+        "check deposit hold how long",
+        "why check deposits placed hold",
+        "check hold release pending funds"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "When you deposit a check via mobile, funds are generally available the next business day [2]. Here's what matters:\n\n- If you deposit before the cutoff time on a business day, it processes that night and is available the next business day [2]\n- Cutoff times depend on your time zone: 9:00 p.m. ET (Eastern/Central) or 8:00 p.m. PT (Mountain/Pacific) [1]\n- Deposits made after cutoff or on weekends/holidays process the next business day and are available the following business day [2]\n\nA hold may delay access beyond the next day if the bank needs extra time to validate the check [4, 7].",
+      "cited": [
+        "c447",
+        "c298"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e06",
+      "ms": 3361,
+      "offtopic": false,
+      "q": "When will money from a mobile check deposit be available?",
+      "queries": [
+        "mobile check deposit availability",
+        "check deposit processing time",
+        "when funds available mobile deposit"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "The public help content covers why banks place holds on deposits and how to avoid them, but it doesn't explain reversals after funds were already available to you. This is a specific account situation that needs direct support.\n\nPlease contact Bank of America directly through your Online Banking account or visit a financial center to discuss what happened with your reversed deposit. They'll be able to review your account and explain the reason.",
+      "cited": [],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e07",
+      "ms": 3132,
+      "offtopic": false,
+      "q": "A check I deposited was cleared and then reversed a week later. Why did the bank take the money back?",
+      "queries": [
+        "check deposit reversed after clearing",
+        "why check cleared then reversed",
+        "deposit reversal hold funds debit"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "The public help content doesn't cover what to do if an ATM didn't dispense cash but charged your account. This needs direct support to investigate and resolve.\n\nContact Bank of America ATM Customer Service right away at the number on their [ATM support page](https://www.bankofamerica.com/customer-service/contact-us/atms/), or reach out through your online banking portal. They can review the transaction and help get this sorted.",
+      "cited": [],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e08",
+      "ms": 2881,
+      "offtopic": false,
+      "q": "The ATM didn't give me my cash but my account was still charged. What now?",
+      "queries": [
+        "ATM cash withdrawal not received charge",
+        "ATM money taken from account",
+        "ATM transaction dispute missing cash"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "Your PIN might not be working for a few reasons. First, double-check that you're entering it correctly and that it's actually your current PIN [2].\n\nIf you're certain you're using the right PIN and entering it properly, contact Bank of America right away by calling 800-432-1000 [2]. Hours are Monday–Friday 8 a.m.–11 p.m. or Saturday–Sunday 8 a.m.–8 p.m. ET (excluding holidays). If you're outside the U.S., call 1-315-724-4022 (international collect; cell phone roaming charges may apply) [2].\n\nNot covered: The passages don't explain other technical reasons why an ATM might reject your PIN (like a card reader issue or system problem). The support team at the number above can dig into that with you.",
+      "cited": [
+        "c052"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e09",
+      "ms": 4192,
+      "offtopic": false,
+      "q": "My debit card PIN isn't working at the ATM.",
+      "queries": [
+        "debit card PIN not working ATM",
+        "ATM PIN reset forgotten",
+        "debit card access issues"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "A few things could have gone wrong. If this was a Zelle® payment, it may have failed because [4]:\n- Your account doesn't have available funds or is ineligible to use Zelle®\n- There's a security issue or processing problem\n- You hit a daily, weekly, or monthly transfer limit\n\nIf you didn't have enough money in your checking account when the transfer was scheduled, Bank of America may have declined it, and you shouldn't have been charged a fee [5].\n\nNot covered: The public help content doesn't explain what happens specifically with scheduled transfers between your own Bank of America accounts. For details on why your transfer didn't go through, please log in to Online Banking to check your payment activity, or contact Bank of America directly at the phone number on the back of your card.",
+      "cited": [
+        "c170",
+        "c259"
+      ],
+      "expect": "partial",
+      "goldCited": false,
+      "id": "e10",
+      "ms": 4185,
+      "offtopic": false,
+      "q": "I scheduled a transfer to my savings account but it never went through. What happened?",
+      "queries": [
+        "scheduled transfer not completed",
+        "transfer failed to savings account",
+        "why transfer didn't go through"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "The public help content doesn't explain reasons why Bank of America might close an account on their end. This sounds like something that needs a direct conversation with the bank. Please call 800.432.1000 [6] to speak with someone who can review what happened with your specific account and explain the closure.",
+      "cited": [
+        "c235"
+      ],
+      "expect": "handoff",
+      "goldCited": true,
+      "id": "e11",
+      "ms": 3596,
+      "offtopic": false,
+      "q": "Bank of America closed my account without telling me why. Why would they do that?",
+      "queries": [
+        "account closure reasons why",
+        "bank closed my account",
+        "account closure notification policy"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "The public help content doesn't cover what happens to funds remaining in a closed account or how to retrieve them. This is something you'll need to discuss directly with Bank of America.\n\nPlease visit a financial center near you or contact Bank of America's customer service—they'll be able to locate your funds and help you access them.",
+      "cited": [],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e12",
+      "ms": 2657,
+      "offtopic": false,
+      "q": "The bank closed my checking account. How do I get the money that was left in it?",
+      "queries": [
+        "closed checking account access funds",
+        "account closure retrieve remaining balance",
+        "how to get money closed account"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "You have three ways to close your checking account [6]:\n\n- **In person** – Visit a Bank of America financial center [6]\n- **By phone** – Call 800.432.1000 anytime; have your account number ready [8]\n- **By mail** – Send a written request to Bank of America, FL1-300-03-15, PO Box 25118, Tampa, FL 33622-5118 [8]. Include your name, address, and account number, and all account owners must sign [8].\n\nBefore you close, make sure to [3][4][6]:\n- Bring your balance to zero by transferring it a few days ahead\n- Update your mailing and email addresses in Online Banking\n- Cancel recurring payments and stop new transactions\n- Destroy debit cards and checks\n- Download statements for your records\n\nBank of America also encourages you to call 800.432.1000 first to discuss your concerns—they'd love to help [2].",
+      "cited": [
+        "c238",
+        "c239",
+        "c236",
+        "c237",
+        "c032"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e13",
+      "ms": 3665,
+      "offtopic": false,
+      "q": "How do I close my checking account?",
+      "queries": [
+        "close checking account",
+        "how to close account",
+        "account closure process"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "Visit the Bank of America home page and select the **Forgot ID/Password?** link on the sign-in widget, then follow the instructions provided [4]. This will walk you through recovering your password.\n\nIf you'd like a step-by-step guide, Bank of America also offers a walkthrough on how to recover or change your password in Online Banking or Mobile Banking [4].",
+      "cited": [
+        "c310"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e14",
+      "ms": 2236,
+      "offtopic": false,
+      "q": "I forgot my online banking password. How do I get back in?",
+      "queries": [
+        "reset online banking password",
+        "forgot password account recovery",
+        "online banking login help"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "I don't see information in Bank of America's public help content about frozen accounts or how to unfreeze them. This is something you'll need to contact Bank of America directly about—they can look into your specific situation and help you resolve it.\n\nYou can reach them by phone, through Online Banking, or visit your nearest financial center [1]. They'll be able to review your account and explain what's happened.",
+      "cited": [
+        "c001"
+      ],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e15",
+      "ms": 2858,
+      "offtopic": false,
+      "q": "My account has been frozen and I can't use my money. How do I get it unfrozen?",
+      "queries": [
+        "account frozen how to unfreeze",
+        "frozen account access restrictions",
+        "account locked cannot access funds"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "I'm sorry this happened to you. Here's what the help content says:\n\nYou likely fell victim to a scam. Bank of America will never call or text asking you to send money via Zelle® or to provide security codes [6]. Once a Zelle® payment is sent to an enrolled recipient, it typically can't be canceled and you're unlikely to get your money back [2][7].\n\nHowever, there's a possible path forward: **Qualifying imposter scams may be eligible for reimbursement** [5].\n\nNot covered: The exact reimbursement process and your specific eligibility. The best next step is to visit the Report Suspicious Activity page on Bank of America's Security Center [5] to report this scam and learn about reimbursement options. You should also act quickly, as the 14-day window for some reversals may apply [8].",
+      "cited": [
+        "c177",
+        "c157",
+        "c173",
+        "c145",
+        "c165"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e16",
+      "ms": 3885,
+      "offtopic": false,
+      "q": "Someone pretending to be from the bank got me to send $800 on Zelle. Can I get it back?",
+      "queries": [
+        "Zelle fraud unauthorized payment recovery",
+        "Zelle scam money back dispute",
+        "unauthorized Zelle transfer dispute resolution"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "Here's what to check first [4]:\n\n- Verify that the U.S. mobile number, email address, or tag you used matches what your friend has registered with Zelle®. Look for her first/last name in the \"Enrolled with Zelle® as\" field to confirm [8].\n\n- If the payment is still pending, your friend may not be enrolled yet. Once she enrolls, money typically arrives in minutes [5]. If she doesn't enroll within 14 days, the money goes back to your account [5].\n\nNot covered: Whether the payment actually went through on your end, or troubleshooting if the contact info matches but she still hasn't received it. \n\nBest next step: Check your Zelle® Activity in the app or Online Banking to see the payment status, then contact Bank of America directly for help investigating the specific transaction.",
+      "cited": [
+        "c172",
+        "c143",
+        "c165"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e17",
+      "ms": 3833,
+      "offtopic": false,
+      "q": "I sent money with Zelle but my friend says she never got it.",
+      "queries": [
+        "Zelle payment not received",
+        "Zelle transfer status tracking",
+        "Zelle missing money troubleshoot"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "No. Once a Zelle® payment is sent to a registered recipient, it cannot be canceled or reversed [1]. \n\nThe only exception: if the recipient hasn't enrolled with Zelle® yet, the payment stays pending and you can cancel it [1]. If they don't enroll within 14 days, the money automatically returns to your account [6].\n\nThink of Zelle® payments like cash—once sent to an enrolled recipient, you're unlikely to get it back [5].",
+      "cited": [
+        "c171",
+        "c138",
+        "c173"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e18",
+      "ms": 2681,
+      "offtopic": false,
+      "q": "Can I cancel a Zelle payment I already sent?",
+      "queries": [
+        "cancel Zelle payment already sent",
+        "how to cancel Zelle transfer",
+        "undo sent Zelle payment"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "The public help content doesn't cover how to stop a gym from taking automatic payments from your checking account. To handle this, you'll need to contact your gym directly and ask them to cancel the recurring charge.\n\nFor questions about Bank of America's side of this (like overdraft protection or disputing a charge), call customer service at 1-800-432-1000 [5].",
+      "cited": [
+        "c014"
+      ],
+      "expect": "handoff",
+      "goldCited": true,
+      "id": "e19",
+      "ms": 3119,
+      "offtopic": false,
+      "q": "How do I stop a gym from taking automatic payments out of my checking account?",
+      "queries": [
+        "stop automatic payments checking account",
+        "cancel recurring charges debit card",
+        "dispute unauthorized gym subscription payments"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "This sounds like identity theft, which is serious. The public help content doesn't cover how to handle fraudulent account openings in your name.\n\nPlease contact Bank of America immediately at 800.432.1000 [2] to report unauthorized use of your account. They can walk you through next steps and help protect you.",
+      "cited": [
+        "c508"
+      ],
+      "expect": "partial",
+      "goldCited": false,
+      "id": "e20",
+      "ms": 2586,
+      "offtopic": false,
+      "q": "Someone opened a credit card in my name. What should I do?",
+      "queries": [
+        "identity theft credit card fraud",
+        "unauthorized credit card account opened",
+        "dispute fraudulent credit card application"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "The public help pages don't cover account application decisions or denial reasons. For an explanation specific to your situation, please call Bank of America at 800.432.1000 [6] or visit your local branch. They'll be able to review your application and explain next steps.",
+      "cited": [
+        "c241"
+      ],
+      "expect": "handoff",
+      "goldCited": true,
+      "id": "e21",
+      "ms": 2382,
+      "offtopic": false,
+      "q": "Why was I denied when I tried to open a checking account?",
+      "queries": [
+        "checking account application denied reasons",
+        "why account opening rejected eligibility requirements",
+        "checking account approval requirements ChexSystems"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "The public help content doesn't list the specific overdraft fee amount. The passages confirm that Bank of America does charge overdraft fees when transactions exceed your available balance [3], but the exact fee isn't shown here.\n\nNot covered: The specific dollar amount of the overdraft fee.\n\nBest next step: Log into your Online Banking account to check your Deposit Agreement and Disclosures, or visit the full overdraft page at https://www.bankofamerica.com/deposits/overdrafts-and-overdraft-protection/ for fee details [7].",
+      "cited": [
+        "c265",
+        "c254"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e22",
+      "ms": 3003,
+      "offtopic": false,
+      "q": "How much is the overdraft fee?",
+      "queries": [
+        "overdraft fee amount charge",
+        "checking account overdraft fees",
+        "overdraft protection fee cost"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "We charge overdraft fees when a transaction exceeds your available balance [4]. Here's what likely happened:\n\nYou may have had pending transactions still processing that lowered your available balance more than you realized. For example, if you had a $20 purchase processing and a $40 check came through, the $40 check could overdraw your account even though you thought you had enough [5].\n\n**To see exactly what happened:**\n- Check your Account Details in Mobile and Online Banking to see which transactions posted that day [4]\n- View your Account Balance History in Online Banking to see how pending transactions and holds affected your available balance and the order things posted [4]\n\nIf you'd rather decline transactions when funds are low instead of paying overdraft fees, you can ask us to apply the Decline All overdraft setting [6].",
+      "cited": [
+        "c265",
+        "c266",
+        "c268"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e23",
+      "ms": 3257,
+      "offtopic": false,
+      "q": "I thought I had enough money, so why did I get an overdraft fee?",
+      "queries": [
+        "overdraft fee why charged account",
+        "insufficient funds overdraft protection",
+        "checking account balance overdraft"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "A late fee is a penalty charged if your Total Minimum Payment Due isn't received by your Payment Due Date [2]. The passages don't specify the dollar amount of the fee.\n\nTo avoid late fees, you have a few solid options [1][2]:\n\n- Pay at least the minimum due on or before the due date\n- Set up automatic payments through Bill Pay\n- Set up Direct Debit through Online Banking (make sure you have enough funds)\n- Create account alerts to remind you when payments are due\n\nNot covered: The exact fee amount for your specific card. You can find this in your Credit Card Agreement or in Online Banking under Information and Services [6]. If you've already missed a payment, call 855.891.3401 (Consumer) or 888.306.4949 (Business) to make a payment right away [3].",
+      "cited": [
+        "c111",
+        "c529",
+        "c112",
+        "c531"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e24",
+      "ms": 4074,
+      "offtopic": false,
+      "q": "What's the late fee on my credit card and how do I avoid it?",
+      "queries": [
+        "credit card late fee amount",
+        "how to avoid late fees",
+        "credit card payment due date"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "You have several ways to pay your Bank of America credit card [1]:\n\n- **Online** — Use the Transfers tab in Online Banking to transfer from your Bank of America checking or savings account, or set up payments through Bill Pay from any financial institution's account [1]\n- **ATM** — Visit a Bank of America ATM with your credit card and cash or check, then select Make a Payment. (Business cards aren't supported at ATMs.) [1]\n- **Automatic payments** — Set up Bill Pay with automatic payments to avoid late fees and interest [5]\n\nYou can also check your balance and payment due date anytime by logging into Online Banking [8].",
+      "cited": [
+        "c527",
+        "c113",
+        "c321"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e25",
+      "ms": 3568,
+      "offtopic": false,
+      "q": "What are the ways I can pay my Bank of America credit card?",
+      "queries": [
+        "pay credit card balance",
+        "credit card payment methods",
+        "how to pay Bank of America card"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "If you believe Bank of America reported an inaccurate late payment, here's what to do:\n\nFirst, get a copy of your credit report [4]. You're entitled to a free one from each bureau once yearly at AnnualCreditReport.com [2].\n\nReview it carefully and mark the error [1]. Then contact the credit reporting agency (Equifax, Experian, or TransUnion) with your dispute [1]—they'll investigate and correct it if warranted [1].\n\nSince the error relates to a Bank of America account, you can also contact us directly [3]:\n- **Credit cards & loans:** 866.635.4314, Mon–Fri 8 a.m.–10 p.m. ET, Sat 8 a.m.–5 p.m. ET [3]\n\nNot covered: The specific process Bank of America uses to review and correct reporting errors on their end. The passages advise disputing with the credit bureau first, but detailed resolution timelines aren't included. Call the number above for account-specific help.",
+      "cited": [
+        "c537",
+        "c548",
+        "c538",
+        "c546"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e26",
+      "ms": 4892,
+      "offtopic": false,
+      "q": "Bank of America reported a late payment on my credit report that isn't right. How do I fix it?",
+      "queries": [
+        "late payment credit report dispute",
+        "incorrect payment reporting fix",
+        "credit report error correction"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "I'm sorry you're in this difficult situation. The public help content covers some options:\n\n- **Talk to your creditors.** Bank of America suggests reaching out to discuss what options may be available based on your financial situation [5].\n- **Pay what you can.** Even small payments help reduce debt faster [5].\n- **Seek professional help.** Consider credit counseling for debt assistance in the United States [5].\n- **Explore alternatives** like balance transfers or debt consolidation loans if they save you interest [5].\n\nNot covered: The passages don't detail specific hardship programs, payment deferrals, or income-based options Bank of America may offer. \n\n**Next step:** Log in to Online Banking or call Bank of America's credit card customer service (found on their contact page) to speak directly about hardship options for your situation [4].",
+      "cited": [
+        "c536",
+        "c321"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e27",
+      "ms": 4133,
+      "offtopic": false,
+      "q": "I lost my job and can't make my credit card payments. What are my options?",
+      "queries": [
+        "credit card payment hardship assistance options",
+        "missed credit card payment what to do",
+        "credit card financial hardship program"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "If you believe a charge was posted in error, you can dispute it [1]. You have 60 days from the statement date to submit [8]. The easiest way is through Online Banking or the mobile app—just log in, select the transaction, and tap \"Dispute Transaction\" [5].\n\nHowever, before disputing, try contacting the merchant directly first—they may resolve it quickly [7]. You can also log into Online Banking to review your transaction details [7].\n\nNot covered: The help content doesn't address disputes with Bank of America's own collections department or charges they're claiming you owe on a paid-off card. For this situation, call Bank of America's credit card customer service at 800.432.1000 [7]—they can look into your account history and clarify the discrepancy directly.",
+      "cited": [
+        "c507",
+        "c326",
+        "c504",
+        "c508"
+      ],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e28",
+      "ms": 3844,
+      "offtopic": false,
+      "q": "A collections department from the bank says I owe money on a card I already paid off. How do I dispute it?",
+      "queries": [
+        "dispute credit card charge already paid",
+        "collections department billing error dispute",
+        "credit card account paid off balance"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "I'm sorry you're getting those calls—that sounds stressful. The public help content doesn't cover your specific rights about collection calls or what's legally permissible for collectors to say.\n\nWhat *is* covered: If you're receiving collection calls frequently, that's a sign you may benefit from credit counseling [1]. Your first step should be to get a copy of your credit report from Equifax, Experian, or TransUnion to see exactly what debts are listed [4].\n\nNot covered: Your legal rights regarding collection practices, complaint procedures for aggressive calls, or how to dispute collection accounts. \n\nBest next step: Contact Bank of America's credit card and loans assistance team at 866.635.4314 (Mon–Fri 8 a.m.–10 p.m. ET, Sat 8 a.m.–5 p.m. ET) [8]. They can clarify what's on your account and may connect you to resources. You may also want to contact the Consumer Financial Protection Bureau (CFPB) for information on your rights under debt collection laws.",
+      "cited": [
+        "c542",
+        "c537",
+        "c546"
+      ],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e29",
+      "ms": 4597,
+      "offtopic": false,
+      "q": "Your collections team keeps calling me and threatening to hurt my credit. What are my rights?",
+      "queries": [
+        "collections calls credit reporting rights",
+        "debt collection harassment complaints",
+        "credit card collections dispute process"
+      ],
+      "status": "PARTIAL"
+    },
+    {
+      "answer": "The public help content doesn't cover missing or delayed rewards. To find out what happened to your cash back rewards, I'd recommend contacting Bank of America's credit card team directly at 800.434.8313 (Mon-Fri 9 a.m.–9 p.m. ET), or log in to your Mobile Banking app to check your rewards balance under the View My Rewards link [7].",
+      "cited": [
+        "c322"
+      ],
+      "expect": "partial",
+      "goldCited": true,
+      "id": "e30",
+      "ms": 2858,
+      "offtopic": false,
+      "q": "I never got the cash back rewards I earned. Where are they?",
+      "queries": [
+        "cash back rewards not received",
+        "missing cash back balance",
+        "where are my cash back rewards"
+      ],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "You can check your credit card application status in two ways:\n\n- **Online**: Log in to your Online Banking account and check there [1]\n- **By phone**: Call 866.422.8089 [1]\n\nBoth options work if you applied for a Bank of America credit card online.",
+      "cited": [
+        "c320"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e31",
+      "ms": 3429,
+      "offtopic": false,
+      "q": "How do I check the status of my credit card application?",
+      "queries": [
+        "credit card application status",
+        "check application progress",
+        "application status tracking"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "You can find your ABA routing number in a few ways [1]:\n\n- **Online Banking or Mobile App** – Sign in and look it up there [5]\n- **Your checks** – It's the 9-digit number at the bottom of your check [4]\n- **Bank of America's Routing Numbers FAQ page** – Visit the Routing Numbers web page, select your state, and you'll see the number(s) for your account [1]\n\nSince there can be multiple routing numbers depending on your transaction type and the state where you opened your account, the requestor (like your employer or payee) should tell you which one you need [1].",
+      "cited": [
+        "c306",
+        "c432",
+        "c431"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e32",
+      "ms": 3391,
+      "offtopic": false,
+      "q": "Where do I find my routing number?",
+      "queries": [
+        "routing number location",
+        "find routing number account",
+        "routing number checking account"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "No, there's no fee to send or receive money with Zelle® using Bank of America's mobile app or Online Banking [1].",
+      "cited": [
+        "c156"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e33",
+      "ms": 2595,
+      "offtopic": false,
+      "q": "Is there a fee to use Zelle?",
+      "queries": [
+        "Zelle transfer fees charges",
+        "does Zelle cost money",
+        "Zelle pricing free service"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "The maximum ATM cash withdrawal amount is $1,000 or a maximum of 60 bills in a single transaction [2]. However, your actual daily limit may be lower based on your account type, card type, and available funds in your account [5].\n\nIf you're setting up a withdrawal in advance through the Mobile Banking app, the maximum you can request is $800 [2].",
+      "cited": [
+        "c362",
+        "c378"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e34",
+      "ms": 3424,
+      "offtopic": false,
+      "q": "How much cash can I take out of an ATM in one day?",
+      "queries": [
+        "ATM daily withdrawal limit",
+        "maximum cash withdrawal ATM",
+        "ATM transaction limit per day"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": ".\n\nIf you've misplaced your debit card, you can lock it right away through your Mobile Banking app or Online Banking. Go to **Manage Debit/Credit Card** and select the option to lock your card [2, 5].\n\nYou can also call **800-432-1000** if you need immediate help [2, 5].\n\nOnce locked, your physical card won't work, but your digital card for debit will continue to work if you have one set up [1].",
+      "cited": [
+        "c452"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e35",
+      "ms": 3014,
+      "offtopic": false,
+      "q": "How do I lock my debit card if I misplaced it?",
+      "queries": [
+        "lock debit card temporarily",
+        "debit card missing lost",
+        "freeze debit card security"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "For transfers between your Bank of America accounts, funds are credited immediately [6]. So the timing doesn't affect when they post to the recipient's account—they're there right away.\n\nHowever, if you're asking when a transfer shows today's date in your transaction history: transfers before 10:45 p.m. ET on a business day show the same day's date [2]. After that, they'll show tomorrow's date even though they process that night.\n\nFor outbound transfers to other banks, you'd need to initiate before 5:00 p.m. ET on a business day for next-business-day or same-day delivery, depending on the transfer type [4] [5].",
+      "cited": [
+        "c299",
+        "c302",
+        "c301",
+        "c300"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e36",
+      "ms": 4175,
+      "offtopic": false,
+      "q": "What's the cutoff time for a transfer to count today?",
+      "queries": [
+        "transfer cutoff time same day",
+        "when does transfer process today",
+        "transfer deadline banking hours"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "You can request a stop payment on a personal check in two ways [1]:\n\n- **Online Banking:** Log in, select your account, and click \"Stop payment on a check\" under Services. Fill in the required information.\n- **Phone:** Call customer service at 1-800-432-1000 (Mon–Fri, 7 a.m.–10 p.m.; Sat–Sun, 8 a.m.–5 p.m., local time), or call the number on your statement.\n\nYou'll need to provide: check number, date written, exact amount, and payee [1]. The stop payment is effective for 6 months [1]. Note: it can't be placed on a check that's already been presented, and if the amount or check number aren't exact, the check may still be paid [1].",
+      "cited": [
+        "c014"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e37",
+      "ms": 4054,
+      "offtopic": false,
+      "q": "How do I stop payment on a check I wrote?",
+      "queries": [
+        "stop payment check",
+        "how to stop check payment",
+        "cancel written check"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "Yes, you can use your credit card at an ATM overseas [3]. The largest international ATM networks—Mastercard/Cirrus, Visa/Plus, and American Express—have ATMs in more than 100 countries [3].\n\nA few things to know:\n\n- Check your card's network symbol to see which ATMs you can access [2].\n- You'll likely incur cash advance fees and foreign transaction fees (check your Credit Card Agreement for specifics) [4].\n- Make sure your PIN is 4 digits or fewer, since some foreign ATMs won't accept longer PINs [4]. You can request or update your PIN by logging into Online Banking [4].\n- Use Bank of America's ATM locator to find international partner banks where you may avoid extra fees [4].\n\nIf you can't use a foreign ATM, you may be able to make a cash advance at a local bank instead [7].",
+      "cited": [
+        "c095",
+        "c409",
+        "c096",
+        "c099"
+      ],
+      "expect": "answer",
+      "goldCited": true,
+      "id": "e38",
+      "ms": 4128,
+      "offtopic": false,
+      "q": "Can I use my credit card at an ATM overseas?",
+      "queries": [
+        "credit card ATM cash withdrawal overseas",
+        "use credit card international ATM",
+        "ATM access foreign countries"
+      ],
+      "status": "ANSWERED"
+    },
+    {
+      "answer": "The public help content doesn't cover current mortgage rates. For up-to-date rate information, please visit Bank of America's mortgage rates page or contact a mortgage specialist directly through your Online Banking account or by calling the number on your mortgage statement.",
+      "cited": [],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e39",
+      "ms": 2220,
+      "offtopic": true,
+      "q": "What's the current 30-year mortgage rate?",
+      "queries": [],
+      "status": "HANDOFF"
+    },
+    {
+      "answer": "The public help content here covers account management, fees, and customer support—not investment advice. This question is outside what these pages cover.\n\nFor guidance on stock investments, I'd recommend speaking with a financial advisor or contacting Bank of America's investment services directly at 800-432-1000 [7].",
+      "cited": [
+        "c052"
+      ],
+      "expect": "handoff",
+      "goldCited": false,
+      "id": "e40",
+      "ms": 2298,
+      "offtopic": true,
+      "q": "Should I buy Bank of America stock?",
+      "queries": [],
+      "status": "HANDOFF"
+    }
+  ],
+  "startedAt": "2026-09-24T20:30:11.612Z",
+  "summary": {
+    "close": 6,
+    "n": 40,
+    "pass": 31,
+    "unsafe": 0
+  },
+  "tier": "quick"
+}
