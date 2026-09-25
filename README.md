@@ -1,8 +1,9 @@
 <div align="center">
 
-<img src="docs/images/banner.png" alt="A help chatbot that knows when not to answer" width="100%">
+<img src="docs/images/banner.png" alt="From Complaints to Coverage: A Gap Analysis and a Cited Help Bot" width="100%">
 
-# A help chatbot that knows when not to answer
+# From Complaints to Coverage
+### A Gap Analysis and a Cited Help Bot
 
 **Product discovery → RAG chatbot → eval, built on public data**
 
