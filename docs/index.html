@@ -6,7 +6,7 @@
 <title>From Complaints to Coverage: A Gap Analysis and a Cited Help Bot</title>
 <meta name="description" content="From 30,763 CFPB complaints to a cited help chatbot that knows when not to answer.">
 <meta property="og:title" content="From Complaints to Coverage: A Gap Analysis and a Cited Help Bot">
-<meta property="og:description" content="Complaint-driven gap analysis, a cited RAG chatbot, and a 40-question eval.">
+<meta property="og:description" content="Complaint-driven gap analysis, a cited RAG chatbot, a 46-question eval, and a before/after test of new help content.">
 <meta property="og:image" content="images/banner.png">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,800&family=Figtree:wght@400;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
@@ -30,6 +30,15 @@ a.card img{border-radius:8px;border:1px solid var(--rule);width:100%;display:blo
 a.card h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px;margin:0}
 a.card p{margin:0;color:var(--ink-2);font-size:14.5px}
 .go{font-weight:600;color:var(--accent);font-size:14px}
+.v3{margin-top:18px;background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:18px 18px 16px;display:grid;gap:12px}
+.v3 h2{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:22px;margin:0}
+.v3 p{margin:0;color:var(--ink-2);font-size:14.5px;max-width:78ch}
+.v3 .tw{overflow-x:auto}
+.v3 table{border-collapse:collapse;width:100%;min-width:480px;font-size:14px}
+.v3 th,.v3 td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule)}
+.v3 th{font-family:"JetBrains Mono",ui-monospace,monospace;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.v3 td.n{font-variant-numeric:tabular-nums;white-space:nowrap}.v3 td b{color:var(--accent)}
+.v3 .links{display:flex;flex-wrap:wrap;gap:8px 22px}.v3 .links a{font-weight:600;color:var(--accent);font-size:14px;text-decoration:none}
 .docs{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px 22px;font-size:15px}
 .docs a{color:var(--accent)}
 footer{margin-top:36px;font-size:13px;color:var(--muted);border-top:1px solid var(--rule);padding-top:12px}
@@ -40,7 +49,7 @@ footer{margin-top:36px;font-size:13px;color:var(--muted);border-top:1px solid va
   <div class="k">Product discovery → RAG chatbot → eval</div>
   <h1>From Complaints to Coverage</h1>
   <p style="font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:clamp(20px,2.6vw,28px);color:var(--accent);margin:-4px 0 0">A Gap Analysis and a Cited Help Bot</p>
-  <p>I compared 30,763 CFPB complaints about Bank of America with the bank's public help content to find what customers struggle with that the help center doesn't answer. Then I built a cited chatbot over that help content and tested it on those gaps.</p>
+  <p>I compared 30,763 CFPB complaints about Bank of America with the bank's public help content to find what customers struggle with that the help center doesn't answer. Then I built a cited chatbot over that help content, tested it on those gaps, and drafted the missing help pages to measure how much they close.</p>
 </header>
 <div class="stats">
   <div><b>30,763</b><span>complaints grouped into 24 customer problems</span></div>
@@ -50,8 +59,24 @@ footer{margin-top:36px;font-size:13px;color:var(--muted);border-top:1px solid va
 </div>
 <div class="cards">
   <a class="card" href="gap-finder.html"><img src="images/gap-finder-gap-map.png" alt="Gap map of 24 customer problems ranked by unanswered complaints"><h2>1 · Help Gap Finder</h2><p>An interactive report of 24 customer problems ranked by the complaints the help content leaves unanswered, with evidence for every coverage rating and the five things a chatbot should cover first.</p><span class="go">Open the report →</span></a>
-  <a class="card" href="chatbot-demo.html"><img src="images/chatbot-answer-with-trace.png" alt="Chatbot answer with citations and retrieval trace"><h2>2 · Cited Help Bot</h2><p>A RAG chatbot with citations, a retrieval trace, a fact check and handoffs, plus the 40-question eval. This public demo replays saved answers; search runs live in your browser.</p><span class="go">Open the demo →</span></a>
+  <a class="card" href="chatbot-demo.html"><img src="images/chatbot-answer-with-trace.png" alt="Chatbot answer with citations and retrieval trace"><h2>2 · Cited Help Bot</h2><p>A RAG chatbot with citations, a retrieval trace, a fact check and handoffs, plus the 46-question eval. Switch between public pages only and public + proposed pages. This public demo replays saved answers, and search runs live in your browser.</p><span class="go">Open the demo →</span></a>
 </div>
+<section class="v3" aria-labelledby="v3h">
+  <div class="k">v3 · before / after</div>
+  <h2 id="v3h">3 · Closing the gaps</h2>
+  <p>I drafted five help pages for the top gaps. Every fact in them comes from a public Bank of America page or a named federal rule, and 17 details I couldn't verify are kept out as open policy questions. Then I re-ran the same bot, with the same prompt and the same eval, and labels set before the run. Only the content changed.</p>
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Public pages</th><th>+ proposed pages</th></tr></thead>
+    <tbody>
+      <tr><td>Targeted gap questions with a cited answer</td><td class="n">2 / 9</td><td class="n"><b>8 / 9</b></td></tr>
+      <tr><td>Handoffs across 46 test questions</td><td class="n">19</td><td class="n"><b>12</b></td></tr>
+      <tr><td>Unsafe answers · unsupported figures</td><td class="n">0 · 0</td><td class="n"><b>0 · 0</b></td></tr>
+      <tr><td>Complaints fully answered (projected)</td><td class="n">11%</td><td class="n"><b>31%</b></td></tr>
+    </tbody>
+  </table></div>
+  <p>The trade-off: two guardrail questions went from a handoff to a cautious partial answer, which showed which two pages need tighter scoping. And "where's my money after the bank closed my account?" doesn't move, because it needs a policy decision, not more content.</p>
+  <div class="links"><a href="chatbot-demo.html">Try both versions in the demo →</a><a href="https://github.com/lilybondybrooklyn/help-content-chatbot/blob/main/docs/V3_CLOSE_THE_GAPS.md">Read the write-up →</a></div>
+</section>
 <div class="docs"><a href="https://github.com/lilybondybrooklyn/help-content-chatbot/blob/main/docs/CASE_STUDY.md">Case study</a><a href="https://github.com/lilybondybrooklyn/help-content-chatbot/blob/main/docs/EVAL_REPORT.md">Eval report</a><a href="https://github.com/lilybondybrooklyn/help-content-chatbot/blob/main/docs/DECISIONS.md">Decision log</a><a href="https://github.com/lilybondybrooklyn/help-content-chatbot">Code on GitHub</a></div>
 <footer>Independent portfolio project using public data only. Not affiliated with or endorsed by Bank of America or the CFPB.</footer>
 </div></body></html>

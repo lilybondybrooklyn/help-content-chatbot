@@ -95,7 +95,7 @@ The gap analysis said what was missing, so I wrote it. I drafted five help pages
 
 ## Try it
 
-- **[Live demo](https://lilybondybrooklyn.github.io/help-content-chatbot/)** (GitHub Pages). The Gap Finder report is fully interactive. The chatbot demo replays saved answers for the 40 test questions, while search, the trace and the fact check run live in your browser.
+- **[Live demo](https://lilybondybrooklyn.github.io/help-content-chatbot/)** (GitHub Pages). The Gap Finder report is fully interactive. The chatbot demo replays saved answers for all 46 test questions, with a switch between public pages only and public + proposed pages (v3), while search, the trace and the fact check run live in your browser.
 - **Run it yourself:**
 ```bash
 # Gap Finder (Python 3, pandas, scikit-learn)
