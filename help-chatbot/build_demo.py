@@ -3,6 +3,7 @@ import json, glob, sys, os
 from wrap import wrap
 t=open('template.html').read()
 ch=json.load(open('chunks.json')); ev=json.load(open('eval_set.json'))
+ev=[e for e in ev if int(e['id'][1:])<=40]  # the static demo replays saved runs of the original 40 questions
 runs=[json.load(open(f)) for f in sorted(glob.glob('eval_runs/*.json'))]
 runs=[r for r in runs if r.get('status','done')=='done' and len(r['results'])==len(ev)]
 for r in runs: r.setdefault('promptVersion','v1')

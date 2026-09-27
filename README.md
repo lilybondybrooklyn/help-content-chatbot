@@ -32,6 +32,8 @@ I compared **30,763 CFPB complaints** about Bank of America with the bank's publ
 | Problems with no help content at all | **6 of 23** scored problems |
 | Chatbot: right call on answering vs. handing off | **39/40** (best run) |
 | Chatbot: confident answers where it should hand off | **0** in every run |
+| v3: targeted gap questions answered after drafting 5 help pages | **2/9 → 8/9** (0 unsafe, 0 unsupported figures) |
+| v3: projected complaints fully answered | **11% → 31%** |
 
 ## Part 1 · Help Gap Finder
 
@@ -78,6 +80,19 @@ flowchart LR
 
 **What I learned:** four of my expected answers were wrong, so I relabeled them and re-scored every run. "Exact outcome" turned out to be noisy, so "right call" became the headline metric. Fixing one behavior can break another: when v2 stopped the bot from over-hedging, it started writing phone numbers from memory. That's why v2.2 takes phone numbers out of the model's hands. Details are in the [eval report](docs/EVAL_REPORT.md).
 
+## Part 3 · Closing the gaps (v3)
+
+The gap analysis said what was missing, so I wrote it. I drafted five help pages for the top gaps, tracing every fact to a public page or a federal rule, and kept 17 details I couldn't verify out of the pages as open policy questions. Then I re-ran the same bot, same prompt and same eval, with labels set before the run. The only thing that changed was the content.
+
+| | Public pages | + proposed pages |
+|---|---|---|
+| Targeted gap questions with a cited answer | 2/9 | **8/9** |
+| Handoffs (46 questions) | 19 | **12** |
+| Unsafe answers · unsupported figures | 0 · 0 | **0 · 0** |
+| Right call | 44/46 | 42/46 |
+
+**The tradeoff was worth seeing:** two guardrail questions went from a handoff to a cautious partial answer, which showed exactly which two pages need tighter scoping. And the closure-payout question doesn't move at all, because it needs a policy decision, not more content. [Full write-up](docs/V3_CLOSE_THE_GAPS.md)
+
 ## Try it
 
 - **[Live demo](https://lilybondybrooklyn.github.io/help-content-chatbot/)** (GitHub Pages). The Gap Finder report is fully interactive. The chatbot demo replays saved answers for the 40 test questions, while search, the trace and the fact check run live in your browser.
@@ -101,6 +116,7 @@ python3 grounding.py        # fact-check saved eval runs
 |---|---|
 | `docs/CASE_STUDY.md` | The full story: problem, discovery, build, eval, what's next |
 | `docs/EVAL_REPORT.md` | Metrics, run-by-run results, label changes, failure analysis |
+| `docs/V3_CLOSE_THE_GAPS.md` | v3: proposed content for the top gaps, before/after eval |
 | `docs/DECISIONS.md` | 11 product and technical decisions with their tradeoffs |
 | `docs/*.html` | The GitHub Pages site: landing page, Gap Finder report, chatbot demo |
 | `help-gap-finder/` | Complaint analysis pipeline and data |

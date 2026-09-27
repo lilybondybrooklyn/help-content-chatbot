@@ -1,0 +1,26 @@
+{
+ "before": {
+  "covered": 3519,
+  "partial": 19894,
+  "missing": 6460,
+  "n/a": 890
+ },
+ "after": {
+  "covered": 9392,
+  "partial": 16085,
+  "missing": 4396,
+  "n/a": 890
+ },
+ "unanswered_before": 16407.0,
+ "unanswered_after": 12438.5,
+ "total": 30763,
+ "rerated": {
+  "cc_dispute_stuck": "covered",
+  "card_fraud": "covered",
+  "deposit_hold": "partial",
+  "bank_closed": "partial",
+  "closed_funds": "missing",
+  "zelle_scam": "partial",
+  "recurring_withdrawal": "partial"
+ }
+}
