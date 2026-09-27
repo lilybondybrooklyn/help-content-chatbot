@@ -188,7 +188,7 @@ td.q{max-width:420px}
 const CHUNKS = __CHUNKS__;
 const EVAL = __EVAL__;
 const DEMO = __DEMO__;          // true on the static GitHub Pages build: replays saved eval answers
-const REPLAY = __REPLAY__;      // {question: saved result} from one complete eval run
+const REPLAY = __REPLAY__;      // {question: saved result} from one run, or {public:{...}, v3:{...}} for one run per corpus
 const SAVED_RUNS = __RUNS__;
 const REPLAY_VERSION = __REPLAY_VERSION__;    // saved eval runs, for the history table in demo mode
 const sleepMs = ms => new Promise(r=>setTimeout(r,ms));
@@ -322,7 +322,7 @@ async function ask(){
   try {
     await samplePromise;
     if (DEMO) { $('#starters').hidden = true; $('#unavail').hidden = true; }
-    const rep = DEMO ? REPLAY[question] : null;
+    const rep = DEMO ? (((REPLAY && (REPLAY.public || REPLAY.v3)) ? (REPLAY[CORPUS] || {}) : REPLAY)[question] || null) : null;
     if (rep) { await sleepMs(500); t.queries = rep.queries||[]; t.offtopic = !!rep.offtopic; setTrace(); await sleepMs(500);
       t.hits = retrieve(question, t.queries); setTrace(); await sleepMs(400);
       const full = rep.answer, p0 = parseAnswer('STATUS: '+rep.status+'\n'+full);
@@ -336,7 +336,7 @@ async function ask(){
     else t.queries = [];
     setTrace();
     t.hits = retrieve(question, t.queries); setTrace();
-    if (!sample) { st.className='status ERROR'; st.textContent='Search only'; bub.hidden=false; bub.innerHTML = DEMO ? '<p>This public demo can replay answers only for the 40 test questions (pick one from the list below). For other questions it shows the search step, so the passages it found are in the trace panel.</p>' : '<p>Claude isn\'t available in this view, so I can\'t write an answer. The passages the search found are in the trace panel.</p>'; return; }
+    if (!sample) { st.className='status ERROR'; st.textContent='Search only'; bub.hidden=false; bub.innerHTML = DEMO ? '<p>This public demo can replay answers only for the ${EVAL.length} test questions (pick one from the list below). For other questions it shows the search step, so the passages it found are in the trace panel.</p>' : '<p>Claude isn\'t available in this view, so I can\'t write an answer. The passages the search found are in the trace panel.</p>'; return; }
     st.innerHTML = '<span class="blink">●</span> Writing an answer…';
     const { text } = await sample(answerPrompt(question, t.hits, history.slice(-4)), { cache:false, onText: ({text}) => {
       const p = parseAnswer(text); bub.hidden=false; bub.innerHTML = render(p.body, t.hits);
@@ -367,7 +367,7 @@ function computeBase(){ EVAL.forEach(e => { const re = new RegExp(e.gold,'i'); e
 computeBase();
 if (HAS_PROPOSED) { $('#corpusbar').hidden = false; $('#corpus').addEventListener('change', e => {
   if (evalCtl && !evalCtl.signal.aborted && $('#run').disabled) { e.target.value = CORPUS; return; } // no switching mid-run
-  CORPUS = e.target.value; IX = IXS[CORPUS]; computeBase(); Object.keys(results).forEach(k=>delete results[k]); renderEval(); loadHistory(); }); }
+  CORPUS = e.target.value; IX = IXS[CORPUS]; computeBase(); Object.keys(results).forEach(k=>delete results[k]); if (DEMO) demoLoad(); renderEval(); loadHistory(); }); }
 const EV = Object.fromEntries(EVAL.map(e=>[e.id,e]));
 function outcome(e, r, corpus=CORPUS){ const x = expOf(e, corpus);
   if (!r || r.status==='ERROR') return r ? 'fail' : null;
@@ -478,14 +478,21 @@ async function runEval(resume){
 $('#run').addEventListener('click', ()=>runEval(null));
 $('#resume').addEventListener('click', ()=>resumable && runEval(resumable));
 $('#stop').addEventListener('click',()=>evalCtl?.abort());
-if (DEMO) {
-  const run = SAVED_RUNS.find(r=>r.promptVersion===REPLAY_VERSION) || SAVED_RUNS[0];
+function demoLoad(){ // static demo: show the saved run for the selected help content
+  const run = SAVED_RUNS.find(r=>r.promptVersion===REPLAY_VERSION && (r.corpus||'public')===CORPUS)
+    || SAVED_RUNS.find(r=>r.promptVersion===REPLAY_VERSION) || SAVED_RUNS[0];
+  Object.keys(results).forEach(k=>delete results[k]);
   if (run) for (const x of run.results){ const {id,expect,q,...rest}=x; results[id]=rest; }
+  const where = HAS_PROPOSED ? ` on ${CORPUS_LABEL[run?.corpus||'public'].toLowerCase()}` : '';
+  $('#evalnote').textContent = `Showing the saved ${run?.promptVersion||''} run${where} (${run?.tier||'quick'} model). In this static demo the eval can't run; in the Claude artifact version, the Run eval button re-runs all ${EVAL.length} questions live.`;
+}
+if (DEMO) {
+  if (HAS_PROPOSED && REPLAY && REPLAY.v3) { CORPUS = 'v3'; IX = IXS.v3; $('#corpus').value = 'v3'; computeBase(); }
+  demoLoad();
   $('#run').hidden = true; $('#tier').hidden = true; document.querySelector('label[for="tier"]').hidden = true;
-  $('#evalnote').textContent = `Showing the saved ${run?.promptVersion||''} run (${run?.tier||'quick'} model). In this static demo the eval can't run; in the Claude artifact version, the Run eval button re-runs all 40 questions live.`;
   $('#unavail').hidden = false;
-  $('#unavail').innerHTML = 'Public demo: answers are replayed from the saved v2.1 eval run for the 40 test questions. Search and the trace run live in your browser. Pick a question:' +
-    `<select id="demoq" style="display:block;margin-top:8px;width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)"><option value="">Choose one of the 40 test questions…</option>${EVAL.map(e=>`<option>${esc(e.q)}</option>`).join('')}</select>`;
+  $('#unavail').innerHTML = `Public demo: answers are replayed from saved ${esc(REPLAY_VERSION||'')} eval runs for the ${EVAL.length} test questions${HAS_PROPOSED ? ', one run for each help-content setting above' : ''}. Search and the trace run live in your browser. Pick a question:` +
+    `<select id="demoq" style="display:block;margin-top:8px;width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--rule);background:var(--surface);color:var(--ink)"><option value="">Choose one of the ${EVAL.length} test questions…</option>${EVAL.map(e=>`<option>${esc(e.q)}</option>`).join('')}</select>`;
   $('#demoq').addEventListener('change',e=>{ if(e.target.value && !busy){ $('#q').value=e.target.value; e.target.value=''; ask(); }});
 }
 renderEval(); loadHistory();
