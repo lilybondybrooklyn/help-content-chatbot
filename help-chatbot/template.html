@@ -118,6 +118,9 @@ td.q{max-width:420px}
     <button role="tab" id="tab-how" aria-selected="false" aria-controls="view-how">How it works</button>
   </div>
 </header>
+<div class="notice" id="corpusbar" hidden style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><b>Help content:</b>
+  <select id="corpus"><option value="public">Public pages only (what's live today)</option><option value="v3">Public + proposed pages (drafts for the top 5 gaps)</option></select>
+  <span style="color:var(--muted)">Proposed pages are drafts I wrote for this project. They are not published by Bank of America, and they're marked PROPOSED DRAFT wherever they appear.</span></div>
 <p class="notice">Unofficial demo built on public web pages captured 24 Sept 2026. Not affiliated with or endorsed by Bank of America, and it can't see any account. Don't type account numbers, card numbers or passwords.</p>
 
 <main id="view-chat" role="tabpanel" aria-labelledby="tab-chat">
@@ -189,7 +192,11 @@ const REPLAY = __REPLAY__;      // {question: saved result} from one complete ev
 const SAVED_RUNS = __RUNS__;
 const REPLAY_VERSION = __REPLAY_VERSION__;    // saved eval runs, for the history table in demo mode
 const sleepMs = ms => new Promise(r=>setTimeout(r,ms));
-const IX = Retrieval.buildIndex(CHUNKS);
+const HAS_PROPOSED = CHUNKS.some(c=>c.src==='proposed');
+const IXS = { public: Retrieval.buildIndex(CHUNKS.filter(c=>c.src!=='proposed')), v3: HAS_PROPOSED ? Retrieval.buildIndex(CHUNKS) : null };
+let CORPUS = 'public', IX = IXS.public;
+const expOf = (e, corpus=CORPUS) => corpus==='v3' ? (e.expect_v3||e.expect) : e.expect;
+const CORPUS_LABEL = { public:'Public pages only', v3:'Public + proposed pages' };
 const $ = s => document.querySelector(s);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -233,7 +240,7 @@ ${prevQ ? `The customer's previous question (for context if this one is a follow
 }
 function retrieve(question, queries){ return Retrieval.search(IX, [question, ...queries], 8); }
 function answerPrompt(question, hits, history){
-  const pas = hits.map((h,i)=>`[${i+1}] ${h.chunk.title}\nSource: ${h.chunk.page} (${h.chunk.url})\n${h.chunk.text}`).join('\n\n');
+  const pas = hits.map((h,i)=>`[${i+1}] ${h.chunk.title}\nSource: ${h.chunk.src==='proposed' ? h.chunk.page.replace(/^PROPOSED DRAFT[^:]*:\s*/,'')+' (help article)' : h.chunk.page+' ('+h.chunk.url+')'}\n${h.chunk.text}`).join('\n\n');
   const hist = history.length ? `Earlier in this chat:\n${history.map(t=>`${t.role==='user'?'Customer':'Assistant'}: ${t.content.slice(0,500)}`).join('\n')}\n\n` : '';
   return `${RULES}\n\n${hist}Passages:\n${pas}\n\nCustomer question: ${question}`;
 }
@@ -294,7 +301,7 @@ $('#msgs').innerHTML = `<div class="msg bot"><div class="bubble"><p>Hi! Ask me a
 
 function traceHTML(t){
   const qs = t.queries ? `<div class="qs">${[t.question,...t.queries].map(q=>`<span>${esc(q)}</span>`).join('')}</div>` : '<span class="empty">Rewriting…</span>';
-  const pas = t.hits ? `<div class="passages">${t.hits.map((h,i)=>`<div class="pas ${t.cited?.includes(i+1)?'cited':''}" id="pas-${i+1}"><div class="m"><span>[${i+1}]</span><span>BM25 ${h.best.toFixed(1)}</span><span>${h.chunk.src==='structured'?'structured data':h.chunk.kind}</span>${t.cited?.includes(i+1)?'<span style="color:var(--accent)">cited</span>':''}</div><div class="t">${esc(h.chunk.title)}</div><div class="x">${esc(h.chunk.text)}</div><a href="${esc(h.chunk.url)}" target="_blank" rel="noopener" style="font-size:12px">${esc(h.chunk.page)}</a></div>`).join('')}</div>` : '';
+  const pas = t.hits ? `<div class="passages">${t.hits.map((h,i)=>`<div class="pas ${t.cited?.includes(i+1)?'cited':''}" id="pas-${i+1}"><div class="m"><span>[${i+1}]</span><span>BM25 ${h.best.toFixed(1)}</span><span>${h.chunk.src==='proposed'?'<b style="color:var(--part)">PROPOSED DRAFT</b>':h.chunk.src==='structured'?'structured data':h.chunk.kind}</span>${t.cited?.includes(i+1)?'<span style="color:var(--accent)">cited</span>':''}</div><div class="t">${esc(h.chunk.title)}</div><div class="x">${esc(h.chunk.text)}</div>${h.chunk.src==='proposed'?`<span style="font-size:12px;color:var(--part)">${esc(h.chunk.page)}</span>`:`<a href="${esc(h.chunk.url)}" target="_blank" rel="noopener" style="font-size:12px">${esc(h.chunk.page)}</a>`}</div>`).join('')}</div>` : '';
   return `<div class="step ${t.queries?'done':''}"><div class="h"><span class="dot">1</span>Search queries${t.offtopic?' <span class="status HANDOFF">off-topic</span>':''}</div>${qs}</div>
    <div class="step ${t.hits?'done':''}"><div class="h"><span class="dot">2</span>Top 8 passages (keyword search, fused)</div>${pas||'<span class="empty">Waiting…</span>'}</div>
    <div class="step ${t.status?'done':''}"><div class="h"><span class="dot">3</span>Answer ${t.status?`<span class="status ${t.status}">${t.status}</span>`:''}</div>${t.cited?`<span class="empty">Cites ${t.cited.length?t.cited.map(n=>'['+n+']').join(' '):'no passages'}.</span>`:'<span class="empty">Waiting…</span>'}</div>
@@ -323,7 +330,7 @@ async function ask(){
       for (let i=0;i<=full.length;i+=Math.max(6,Math.ceil(full.length/60))){ bub.innerHTML = render(full.slice(0,i), t.hits); msgs.scrollTop=msgs.scrollHeight; await sleepMs(25); }
       t.status=rep.status; t.cited=p0.cited; t.fc=factCheck(p0.body,t.hits,p0.cited); setTrace();
       bub.innerHTML = render(p0.body, t.hits) + (t.fc.unsupported.length ? `<div class="gap" style="background:var(--bad-soft)">Check this: ${t.fc.unsupported.map(esc).join(', ')} isn't in the cited sources.</div>` : '');
-      if (p0.cited.length){ srcs.hidden=false; srcs.innerHTML = `<span class="lab">Sources</span>` + p0.cited.filter(n=>t.hits[n-1]).map(n=>`<a href="${esc(t.hits[n-1].chunk.url)}" target="_blank" rel="noopener"><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)}</a>`).join(''); }
+      if (p0.cited.length){ srcs.hidden=false; srcs.innerHTML = `<span class="lab">Sources</span>` + p0.cited.filter(n=>t.hits[n-1]).map(n=>(t.hits[n-1].chunk.src==='proposed' ? `<span><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)} <b style="color:var(--part)">(proposed draft)</b></span>` : `<a href="${esc(t.hits[n-1].chunk.url)}" target="_blank" rel="noopener"><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)}</a>`)).join(''); }
       return; }
     if (sample) { const r = await rewrite(question, lastQ, 'quick'); t.queries = r.queries; t.offtopic = r.offtopic; }
     else t.queries = [];
@@ -339,7 +346,7 @@ async function ask(){
     t.status = p.status || 'ANSWERED'; t.cited = p.cited; t.fc = factCheck(p.body, t.hits, p.cited); setTrace();
     st.className='status '+t.status; st.textContent = STATUS_LABEL[t.status];
     bub.innerHTML = render(p.body, t.hits) + (t.status==='HANDOFF' ? contactsHTML() : '') + (t.fc.unsupported.length ? `<div class="gap" style="background:var(--bad-soft)">Check this: ${t.fc.unsupported.map(esc).join(', ')} isn't in the cited sources.</div>` : '');
-    if (p.cited.length){ srcs.hidden=false; srcs.innerHTML = `<span class="lab">Sources</span>` + p.cited.filter(n=>t.hits[n-1]).map(n=>`<a href="${esc(t.hits[n-1].chunk.url)}" target="_blank" rel="noopener"><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)}</a>`).join(''); }
+    if (p.cited.length){ srcs.hidden=false; srcs.innerHTML = `<span class="lab">Sources</span>` + p.cited.filter(n=>t.hits[n-1]).map(n=>(t.hits[n-1].chunk.src==='proposed' ? `<span><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)} <b style="color:var(--part)">(proposed draft)</b></span>` : `<a href="${esc(t.hits[n-1].chunk.url)}" target="_blank" rel="noopener"><span class="n">[${n}]</span>${esc(t.hits[n-1].chunk.title)}</a>`)).join(''); }
     history.push({role:'user',content:question},{role:'assistant',content:p.body});
     lastQ = question;
   } catch(e){
@@ -356,13 +363,17 @@ async function ask(){
 const CHUNK_BY_ID = Object.fromEntries(CHUNKS.map(c=>[c.id,c]));
 const EXPECT_STATUS = { answer:'ANSWERED', partial:'PARTIAL', handoff:'HANDOFF' };
 const results = {}; let running = null;
-EVAL.forEach(e => { const re = new RegExp(e.gold,'i'); e.base = Retrieval.search(IX,[e.q],8).some(h=>re.test(h.chunk.title+' '+h.chunk.url)); });
+function computeBase(){ EVAL.forEach(e => { const re = new RegExp(e.gold,'i'); e.base = Retrieval.search(IX,[e.q],8).some(h=>re.test(h.chunk.title+' '+h.chunk.url)); }); }
+computeBase();
+if (HAS_PROPOSED) { $('#corpusbar').hidden = false; $('#corpus').addEventListener('change', e => {
+  if (evalCtl && !evalCtl.signal.aborted && $('#run').disabled) { e.target.value = CORPUS; return; } // no switching mid-run
+  CORPUS = e.target.value; IX = IXS[CORPUS]; computeBase(); Object.keys(results).forEach(k=>delete results[k]); renderEval(); loadHistory(); }); }
 const EV = Object.fromEntries(EVAL.map(e=>[e.id,e]));
-function outcome(e, r){
+function outcome(e, r, corpus=CORPUS){ const x = expOf(e, corpus);
   if (!r || r.status==='ERROR') return r ? 'fail' : null;
-  if (r.status === EXPECT_STATUS[e.expect]) return 'pass';
-  if (e.expect!=='handoff' && r.status!=='HANDOFF') return 'soft';
-  if (e.expect==='handoff' && r.status==='PARTIAL') return 'soft';
+  if (r.status === EXPECT_STATUS[x]) return 'pass';
+  if (x!=='handoff' && r.status!=='HANDOFF') return 'soft';
+  if (x==='handoff' && r.status==='PARTIAL') return 'soft';
   return 'fail';
 }
 function unsupportedOf(r){ // fact check against the passages the answer cited (works for stored runs too)
@@ -370,19 +381,19 @@ function unsupportedOf(r){ // fact check against the passages the answer cited (
   const txt = fnorm((r.cited||[]).map(id=>CHUNK_BY_ID[id]?.text||'').join(' '));
   return [...new Set((r.answer.match(FACT)||[]).map(s=>s.trim()))].filter(f=>!txt.includes(fnorm(f)));
 }
-function score(res){ // res: {id: result}; scored against the CURRENT labels
+function score(res, corpus=CORPUS){ const X = id => expOf(EV[id], corpus); // res: {id: result}; scored against the CURRENT labels
   const ids = Object.keys(res).filter(id=>EV[id]);
-  const o = id => outcome(EV[id], res[id]);
-  const needSrc = ids.filter(id=>EV[id].expect!=='handoff' && res[id].status!=='HANDOFF' && res[id].status!=='ERROR');
+  const o = id => outcome(EV[id], res[id], corpus);
+  const needSrc = ids.filter(id=>X(id)!=='handoff' && res[id].status!=='HANDOFF' && res[id].status!=='ERROR');
   return { n: ids.length, pass: ids.filter(id=>o(id)==='pass').length, close: ids.filter(id=>o(id)==='soft').length,
-    unsafe: ids.filter(id=>EV[id].expect==='handoff' && res[id].status==='ANSWERED').length,
-    call: ids.filter(id=>res[id].status!=='ERROR' && ((EV[id].expect==='handoff')===(res[id].status==='HANDOFF'))).length,
+    unsafe: ids.filter(id=>X(id)==='handoff' && res[id].status==='ANSWERED').length,
+    call: ids.filter(id=>res[id].status!=='ERROR' && ((X(id)==='handoff')===(res[id].status==='HANDOFF'))).length,
     src: needSrc.filter(id=>res[id].goldCited).length, srcN: needSrc.length,
     unsup: ids.filter(id=>unsupportedOf(res[id]).length).length, errors: ids.filter(id=>res[id].status==='ERROR').length };
 }
 function renderEval(){
   const s = score(results);
-  const baseN = EVAL.filter(e=>e.expect!=='handoff'), baseHit = baseN.filter(e=>e.base).length;
+  const baseN = EVAL.filter(e=>expOf(e)!=='handoff'), baseHit = baseN.filter(e=>e.base).length;
   $('#metrics').innerHTML = [
     [s.n?`${s.call}/${s.n}`:'–', 'Right call on answering vs. handing off'],
     [s.n?`${s.pass}/${s.n}`:'–', `Exact outcome match${s.close?` (+${s.close} close)`:''}`],
@@ -394,17 +405,17 @@ function renderEval(){
   $('#evalrows').innerHTML = EVAL.map((e,i)=>{ const r=results[e.id], o=outcome(e,r), un=unsupportedOf(r);
     const got = r? `<span class="status ${r.status}">${r.status}</span>${un.length?`<div class="pf fail" style="margin-top:4px;display:inline-block" title="Not in cited passages">unsupported: ${esc(un.join(', '))}</div>`:''}` : (running===e.id?'<span class="pf wait">running…</span>':'<span class="pf wait">–</span>');
     const oc = o? `<span class="pf ${o}">${o==='pass'?'pass':o==='soft'?'close':'fail'}</span>`:'';
-    const src = r && e.expect!=='handoff' && r.status!=='HANDOFF' && r.status!=='ERROR' ? (r.goldCited?'<span class="pf pass">yes</span>':'<span class="pf fail">no</span>') : '';
-    const note = e.label_note ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${esc(e.label_note)}</div>` : '';
+    const src = r && expOf(e)!=='handoff' && r.status!=='HANDOFF' && r.status!=='ERROR' ? (r.goldCited?'<span class="pf pass">yes</span>':'<span class="pf fail">no</span>') : '';
+    const note = (CORPUS==='v3' && e.v3_note) ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">v3: ${esc(e.v3_note)}</div>` : e.label_note ? `<div style="font-size:12px;color:var(--muted);margin-top:3px">${esc(e.label_note)}</div>` : '';
     const ans = r?.answer ? `<details style="margin-top:4px"><summary style="font-size:12px;color:var(--accent);cursor:pointer">Answer</summary><div style="font-size:12.5px;white-space:pre-wrap;color:var(--ink-2)">${esc(r.answer)}</div></details>` : '';
-    return `<tr><td class="num">${i+1}</td><td class="q">${esc(e.q)}${note}${ans}</td><td><span class="status ${EXPECT_STATUS[e.expect]}">${e.expect}</span></td><td>${got}</td><td>${oc}</td><td>${src}</td><td>${e.expect==='handoff'?'':(e.base?'<span class="pf pass">yes</span>':'<span class="pf fail">no</span>')}</td></tr>`; }).join('');
+    return `<tr><td class="num">${i+1}</td><td class="q">${esc(e.q)}${note}${ans}</td><td><span class="status ${EXPECT_STATUS[expOf(e)]}">${expOf(e)}</span>${expOf(e)!==e.expect?`<div style="font-size:11px;color:var(--muted);margin-top:3px">was ${e.expect}</div>`:''}</td><td>${got}</td><td>${oc}</td><td>${src}</td><td>${expOf(e)==='handoff'?'':(e.base?'<span class="pf pass">yes</span>':'<span class="pf fail">no</span>')}</td></tr>`; }).join('');
 }
 function renderRuns(runs){
   if (!runs.length){ $('#history').innerHTML = '<p class="empty" style="padding:0 18px 18px">No saved runs yet.</p>'; return; }
-    $('#history').innerHTML = `<div class="tablewrap"><table><thead><tr><th>Run</th><th>Prompt</th><th>Model</th><th>Right call</th><th>Exact match</th><th>Close</th><th>Unsafe answers</th><th>Right source</th><th>Unsupported figures</th></tr></thead><tbody>${runs.map(r=>{
-      const res = Object.fromEntries((r.results||[]).map(x=>[x.id,x])); const s = score(res);
+    $('#history').innerHTML = `<div class="tablewrap"><table><thead><tr><th>Run</th><th>Prompt</th><th>Corpus</th><th>Model</th><th>Right call</th><th>Exact match</th><th>Close</th><th>Unsafe answers</th><th>Right source</th><th>Unsupported figures</th></tr></thead><tbody>${runs.map(r=>{
+      const res = Object.fromEntries((r.results||[]).map(x=>[x.id,x])); const s = score(res, r.corpus||'public');
       const when = new Date(r.startedAt).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
-      return `<tr><td>${esc(when)}${r.status==='running'||r.status==='stopped'?` <span class="pf wait">${(r.results||[]).length}/${EVAL.length}, unfinished</span>`:''}</td><td class="num">${esc(r.promptVersion||'v1')}</td><td>${esc(r.tier||'')}</td><td class="num">${s.call}/${s.n}</td><td class="num">${s.pass}/${s.n}</td><td class="num">${s.close}</td><td class="num">${s.unsafe}</td><td class="num">${s.src}/${s.srcN}</td><td class="num">${s.unsup}</td></tr>`; }).join('')}</tbody></table></div>`;
+      return `<tr><td>${esc(when)}${r.status==='running'||r.status==='stopped'?` <span class="pf wait">${(r.results||[]).length}/${EVAL.length}, unfinished</span>`:''}</td><td class="num">${esc(r.promptVersion||'v1')}</td><td>${esc(CORPUS_LABEL[r.corpus||'public'])}</td><td>${esc(r.tier||'')}</td><td class="num">${s.call}/${s.n}</td><td class="num">${s.pass}/${s.n}</td><td class="num">${s.close}</td><td class="num">${s.unsafe}</td><td class="num">${s.src}/${s.srcN}</td><td class="num">${s.unsup}</td></tr>`; }).join('')}</tbody></table></div>`;
 }
 async function loadHistory(){
   if (DEMO && SAVED_RUNS.length){ renderRuns(SAVED_RUNS); return; }
@@ -414,7 +425,7 @@ async function loadHistory(){
     const runs = snap.docs.map(d=>d.data()).filter(Boolean).sort((a,b)=>String(b.startedAt).localeCompare(String(a.startedAt)));
     renderRuns(runs);
     const last = runs[0];
-    resumable = (last && last.promptVersion===PROMPT_VERSION && last.status!=='done' && (last.results||[]).length < EVAL.length && !$('#run').disabled) ? last : null;
+    resumable = (last && last.promptVersion===PROMPT_VERSION && (last.corpus||'public')===CORPUS && last.status!=='done' && (last.results||[]).length < EVAL.length && !$('#run').disabled) ? last : null;
     if (resumable){ $('#resume').hidden=false; $('#resume').textContent = `Resume last run (${resumable.results.length}/${EVAL.length} done)`; $('#tier').value = resumable.tier||'quick'; }
   } catch(err){ $('#history').innerHTML = '<p class="empty" style="padding:0 18px 18px">Couldn\'t load saved runs.</p>'; }
 }
@@ -435,7 +446,7 @@ async function runEval(resume){
   let saveOk = !!ref;
   const save = async (status) => { if (!ref) return; try {
       const done = EVAL.filter(e=>results[e.id]);
-      await ref.set({ startedAt, updatedAt:new Date().toISOString(), status, tier, promptVersion: PROMPT_VERSION, corpusChunks: CHUNKS.length, summary: score(results),
+      await ref.set({ startedAt, updatedAt:new Date().toISOString(), status, tier, promptVersion: PROMPT_VERSION, corpus: CORPUS, corpusChunks: IX.N, summary: score(results),
         results: done.map(e=>({ id:e.id, expect:e.expect, q:e.q, ...results[e.id] })) });
     } catch(err){ saveOk = false; } };
   await save('running');

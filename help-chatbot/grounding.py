@@ -1,5 +1,8 @@
 import json, re, glob, sys
+import os
 chunks = {c['id']: c for c in json.load(open('chunks.json'))}
+if os.path.exists('chunks_proposed.json'):  # v3 runs can cite proposed pages
+    chunks.update({c['id']: c for c in json.load(open('chunks_proposed.json'))})
 PAT = re.compile(r'\b\d{3}[.\-]\d{3}[.\-]\d{4}\b|\$\d[\d,]*(?:\.\d\d)?|\b\d+\s*(?:business\s+)?days?\b|\b\d{1,2}(?::\d\d)?\s*[ap]\.?m\.?', re.I)
 def norm(s): return re.sub(r'[^0-9a-z$]', '', s.lower())
 for f in sorted(glob.glob('eval_runs/*.json')):

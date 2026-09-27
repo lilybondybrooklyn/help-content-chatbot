@@ -37,7 +37,7 @@ All runs used the Quick model tier, and every run is scored against the current 
 | Sept 24, 4:30 pm | v1 | 37/40 | 35/40 | 0 | 25/26 | 1 |
 | Sept 24, 8:43 pm | v1 | 38/40 | 34/40 | 0 | 26/26 | 0 |
 | Sept 24, 9:52 pm | v2.1 | **39/40** | 34/40 | **0** | 24/26 | 4 |
-| — | v2.2 | *pending next run* | | | | |
+| Sept 27, 2:33 pm | v2.2 | **39/40** | 35/40 | **0** | 24/26 | **0** |
 
 Search hit (keyword only, no rewriting): **25/27** answerable questions.
 
@@ -71,9 +71,16 @@ I changed each label only where reading the sources showed my original expectati
 **v2.1: fixed in v2.2**
 - **Four handoff answers included the general phone number from memory, uncited.** The number is real, but it came from outside the sources. The fact check flagged all four. v2.2 removes phone numbers from model-written handoffs and appends a fixed, source-linked contact list instead.
 
+**v2.2: confirmed**
+- No answers with figures missing from their cited passages (down from 4 in v2.1), and still 0 unsafe answers.
+
 **Open**
 - **e20 "Someone opened a credit card in my name"** hands off in every run. The captured pages don't include Bank of America's identity-theft guidance, so this is a corpus gap, not a model error.
 - **The answered/partial boundary stays noisy** (±1 to 2 questions between identical runs). This is why "right call" is the headline metric.
+
+## v3: proposed content for the top gaps
+
+The test set grew to 46 questions, and each question has a second label (`expect_v3`) set before any v3 run. Results and the full before/after are in [V3_CLOSE_THE_GAPS.md](V3_CLOSE_THE_GAPS.md). In short: targeted gap questions with a cited answer went from 2/9 to 8/9, with 0 unsafe answers and 0 unsupported figures on both corpora. Right call went from 44/46 to 42/46, because two guardrail questions got cautious PARTIAL answers.
 
 ## Reproducing
 

@@ -1,0 +1,113 @@
+{
+ "about": "PROPOSED help content, drafted by Lily Bondy for this portfolio project. NOT published by or affiliated with Bank of America. Every sentence is either (a) restated from a public Bank of America help passage listed in `basis`, (b) a federal rule, cited by regulation, or (c) a plain next step that states no bank policy. Bank-specific facts I could not verify are listed as open_questions for a policy owner and are NOT in the indexed text.",
+ "drafted": "2026-09-27",
+ "articles": [
+  {
+   "slug": "dispute-claim-next-steps",
+   "title": "After you file a dispute or fraud claim: what happens next",
+   "themes": ["cc_dispute_stuck", "card_fraud"],
+   "why": "Top gap: 5,873 dispute and fraud-claim complaints. Help content explains how to file, then stops.",
+   "items": [
+    {
+     "q": "How long does a credit card dispute take?",
+     "a": "Federal billing-error rules (Regulation Z) set the maximum timeline for credit card disputes. If you report a billing error in writing within 60 days after the statement showing it was sent, the card issuer must acknowledge your dispute in writing within 30 days, unless it has already resolved it, and must resolve it within two complete billing cycles, and in no case later than 90 days. You can check the status of your claim in the mobile app (Inbox, then Status Tracker) or in your Online Banking Communications Inbox. If Bank of America asks you for more information, reply within 12 business days. While the dispute is open, Bank of America may recalculate your minimum payment without the disputed amount.",
+     "basis": ["12 CFR 1026.13(b)-(c)", "c505", "c510", "c509"]
+    },
+    {
+     "q": "What can I do if my credit card dispute is denied?",
+     "a": "If the card issuer decides there was no billing error, federal rules (Regulation Z) require it to send you a written explanation of the reasons. If you ask, it must also give you copies of the documents it relied on. It must tell you how much you owe and when the payment is due. If you still disagree, tell the issuer in writing before that payment is due. After that, it may not report the amount as delinquent unless it also reports that you dispute the amount and tells you who it reported to.",
+     "basis": ["12 CFR 1026.13(f)-(g)"]
+    },
+    {
+     "q": "How long does a debit card or checking account fraud claim take?",
+     "a": "For unauthorized or incorrect electronic transactions on a checking or savings account, such as debit card purchases, ATM withdrawals or online transfers, federal rules (Regulation E) set the timeline. Report the problem within 60 days after the statement showing it was sent. The bank generally must investigate within 10 business days, or 20 business days if the account has been open less than 30 days. If it needs more time, it can take up to 45 days, or 90 days for debit card purchases, transactions outside the U.S. and new accounts. In that case, it generally must give you a provisional credit for the disputed amount within 10 business days while it investigates. It must tell you the results within 3 business days after finishing. You can check the status of your claim in the mobile app (Inbox, then Status Tracker) or in your Online Banking Communications Inbox.",
+     "basis": ["12 CFR 1005.11(b)-(c)", "c505"]
+    },
+    {
+     "q": "What happens if my debit card or checking account claim is denied and the credit is taken back?",
+     "a": "If the bank finds no error, federal rules (Regulation E) require it to send you a written explanation of its findings. You have the right to ask for the documents it relied on. If you received a provisional credit, the bank must tell you the date and amount before it takes the credit back. For five business days after that notice, it must still pay your checks and preauthorized payments that it would have paid if the credit hadn't been removed, without charging you overdraft fees for them.",
+     "basis": ["12 CFR 1005.11(d)"]
+    }
+   ],
+   "open_questions": [
+    "Is there an appeal or reconsideration process for a denied dispute or fraud claim? How does a customer start it?",
+    "Typical (not maximum) time to resolve a card dispute and a debit or checking fraud claim, so the page can set realistic expectations.",
+    "Does Bank of America require written confirmation of debit or checking claims made by phone, and within how many days?",
+    "When is provisional credit given for checking and debit claims in practice (for example, the same day or within 10 business days)?"
+   ]
+  },
+  {
+   "slug": "deposit-returned-after-available",
+   "title": "When a deposited check is returned after the money was available",
+   "themes": ["deposit_hold"],
+   "why": "Deposit holds and missing deposits: 3,361 complaints, the most common problem. Hold pages explain why holds happen, not reversals.",
+   "items": [
+    {
+     "q": "Why did the bank take back money from a check I deposited after the funds were available?",
+     "a": "A check can still be returned unpaid after the funds have been made available to you. When funds become available, it means you can use the money. It doesn't mean the paying bank has finished paying the check. Holds give Bank of America and the paying bank time to validate the check, and service representatives can't release deposited funds that are on hold. Under standard check-collection rules (UCC 4-214), if the paying bank returns a deposited check unpaid, your bank can take the amount back out of your account. If this happens, contact the person or business that wrote the check to find out why it was returned and to get paid another way.",
+     "basis": ["c436", "c433", "UCC 4-214"]
+    }
+   ],
+   "open_questions": [
+    "Is there a fee when a deposited check is returned unpaid? How much is it?",
+    "How is the customer told that a deposited check was returned (alert, letter, Message Center)? Does the notice give the return reason?",
+    "Can a customer re-deposit a returned check, and under what conditions?"
+   ]
+  },
+  {
+   "slug": "bank-closed-account",
+   "title": "If Bank of America closes your account",
+   "themes": ["bank_closed", "closed_funds"],
+   "why": "2,394 complaints and no help content at all. The handoff rule stays: never guess why an account was closed.",
+   "items": [
+    {
+     "q": "What should I do if Bank of America closed my account?",
+     "a": "Only Bank of America can tell you why a specific account was closed, so contact the bank for the reason. In the meantime, many of the steps for closing an account yourself still apply. Make other arrangements for any direct deposits. Tell the businesses that take recurring payments from the account (such as internet or subscriptions) to bill you another way. Let anyone you wrote an outstanding check to know the account is closed. Keep your mailing and email addresses up to date: after an account is closed, Bank of America mails the final statement so you can check it for unexpected transactions. If something doesn't match, contact the bank right away.",
+     "basis": ["c008", "c240", "c007"]
+    }
+   ],
+   "open_questions": [
+    "BLOCKING: How and when is the remaining balance returned after a bank-initiated closure (mailed check, transfer, branch)? This is the fact customers complain about most; the page can't answer it without policy input.",
+    "What notice does the customer get before or after a bank-initiated closure, and through which channel?",
+    "Is there a way to ask for a review of a closure decision?",
+    "What happens to direct deposits and payments that arrive after closure?"
+   ]
+  },
+  {
+   "slug": "zelle-scam-claims",
+   "title": "If you were scammed into sending money with Zelle",
+   "themes": ["zelle_scam"],
+   "why": "1,411 complaints, up 20%. Current content is one sentence.",
+   "items": [
+    {
+     "q": "I was tricked into sending money with Zelle. Can I get it back?",
+     "a": "Report it right away on the Report Suspicious Activity page in Bank of America's Security Center, and stop contact with the person. How your claim is handled depends on how the payment was made. If someone got into your account or used your information to send money without your permission, that's an unauthorized transfer. Federal error-resolution rules (Regulation E) apply, so report it within 60 days after the statement showing it was sent. If you sent the payment yourself, it's generally treated as authorized, even if you were tricked. Bank of America says qualifying imposter scams may be eligible for reimbursement. Remember: Bank of America will never call and ask you to send money with Zelle to yourself or anyone, and won't ask for a security code by phone or text.",
+     "basis": ["c178", "c177", "12 CFR 1005.2(m)", "12 CFR 1005.11(b)"]
+    }
+   ],
+   "open_questions": [
+    "BLOCKING: Which imposter scams qualify for reimbursement (who was impersonated, which dates, dollar limits)?",
+    "How does a customer file a scam reimbursement claim, and how long does a decision take?",
+    "Is there any recourse for purchase scams (for example, a fake online seller)?"
+   ]
+  },
+  {
+   "slug": "stop-automatic-withdrawals",
+   "title": "How to stop automatic withdrawals from your account",
+   "themes": ["recurring_withdrawal"],
+   "why": "367 complaints and the fastest-growing problem (+36%). Stop-payment content covers paper checks only. A quick win.",
+   "items": [
+    {
+     "q": "How do I stop a company from taking automatic payments out of my checking account?",
+     "a": "Federal rules (Regulation E) let you stop a preauthorized electronic payment from your account. Tell your bank by phone or in writing at least 3 business days before the scheduled payment. The bank may ask you to confirm in writing within 14 days. You can also tell the company you're revoking your authorization. If you tell the bank that you've revoked it, the bank must block future payments from that company, though it may ask you to confirm in writing. Payments you scheduled yourself with Zelle are simpler: you can cancel a single payment or a whole recurring series until 11:59 p.m. ET the day before it's scheduled, under Payment Activity, then Scheduled. Stopping payment on a paper check you wrote is a separate process.",
+     "basis": ["12 CFR 1005.10(c)", "Official interpretation 1005.10(c)", "c187", "c014"]
+    }
+   ],
+   "open_questions": [
+    "How does a customer ask Bank of America to stop an automatic (ACH) withdrawal: online, app, phone? Is there a fee?",
+    "Does the same process cover recurring debit card charges (for example, a gym billing the card), or do those go through a card dispute?",
+    "How long does a stop on a recurring withdrawal last?"
+   ]
+  }
+ ]
+}

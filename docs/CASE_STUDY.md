@@ -73,10 +73,22 @@ I wrote a 40-question test set from the gap analysis: questions the help content
 - **"Exact outcome" is noisy.** Two runs of the same version differed by one question, and the line between "answered" and "partial" is fuzzy. **"Right call" (answer vs. hand off) is the metric that matters for customers**, so I made it the headline number.
 - **Fixing one behavior broke another.** Version 2 cut unnecessary hedging, but in handoff answers the model started writing the general phone number from memory, uncited. The fact check caught all four cases. In v2.2 I took phone numbers out of the model's hands: handoffs now show a fixed, source-linked list of contacts. The lesson: **for high-stakes details, don't rely on a prompt when a deterministic control will do.**
 
-## 6. What I'd do next
+## 6. v3: closing the gaps
+
+The obvious next question was whether better content would close the gaps. I drafted five help pages for the top gaps. Every fact comes from a public Bank of America page or a named federal rule, and 17 unverifiable details are kept out of the pages as open questions for a policy owner. Then I re-ran the same bot on the same prompt, with labels set before the run.
+
+- Targeted gap questions with a cited answer: **2/9 → 8/9**. Handoffs across the test set: **19 → 12**.
+- Still **0 unsafe answers** and **0 unsupported figures**.
+- Projected complaints fully answered: **11% → 31%** (my re-rating with the same rubric).
+- Cost: two guardrail questions went from a handoff to a cautious partial answer, which pointed to the two pages that need tighter scoping.
+- Bank-initiated closures don't move: where the money goes is a policy decision, not a content fix.
+
+Details: [V3_CLOSE_THE_GAPS.md](V3_CLOSE_THE_GAPS.md).
+
+## 7. What I'd do next
 
 - **Measure embeddings against keyword search** on the same 40 questions. Keyword search alone, on the raw question, already finds the right topic in the top 8 for 25 of 27 answerable questions, so I'd only switch if embeddings do measurably better.
-- **Fill the content gaps first.** The bot can only answer as well as its sources. Pages on bank-initiated closures, collections and identity theft would move the most complaints.
+- **Get the open policy questions answered** (closure payouts, which scams qualify, stop-payment channel), then run v3.1 with the two scoping fixes. Collections and identity theft are the next content gaps.
 - **Use first-party data.** The CFPB data is a biased sample of escalated complaints. At a bank, I'd run the same method on chat transcripts and call reasons.
 - **Track in production:** containment rate, handoff rate by intent, the "was this helpful" rate on PARTIAL answers, and repeat contacts within 7 days.
 
